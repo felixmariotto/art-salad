@@ -35,6 +35,17 @@ module.exports = env => {
       })
     ],
 
+    module: {
+      rules: [
+        {
+          test: /\.(gltf|glb|png|svg|jpg|gif)$/,
+          use: [
+            'file-loader',
+          ],
+        },
+      ],
+    },
+
     devtool: devtool
 
   }

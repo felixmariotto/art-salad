@@ -11,6 +11,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "file-loader": "^6.2.0",
     "three": "^0.128.0",
     "three-mesh-ui": "^4.6.1"
   },
