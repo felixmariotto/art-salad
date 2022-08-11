@@ -1,7 +1,7 @@
 {
-  "name": "minimal_vr",
+  "name": "puzzle museum",
   "version": "0.0.0",
-  "description": "minimal three.js VR app",
+  "description": "puzzle museum",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --open --env.NODE_ENV=dev",
