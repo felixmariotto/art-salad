@@ -7,36 +7,47 @@ import * as THREE from 'three';
 
 //
 
-const vec3 = new THREE.Vector3();
+const vec3A = new THREE.Vector3();
+const vec3B = new THREE.Vector3();
 
-const STANDARD_SIZE = 0.5;
+const STANDARD_PUZZLE_SIZE = 0.5;
+const STANDARD_PUZZLE_POSITION = new THREE.Vector3( 0, 1, -1 );
+
+const GRID_SIZE = 1.5;
+const GRID_CENTER = new THREE.Vector3( 0, 0, -1.5 );
 
 //
 
 function PuzzleManager( puzzleModel ) {
 
 	const puzzleManager = {
-		puzzleModel,
 		init,
-		group: new THREE.Group()
+		precompute,
+		setFinishedState,
+		setShuffledState,
+		group: new THREE.Group(),
+		puzzleModel: new THREE.Group()
 	}
 
-	puzzleManager.init();
+	puzzleManager.init( puzzleModel );
+	puzzleManager.precompute();
+	puzzleManager.setFinishedState();
+	puzzleManager.setShuffledState();
 
 	return puzzleManager
 
 }
 
-function init() {
-
-	const cleanModel = new THREE.Group();
-	this.group.add( cleanModel );
+function init( puzzleModel ) {
+	
+	this.puzzleModel = new THREE.Group();
+	this.group.add( this.puzzleModel );
 
 	// firstly we take all the meshes from the imported model, and place them in a new global Group.
 
 	const toAdd = [];
 
-	this.puzzleModel.traverse( obj => {
+	puzzleModel.traverse( obj => {
 
 		if ( obj.geometry ) {
 
@@ -49,15 +60,15 @@ function init() {
 
 	} );
 
-	cleanModel.add( ...toAdd );
+	this.puzzleModel.add( ...toAdd );
 
 	// then we compute the bounding box center point, and move the geometry to the center of the object.
 
 	const bbox = new THREE.Box3();
-	bbox.setFromObject( cleanModel, true );
-	const translation = bbox.getCenter( vec3 ).negate();
+	bbox.setFromObject( this.puzzleModel, true );
+	const translation = bbox.getCenter( vec3A ).negate();
 
-	cleanModel.traverse( obj => {
+	this.puzzleModel.traverse( obj => {
 
 		if ( obj.geometry ) {
 			obj.geometry.translate(
@@ -71,11 +82,11 @@ function init() {
 
 	// then we scale the geometry to a standard scale so that the user can grab all parts with their hands.
 
-	const bboxS = bbox.getSize( vec3 );
+	const bboxS = bbox.getSize( vec3A );
 	const average = ( bboxS.x + bboxS.y + bboxS.z ) / 3;
-	const scaleFactor = STANDARD_SIZE / average;
+	const scaleFactor = STANDARD_PUZZLE_SIZE / average;
 
-	cleanModel.traverse( obj => {
+	this.puzzleModel.traverse( obj => {
 
 		if ( obj.geometry ) {
 			obj.geometry.scale(
@@ -87,9 +98,68 @@ function init() {
 
 	} );
 
-	// then a pre-computation must be made :
-	// each piece of the puzzle must get moved to its own object with center at center of bbox
-	// then each piece center point related to the puzzle center must be recorded
+}
+
+//
+
+function precompute() {
+
+	this.pieces = this.puzzleModel.children;
+	this.piecesNumber = this.pieces.length;
+
+	// each piece bounding box will need to be computed often, so we add some utilities to Three's Meshes.
+
+	this.pieces.forEach( piece => {
+
+		piece.bbox = new THREE.Box3();
+		piece.computeBBOX = function () {
+			this.bbox.setFromObject( this, true );
+		}
+
+	} );
+
+}
+
+//
+
+function setFinishedState() {
+
+	this.puzzleModel.position.copy( STANDARD_PUZZLE_POSITION )
+
+}
+
+//
+
+function setShuffledState() {
+
+	// firstly we compute the layout of the grid we must make
+
+	const gridCellLength = Math.ceil( Math.sqrt( this.piecesNumber ) );
+	const gridCellSize = GRID_SIZE / gridCellLength;
+	const cursor = new THREE.Vector2();
+
+	this.pieces.forEach( piece => {
+
+		piece.computeBBOX();
+		const center = piece.bbox.getCenter( vec3A );
+
+		const targetCenter = vec3B.set(
+			GRID_CENTER.x + ( GRID_SIZE * -0.5 ) + ( cursor.x * gridCellSize ) + ( gridCellSize * 0.5 ),
+			GRID_CENTER.y - ( GRID_SIZE * -0.5 ) - ( cursor.y * gridCellSize ) - ( gridCellSize * 0.5 ),
+			GRID_CENTER.z
+		)
+
+		const translation = targetCenter.sub( center );
+
+		piece.position.copy( translation );
+
+		cursor.x = cursor.x + 1;
+		if ( cursor.x > gridCellLength - 1 ) {
+			cursor.x = 0;
+			cursor.y ++;
+		}
+
+	} );
 
 }
 
