@@ -48,8 +48,11 @@ function Controller( renderer, i ) {
 }
 
 function Hand() {
-	const material = new THREE.MeshNormalMaterial();
-	const geometry = new THREE.SphereGeometry( 0.1 );
+	const material = new THREE.MeshPhongMaterial({
+		transparent: true,
+		opacity: 0.5
+	});
+	const geometry = new THREE.IcosahedronGeometry( 0.1, 5 );
 	return new THREE.Mesh( geometry, material );
 }
 
