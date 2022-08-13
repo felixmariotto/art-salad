@@ -13,6 +13,7 @@ export default function PuzzlePiece( model ) {
 	piece.add( piece.origModel, piece.bgModel1, piece.bgModel2 );
 
 	piece.bbox = new THREE.Box3();
+	
 	piece.computeBBOX = function () {
 		this.bbox.setFromObject( this, true );
 	}

@@ -13,19 +13,22 @@ function Controls( renderer ) {
 		controllers: [],
 		group: new THREE.Group(),
 		update,
-		intersectPuzzle,
-		setPuzzle
+		lookForHighlights,
+		intersectController,
+		setPuzzle,
+		grip
 	}
 
 	function update() {
 
-		controls.intersectPuzzle();
+		controls.lookForHighlights();
 
 	}
 
 	for ( let i=0 ; i<2 ; i++ ) {
 
-		controls.controllers[i] = Controller( renderer, i );
+		controls.controllers[i] = Controller( controls, renderer, i );
+
 		controls.group.add( controls.controllers[i].group );
 
 	}
@@ -36,7 +39,7 @@ function Controls( renderer ) {
 
 //
 
-function Controller( renderer, i ) {
+function Controller( controls, renderer, i ) {
 
 	const controller = {
 		type: "controller",
@@ -45,6 +48,30 @@ function Controller( renderer, i ) {
 	}
 
 	controller.group.add( Hand() );
+
+	controller.group.addEventListener( 'selectstart', (e) => {
+
+		console.log( 'selectstart');
+
+	} );
+
+	controller.group.addEventListener( 'selectend', (e) => {
+
+		console.log( 'selectend');
+
+	} );
+
+	controller.group.addEventListener( 'squeezestart', (e) => {
+
+		controls.grip( i );
+
+	} );
+
+	controller.group.addEventListener( 'squeezeend', (e) => {
+
+		console.log( 'squeezeend');
+
+	} );
 
 	controller.group.addEventListener( 'connected', (e) => {
 
@@ -83,31 +110,58 @@ function setPuzzle( puzzle ) {
 
 //
 
-function intersectPuzzle() {
+function lookForHighlights() {
 
-	if ( this.puzzle ) {
+	let noneHighlighted = true;
 
-		let noneHighlighted = true;
+	this.controllers.forEach( ( controller, i ) => {
 
-		this.controllers.forEach( controller => {
+		const intersects = this.intersectController( i );
 
-			this.puzzle.pieces.forEach( piece => {
+		if ( intersects.length ) {
 
-				if ( piece.bbox.distanceToPoint( controller.group.position ) < HAND_RADIUS ) {
+			this.puzzle.highlightPiece( intersects[0] );
 
-					this.puzzle.highlightPiece( piece );
+			noneHighlighted = false;
 
-					noneHighlighted = false;
+		}
 
-				}
+	} );
 
-			} );
+	if ( noneHighlighted ) this.puzzle.highlightPiece( null );
 
-		} );
+}
 
-		if ( noneHighlighted ) this.puzzle.highlightPiece( null );
+//
 
-	}
+function grip( i ) {
+
+	const intersects = this.intersectController( i );
+
+	console.log( intersects );
+
+}
+
+//
+
+function intersectController( i ) {
+
+	const controller = this.controllers[i];
+	const intersects = [];
+
+	if ( !this.puzzle ) return intersects;
+	
+	this.puzzle.pieces.forEach( piece => {
+
+		if ( piece.bbox.distanceToPoint( controller.group.position ) < HAND_RADIUS ) {
+
+			intersects.push( piece );
+
+		}
+
+	} );
+
+	return intersects;
 
 }
 
