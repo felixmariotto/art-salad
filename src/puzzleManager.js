@@ -16,7 +16,7 @@ const STANDARD_PUZZLE_SIZE = 0.5;
 const STANDARD_PUZZLE_POSITION = new THREE.Vector3( 0, 1, -1 );
 
 const GRID_SIZE = 1.5;
-const GRID_CENTER = new THREE.Vector3( 0, 1, -1 );
+const GRID_CENTER = new THREE.Vector3( 0, 1, -0.5 );
 
 //
 
@@ -104,12 +104,16 @@ function init( puzzleModel ) {
 
 function precompute() {
 
-
 	this.pieces = [];
+
 	for ( let i=this.group.children.length-1 ; i>-1 ; i-- ) {
+
 		const newPiece = PuzzlePiece( this.group.children[i] );
+
 		this.pieces.push( newPiece );
+
 		this.group.add( newPiece );
+		
 	}
 
 	this.piecesNumber = this.pieces.length;

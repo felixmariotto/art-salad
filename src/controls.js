@@ -10,13 +10,15 @@ const HAND_RADIUS = 0.1;
 function Controls( renderer ) {
 
 	const controls = {
+		grippedPiece: null,
 		controllers: [],
 		group: new THREE.Group(),
 		update,
 		lookForHighlights,
 		intersectController,
 		setPuzzle,
-		grip
+		grip,
+		release
 	}
 
 	function update() {
@@ -29,7 +31,7 @@ function Controls( renderer ) {
 
 		controls.controllers[i] = Controller( controls, renderer, i );
 
-		controls.group.add( controls.controllers[i].group );
+		controls.group.add( controls.controllers[i] );
 
 	}
 
@@ -41,45 +43,41 @@ function Controls( renderer ) {
 
 function Controller( controls, renderer, i ) {
 
-	const controller = {
-		type: "controller",
-		index: i,
-		group: renderer.xr.getControllerGrip( i )
-	}
+	const controller = renderer.xr.getControllerGrip( i );
 
-	controller.group.add( Hand() );
+	controller.add( Hand() );
 
-	controller.group.addEventListener( 'selectstart', (e) => {
+	controller.addEventListener( 'selectstart', (e) => {
 
 		console.log( 'selectstart');
 
 	} );
 
-	controller.group.addEventListener( 'selectend', (e) => {
+	controller.addEventListener( 'selectend', (e) => {
 
 		console.log( 'selectend');
 
 	} );
 
-	controller.group.addEventListener( 'squeezestart', (e) => {
+	controller.addEventListener( 'squeezestart', (e) => {
 
 		controls.grip( i );
 
 	} );
 
-	controller.group.addEventListener( 'squeezeend', (e) => {
+	controller.addEventListener( 'squeezeend', (e) => {
 
-		console.log( 'squeezeend');
+		controls.release();
 
 	} );
 
-	controller.group.addEventListener( 'connected', (e) => {
+	controller.addEventListener( 'connected', (e) => {
 
 		console.log( 'setup source', e.data );
 
 	} );
 
-	controller.group.addEventListener( 'disconnected', () => {
+	controller.addEventListener( 'disconnected', () => {
 
 		console.log('remove source')
 
@@ -112,6 +110,8 @@ function setPuzzle( puzzle ) {
 
 function lookForHighlights() {
 
+	if ( this.grippedPiece ) return
+
 	let noneHighlighted = true;
 
 	this.controllers.forEach( ( controller, i ) => {
@@ -138,7 +138,27 @@ function grip( i ) {
 
 	const intersects = this.intersectController( i );
 
-	console.log( intersects );
+	if ( intersects.length > 0 ) {
+
+		this.grippedPiece = intersects[0];
+
+		this.controllers[i].attach( this.grippedPiece );
+
+		this.puzzle.highlightPiece( null );
+
+	}
+
+}
+
+function release() {
+
+	this.puzzle.group.attach( this.grippedPiece );
+
+	this.grippedPiece.computeBBOX();
+
+	this.grippedPiece = null;
+
+	// we have to recompute the piece bbox
 
 }
 
@@ -153,7 +173,7 @@ function intersectController( i ) {
 	
 	this.puzzle.pieces.forEach( piece => {
 
-		if ( piece.bbox.distanceToPoint( controller.group.position ) < HAND_RADIUS ) {
+		if ( piece.bbox.distanceToPoint( controller.position ) < HAND_RADIUS ) {
 
 			intersects.push( piece );
 
