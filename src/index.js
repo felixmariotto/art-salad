@@ -21,4 +21,6 @@ files.puzzleModel.then( model => {
 	const puzzleManager = PuzzleManager( model );
 	scene.add( puzzleManager.group );
 
+	puzzleManager.setShuffledState();
+
 } );

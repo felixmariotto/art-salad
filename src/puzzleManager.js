@@ -14,7 +14,7 @@ const STANDARD_PUZZLE_SIZE = 0.5;
 const STANDARD_PUZZLE_POSITION = new THREE.Vector3( 0, 1, -1 );
 
 const GRID_SIZE = 1.5;
-const GRID_CENTER = new THREE.Vector3( 0, 0, -1.5 );
+const GRID_CENTER = new THREE.Vector3( 0, 1, -2 );
 
 //
 
@@ -23,16 +23,12 @@ function PuzzleManager( puzzleModel ) {
 	const puzzleManager = {
 		init,
 		precompute,
-		setFinishedState,
 		setShuffledState,
 		group: new THREE.Group(),
-		puzzleModel: new THREE.Group()
 	}
 
 	puzzleManager.init( puzzleModel );
 	puzzleManager.precompute();
-	puzzleManager.setFinishedState();
-	puzzleManager.setShuffledState();
 
 	return puzzleManager
 
@@ -40,8 +36,7 @@ function PuzzleManager( puzzleModel ) {
 
 function init( puzzleModel ) {
 	
-	this.puzzleModel = new THREE.Group();
-	this.group.add( this.puzzleModel );
+	this.group = new THREE.Group();
 
 	// firstly we take all the meshes from the imported model, and place them in a new global Group.
 
@@ -60,15 +55,15 @@ function init( puzzleModel ) {
 
 	} );
 
-	this.puzzleModel.add( ...toAdd );
+	this.group.add( ...toAdd );
 
 	// then we compute the bounding box center point, and move the geometry to the center of the object.
 
 	const bbox = new THREE.Box3();
-	bbox.setFromObject( this.puzzleModel, true );
+	bbox.setFromObject( this.group, true );
 	const translation = bbox.getCenter( vec3A ).negate();
 
-	this.puzzleModel.traverse( obj => {
+	this.group.traverse( obj => {
 
 		if ( obj.geometry ) {
 			obj.geometry.translate(
@@ -86,7 +81,7 @@ function init( puzzleModel ) {
 	const average = ( bboxS.x + bboxS.y + bboxS.z ) / 3;
 	const scaleFactor = STANDARD_PUZZLE_SIZE / average;
 
-	this.puzzleModel.traverse( obj => {
+	this.group.traverse( obj => {
 
 		if ( obj.geometry ) {
 			obj.geometry.scale(
@@ -104,7 +99,7 @@ function init( puzzleModel ) {
 
 function precompute() {
 
-	this.pieces = this.puzzleModel.children;
+	this.pieces = this.group.children;
 	this.piecesNumber = this.pieces.length;
 
 	// each piece bounding box will need to be computed often, so we add some utilities to Three's Meshes.
@@ -117,14 +112,6 @@ function precompute() {
 		}
 
 	} );
-
-}
-
-//
-
-function setFinishedState() {
-
-	this.puzzleModel.position.copy( STANDARD_PUZZLE_POSITION )
 
 }
 
@@ -145,7 +132,7 @@ function setShuffledState() {
 
 		const targetCenter = vec3B.set(
 			GRID_CENTER.x + ( GRID_SIZE * -0.5 ) + ( cursor.x * gridCellSize ) + ( gridCellSize * 0.5 ),
-			GRID_CENTER.y - ( GRID_SIZE * -0.5 ) - ( cursor.y * gridCellSize ) - ( gridCellSize * 0.5 ),
+			GRID_CENTER.y + ( GRID_SIZE * 0.5 ) - ( cursor.y * gridCellSize ) - ( gridCellSize * 0.5 ),
 			GRID_CENTER.z
 		)
 
