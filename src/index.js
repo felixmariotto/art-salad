@@ -1,5 +1,5 @@
 
-import { scene, renderer } from './init.js';
+import { scene, renderer, loopCallbacks } from './init.js';
 import stage from './stage.js';
 import Controls from './controls.js';
 import files from './files.js';
@@ -22,6 +22,7 @@ files.puzzleModel.then( model => {
 
 	puzzle.setShuffledState();
 
-	materials.setSelectedShader( puzzle.pieces[0], true );
+	controls.setPuzzle( puzzle );
+	loopCallbacks.push( controls.update );
 
 } );

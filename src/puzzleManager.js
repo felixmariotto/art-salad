@@ -5,6 +5,7 @@ the PuzzleManager class represent a whole puzzle and its space.
 
 import * as THREE from 'three';
 import PuzzlePiece from './PuzzlePiece.js';
+import materials from './materials.js';
 
 //
 
@@ -15,7 +16,7 @@ const STANDARD_PUZZLE_SIZE = 0.5;
 const STANDARD_PUZZLE_POSITION = new THREE.Vector3( 0, 1, -1 );
 
 const GRID_SIZE = 1.5;
-const GRID_CENTER = new THREE.Vector3( 0, 1, -2 );
+const GRID_CENTER = new THREE.Vector3( 0, 1, -1 );
 
 //
 
@@ -25,6 +26,7 @@ function PuzzleManager( puzzleModel ) {
 		init,
 		precompute,
 		setShuffledState,
+		highlightPiece,
 		group: new THREE.Group(),
 	}
 
@@ -34,6 +36,8 @@ function PuzzleManager( puzzleModel ) {
 	return puzzleManager
 
 }
+
+//
 
 function init( puzzleModel ) {
 	
@@ -110,17 +114,6 @@ function precompute() {
 
 	this.piecesNumber = this.pieces.length;
 
-	// each piece bounding box will need to be computed often, so we add some utilities to Three's Meshes.
-
-	this.pieces.forEach( piece => {
-
-		piece.bbox = new THREE.Box3();
-		piece.computeBBOX = function () {
-			this.bbox.setFromObject( this, true );
-		}
-
-	} );
-
 }
 
 //
@@ -154,7 +147,30 @@ function setShuffledState() {
 			cursor.y ++;
 		}
 
+		piece.computeBBOX();
+
 	} );
+
+}
+
+// set the highlight material on one piece.
+// this function is call with null as argument to unset highlight from all.
+
+function highlightPiece( piece ) {
+
+	if ( this.selectedPiece ) {
+
+		materials.setHighlightShader( this.selectedPiece, false );
+
+	}
+
+	if ( piece ) {
+
+		this.selectedPiece = piece;
+
+		materials.setHighlightShader( piece, true );
+
+	}
 
 }
 

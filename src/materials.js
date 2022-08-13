@@ -96,7 +96,7 @@ function initPuzzle( puzzle ) {
 
 //
 
-function setSelectedShader( puzzlePiece, value ) {
+function setHighlightShader( puzzlePiece, value ) {
 
 	puzzlePiece.bgModel1.visible = value;
 	puzzlePiece.bgModel2.visible = value;
@@ -107,5 +107,5 @@ function setSelectedShader( puzzlePiece, value ) {
 
 export default {
 	initPuzzle,
-	setSelectedShader
+	setHighlightShader
 }

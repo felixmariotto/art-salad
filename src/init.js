@@ -24,10 +24,13 @@ document.body.appendChild( renderer.domElement );
 
 /* Render loop (called ~60 times/second, or more in VR) */
 
+const loopCallbacks = [];
+
 renderer.setAnimationLoop( loop );
 
 function loop() {
 	renderer.render( scene, camera );
+	loopCallbacks.forEach( fn => fn() );
 };
 
 //
@@ -35,4 +38,5 @@ function loop() {
 export { scene }
 export { camera }
 export { renderer }
-export default { scene, camera, renderer }
+export { loopCallbacks }
+export default { scene, camera, renderer, loopCallbacks }
