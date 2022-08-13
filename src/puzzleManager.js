@@ -4,6 +4,7 @@ the PuzzleManager class represent a whole puzzle and its space.
 */
 
 import * as THREE from 'three';
+import PuzzlePiece from './PuzzlePiece.js';
 
 //
 
@@ -99,7 +100,14 @@ function init( puzzleModel ) {
 
 function precompute() {
 
-	this.pieces = this.group.children;
+
+	this.pieces = [];
+	for ( let i=this.group.children.length-1 ; i>-1 ; i-- ) {
+		const newPiece = PuzzlePiece( this.group.children[i] );
+		this.pieces.push( newPiece );
+		this.group.add( newPiece );
+	}
+
 	this.piecesNumber = this.pieces.length;
 
 	// each piece bounding box will need to be computed often, so we add some utilities to Three's Meshes.

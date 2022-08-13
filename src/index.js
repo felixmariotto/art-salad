@@ -16,11 +16,12 @@ scene.add( controls.group );
 
 files.puzzleModel.then( model => {
 
-	materials.makeBackgroundGrey( model );
+	const puzzle = PuzzleManager( model );
+	scene.add( puzzle.group );
+	materials.initPuzzle( puzzle );
 
-	const puzzleManager = PuzzleManager( model );
-	scene.add( puzzleManager.group );
+	puzzle.setShuffledState();
 
-	puzzleManager.setShuffledState();
+	materials.setSelectedShader( puzzle.pieces[0], true );
 
 } );
