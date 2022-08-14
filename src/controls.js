@@ -173,9 +173,19 @@ function intersectController( i ) {
 	
 	this.puzzle.pieces.forEach( piece => {
 
+		// we first check intersection with the bouding box because it's less costly
+
 		if ( piece.bbox.distanceToPoint( controller.position ) < HAND_RADIUS ) {
 
-			intersects.push( piece );
+			// then here we look for real intersection
+
+			const dist = piece.distanceToPoint( controller.position );
+
+			if ( dist < HAND_RADIUS ) {
+
+				intersects.push( piece );
+
+			}
 
 		}
 
