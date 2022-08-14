@@ -1,19 +1,37 @@
 
+import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 import puzzleModel from '../assets/test.glb';
+import museumModel from '../assets/museum.glb';
+import environmentMap from '../assets/environment_map.jpg';
 
 //
 
-const loader = new GLTFLoader();
+const gltfLoader = new GLTFLoader();
+const textureLoader = new THREE.TextureLoader();
 
-function getFile( url ) {
+function getGLTF( url ) {
 
 	return new Promise( resolve => {
 
-		loader.load( url, file => {
+		gltfLoader.load( url, file => {
 
 			resolve( file.scene );
+
+		} );
+
+	} );
+
+}
+
+function getTexture( url ) {
+
+	return new Promise( resolve => {
+
+		textureLoader.load( url, file => {
+
+			resolve( file  );
 
 		} );
 
@@ -24,5 +42,7 @@ function getFile( url ) {
 //
 
 export default {
-	puzzleModel: getFile( puzzleModel )
+	puzzleModel: getGLTF( puzzleModel ),
+	museumModel: getGLTF( museumModel ),
+	environmentMap: getTexture( environmentMap )
 }

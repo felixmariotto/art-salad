@@ -2,11 +2,16 @@
 import * as THREE from 'three';
 
 import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
+import files from './files.js';
 
 /* Create the container object, the scene */
 
 var scene = new THREE.Scene();
-scene.background = new THREE.Color( 0x505050 );
+scene.background = new THREE.Color( 0xc7c7c7 );
+files.environmentMap.then( map => {
+	map.mapping = THREE.EquirectangularReflectionMapping
+	scene.environment = map;
+} );
 
 /* Create the camera from which the scene will be seen */
 
@@ -19,6 +24,7 @@ camera.lookAt( 0, 1, -1.8 );
 var renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize( window.innerWidth, window.innerHeight );
 renderer.xr.enabled = true;
+renderer.outputEncoding = THREE.sRGBEncoding;
 document.body.appendChild(VRButton.createButton(renderer));
 document.body.appendChild( renderer.domElement );
 
@@ -31,6 +37,8 @@ renderer.setAnimationLoop( loop );
 function loop() {
 	renderer.render( scene, camera );
 	loopCallbacks.forEach( fn => fn() );
+
+	// camera.rotation.y += 0.01;
 };
 
 //
