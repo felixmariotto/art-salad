@@ -1,5 +1,6 @@
 
 import * as THREE from 'three';
+import materials from './materials.js';
 
 //
 
@@ -58,15 +59,19 @@ function setPuzzle( puzzle ) {
 
 function lookForHighlights() {
 
-	this.controllers.forEach( ( controller, i ) => {
+	this.puzzle.pieces.forEach( piece => {
 
-		// this.puzzle.highlightPiece( null );
+		materials.setHighlightShader( piece, false );
+
+	} );
+
+	this.controllers.forEach( ( controller, i ) => {
 
 		const intersects = controller.intersectController();
 
-		if ( intersects.length ) {
-
-			this.puzzle.highlightPiece( intersects[0] );
+		if ( intersects.length && intersects[0] !== controller.grippedPiece ) {
+			
+			materials.setHighlightShader( intersects[0], true );
 
 		}
 
@@ -138,8 +143,6 @@ function grip() {
 
 		this.attach( this.grippedPiece );
 
-		this.controls.puzzle.highlightPiece( null );
-
 	}
 
 }
@@ -189,6 +192,32 @@ function intersectController() {
 	return intersects;
 
 }
+
+//
+
+
+/*
+// set the highlight material on one piece.
+// this function is call with null as argument to unset highlight
+
+function highlightPiece( piece ) {
+
+	if ( this.selectedPiece ) {
+
+		materials.setHighlightShader( this.selectedPiece, false );
+
+	}
+
+	if ( piece ) {
+
+		this.selectedPiece = piece;
+
+		materials.setHighlightShader( piece, true );
+
+	}
+
+}
+*/
 
 //
 

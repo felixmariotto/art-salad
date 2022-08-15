@@ -26,7 +26,6 @@ function PuzzleManager( puzzleModel ) {
 		init,
 		precompute,
 		setShuffledState,
-		highlightPiece,
 		group: new THREE.Group(),
 	}
 
@@ -154,27 +153,6 @@ function setShuffledState() {
 		piece.computeBBOX();
 
 	} );
-
-}
-
-// set the highlight material on one piece.
-// this function is call with null as argument to unset highlight from all.
-
-function highlightPiece( piece ) {
-
-	if ( this.selectedPiece ) {
-
-		materials.setHighlightShader( this.selectedPiece, false );
-
-	}
-
-	if ( piece ) {
-
-		this.selectedPiece = piece;
-
-		materials.setHighlightShader( piece, true );
-
-	}
 
 }
 
