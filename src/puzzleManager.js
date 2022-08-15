@@ -185,7 +185,17 @@ function findPossibleMerging( part ) {
 			part.position.distanceTo( oppositePart.position ) < 0.07 &&
 			part.quaternion.angleTo( oppositePart.quaternion ) < 0.5
 		) {
-			console.log('assemble')
+
+			for ( let i=oppositePart.children.length -1 ; i>-1 ; i-- ) {
+
+				const child = oppositePart.children[i];
+
+				part.add( child );
+
+			}
+
+			console.log( 'oppositePart must be destroyed and removed from controls knowledge')
+
 		}
 
 		oppositePartParent.attach( oppositePart );
