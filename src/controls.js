@@ -22,6 +22,13 @@ function Controls( renderer ) {
 
 		controls.lookForHighlights();
 
+		// if the user grips at least one part, we tell the puzzle to check for
+		// possible parts merging.
+
+		const grippingC = controls.controllers.find( c => c.grippedPart );
+
+		if ( grippingC ) controls.puzzle.findPossibleMerging( grippingC.grippedPart );
+
 	}
 
 	for ( let i=0 ; i<2 ; i++ ) {
@@ -39,11 +46,14 @@ function Controls( renderer ) {
 //
 
 function Hand() {
+
 	const material = new THREE.MeshPhongMaterial({
 		transparent: true,
 		opacity: 0.5
 	});
+
 	const geometry = new THREE.IcosahedronGeometry( HAND_RADIUS, 5 );
+
 	return new THREE.Mesh( geometry, material );
 }
 
@@ -165,7 +175,7 @@ function release() {
 
 		this.controls.puzzle.group.attach( this.grippedPart );
 
-		this.grippedPart.computeBBOX();
+		this.grippedPart.computeChildrenBBOX();
 
 		this.grippedPart = null;
 

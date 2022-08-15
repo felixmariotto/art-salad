@@ -32,9 +32,9 @@ function PuzzleManager( puzzleModel ) {
 		init,
 		precompute,
 		setShuffledState,
+		findPossibleMerging,
 		pieces: [],
 		parts: [],
-		piecesNumber: null,
 		group: new THREE.Group(),
 	}
 
@@ -124,24 +124,20 @@ function precompute() {
 		
 	}
 
-	this.piecesNumber = this.pieces.length;
-
 }
 
-//
+// move the parts into a grid pattern in front of the player
 
 function setShuffledState() {
 
-	// firstly we compute the layout of the grid we must make
-
-	const gridCellLength = Math.ceil( Math.sqrt( this.piecesNumber ) );
+	const gridCellLength = Math.ceil( Math.sqrt( this.parts.length ) );
 	const gridCellSize = GRID_SIZE / gridCellLength;
 	const cursor = new THREE.Vector2();
 
-	this.pieces.forEach( piece => {
+	this.parts.forEach( part => {
 
-		piece.computeBBOX();
-		const center = piece.bbox.getCenter( vec3A );
+		part.computeBBOX();
+		const center = part.bbox.getCenter( vec3A );
 
 		const targetCenter = vec3B.set(
 			GRID_CENTER.x + ( GRID_SIZE * -0.5 ) + ( cursor.x * gridCellSize ) + ( gridCellSize * 0.5 ),
@@ -151,7 +147,7 @@ function setShuffledState() {
 
 		const translation = targetCenter.sub( center );
 
-		piece.position.copy( translation );
+		part.position.copy( translation );
 
 		cursor.x = cursor.x + 1;
 		if ( cursor.x > gridCellLength - 1 ) {
@@ -159,9 +155,44 @@ function setShuffledState() {
 			cursor.y ++;
 		}
 
-		piece.computeBBOX();
+		part.computeChildrenBBOX();
+
+		console.log( part.position )
 
 	} );
+
+}
+
+//
+
+function findPossibleMerging( part ) {
+
+	const partParent = part.parent;
+
+	this.group.attach( part );
+
+	let smallestDist = Infinity;
+
+	this.parts.forEach( oppositePart => {
+
+		if ( part == oppositePart ) return
+
+		const oppositePartParent = oppositePart.parent;
+
+		this.group.attach( oppositePart );
+
+		if (
+			part.position.distanceTo( oppositePart.position ) < 0.07 &&
+			part.quaternion.angleTo( oppositePart.quaternion ) < 0.5
+		) {
+			console.log('assemble')
+		}
+
+		oppositePartParent.attach( oppositePart );
+
+	} );
+
+	partParent.attach( part );
 
 }
 

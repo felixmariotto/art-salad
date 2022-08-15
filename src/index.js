@@ -3,7 +3,7 @@ import { scene, renderer, loopCallbacks } from './init.js';
 import stage from './stage.js';
 import Controls from './controls.js';
 import files from './files.js';
-import PuzzleManager from './puzzleManager.js';
+import PuzzleManager from './PuzzleManager.js';
 import materials from './materials.js';
 
 //

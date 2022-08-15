@@ -14,6 +14,8 @@ export default function PuzzlePart( /* component(s) */ ) {
 	part.isPart = true;
 	part.distanceToController = distanceToController;
 	part.computeBBOX = computeBBOX;
+	part.computeChildrenBBOX = computeChildrenBBOX;
+	part.bbox = new THREE.Box3();
 
 	// we let PuzzlePart argument quite free, so here we sort everything up.
 
@@ -61,7 +63,9 @@ function distanceToController( controller, handRadius ) {
 
 //
 
-function computeBBOX() {
+function computeChildrenBBOX() {
+
+	this.updateWorldMatrix( true, false );
 
 	this.traverse( child => {
 
@@ -69,4 +73,12 @@ function computeBBOX() {
 
 	} );
 
+}
+
+//
+
+function computeBBOX() {
+
+	this.bbox.setFromObject( this, true );
+	
 }
