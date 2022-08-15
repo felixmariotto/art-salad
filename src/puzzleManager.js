@@ -1,6 +1,11 @@
 
 /*
 the PuzzleManager class represent a whole puzzle and its space.
+It manages the puzzlePieces and the puzzleParts.
+A puzzlePiece is one of the many pieces in which the model was originally divided.
+A puzzlePart represent one of the assembled parts of the puzzle. At the begining each
+piece is in one part, and when the player assemble two parts together they are merged into
+one part containing two pieces.
 */
 
 import * as THREE from 'three';
@@ -28,6 +33,7 @@ function PuzzleManager( puzzleModel ) {
 		precompute,
 		setShuffledState,
 		pieces: [],
+		parts: [],
 		piecesNumber: null,
 		group: new THREE.Group(),
 	}
@@ -109,18 +115,16 @@ function precompute() {
 	for ( let i=this.group.children.length-1 ; i>-1 ; i-- ) {
 
 		const newPiece = PuzzlePiece( this.group.children[i] );
+		const newPart = PuzzlePart( newPiece );
 
 		this.pieces.push( newPiece );
+		this.parts.push( newPart );
 
-		this.group.add( newPiece );
+		this.group.add( newPart );
 		
 	}
 
 	this.piecesNumber = this.pieces.length;
-
-	// test
-
-	PuzzlePart( this.pieces[0] );
 
 }
 

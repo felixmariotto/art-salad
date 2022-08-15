@@ -96,10 +96,18 @@ function initPuzzle( puzzle ) {
 
 //
 
-function setHighlightShader( puzzlePiece, value ) {
+function setHighlightShader( puzzlePart, value ) {
 
-	puzzlePiece.bgModel1.visible = value;
-	puzzlePiece.bgModel2.visible = value;
+	puzzlePart.traverse( child => {
+
+		if ( child.isPiece ) {
+
+			child.bgModel1.visible = value;
+			child.bgModel2.visible = value;
+
+		}
+
+	} );
 
 }
 

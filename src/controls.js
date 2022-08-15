@@ -59,9 +59,9 @@ function setPuzzle( puzzle ) {
 
 function lookForHighlights() {
 
-	this.puzzle.pieces.forEach( piece => {
+	this.puzzle.parts.forEach( part => {
 
-		materials.setHighlightShader( piece, false );
+		materials.setHighlightShader( part, false );
 
 	} );
 
@@ -71,7 +71,7 @@ function lookForHighlights() {
 
 		if ( intersects.length ) {
 
-			const isNotFree = controllers.find( val => intersects[0] == val.grippedPiece );
+			const isNotFree = controllers.find( val => intersects[0] == val.grippedPart );
 
 			if ( !isNotFree ) materials.setHighlightShader( intersects[0], true );
 
@@ -141,19 +141,19 @@ function grip() {
 
 	if ( intersects.length > 0 ) {
 
-		// before to attach the piece to this controller, we must make sure that
-		// the selected piece is not gripped by another controller.
+		// before to attach the part to this controller, we must make sure that
+		// the selected part is not gripped by another controller.
 		// if so, we don't grip.
 
-		const isNotFree = this.controls.controllers.find( c => c.grippedPiece == intersects[0] );
+		const isNotFree = this.controls.controllers.find( c => c.grippedPart == intersects[0] );
 
 		if ( isNotFree ) return
 
 		//
 
-		this.grippedPiece = intersects[0];
+		this.grippedPart = intersects[0];
 
-		this.attach( this.grippedPiece );
+		this.attach( this.grippedPart );
 
 	}
 
@@ -161,13 +161,13 @@ function grip() {
 
 function release() {
 
-	if ( this.grippedPiece ) {
+	if ( this.grippedPart ) {
 
-		this.controls.puzzle.group.attach( this.grippedPiece );
+		this.controls.puzzle.group.attach( this.grippedPart );
 
-		this.grippedPiece.computeBBOX();
+		this.grippedPart.computeBBOX();
 
-		this.grippedPiece = null;
+		this.grippedPart = null;
 
 	}
 
@@ -181,21 +181,13 @@ function intersectController() {
 
 	if ( !this.controls.puzzle ) return intersects;
 	
-	this.controls.puzzle.pieces.forEach( piece => {
+	this.controls.puzzle.parts.forEach( part => {
 
-		// we first check intersection with the bouding box because it's less costly
+		const dist = part.distanceToController( this, HAND_RADIUS );
 
-		if ( piece.bbox.distanceToPoint( this.position ) < HAND_RADIUS ) {
+		if ( dist < HAND_RADIUS ) {
 
-			// then here we look for real intersection
-
-			const dist = piece.distanceToPoint( this.position );
-
-			if ( dist < HAND_RADIUS ) {
-
-				intersects.push( piece );
-
-			}
+			intersects.push( part );
 
 		}
 
