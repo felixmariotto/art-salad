@@ -10,6 +10,7 @@ const vec3 = new THREE.Vector3();
 export default function PuzzlePiece( model ) {
 
 	const piece = new THREE.Group();
+	piece.isPiece = true;
 	piece.origModel = model;
 	piece.bgModel1 = model.clone();
 	piece.bgModel2 = model.clone();

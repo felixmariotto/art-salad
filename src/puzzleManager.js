@@ -5,6 +5,7 @@ the PuzzleManager class represent a whole puzzle and its space.
 
 import * as THREE from 'three';
 import PuzzlePiece from './PuzzlePiece.js';
+import PuzzlePart from './PuzzlePart.js';
 import materials from './materials.js';
 
 //
@@ -26,6 +27,8 @@ function PuzzleManager( puzzleModel ) {
 		init,
 		precompute,
 		setShuffledState,
+		pieces: [],
+		piecesNumber: null,
 		group: new THREE.Group(),
 	}
 
@@ -103,8 +106,6 @@ function init( puzzleModel ) {
 
 function precompute() {
 
-	this.pieces = [];
-
 	for ( let i=this.group.children.length-1 ; i>-1 ; i-- ) {
 
 		const newPiece = PuzzlePiece( this.group.children[i] );
@@ -116,6 +117,10 @@ function precompute() {
 	}
 
 	this.piecesNumber = this.pieces.length;
+
+	// test
+
+	PuzzlePart( this.pieces[0] );
 
 }
 
