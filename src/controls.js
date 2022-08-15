@@ -65,13 +65,15 @@ function lookForHighlights() {
 
 	} );
 
-	this.controllers.forEach( ( controller, i ) => {
+	this.controllers.forEach( ( controller, i, controllers ) => {
 
 		const intersects = controller.intersectController();
 
-		if ( intersects.length && intersects[0] !== controller.grippedPiece ) {
-			
-			materials.setHighlightShader( intersects[0], true );
+		if ( intersects.length ) {
+
+			const isNotFree = controllers.find( val => intersects[0] == val.grippedPiece );
+
+			if ( !isNotFree ) materials.setHighlightShader( intersects[0], true );
 
 		}
 
@@ -139,6 +141,16 @@ function grip() {
 
 	if ( intersects.length > 0 ) {
 
+		// before to attach the piece to this controller, we must make sure that
+		// the selected piece is not gripped by another controller.
+		// if so, we don't grip.
+
+		const isNotFree = this.controls.controllers.find( c => c.grippedPiece == intersects[0] );
+
+		if ( isNotFree ) return
+
+		//
+
 		this.grippedPiece = intersects[0];
 
 		this.attach( this.grippedPiece );
@@ -192,32 +204,6 @@ function intersectController() {
 	return intersects;
 
 }
-
-//
-
-
-/*
-// set the highlight material on one piece.
-// this function is call with null as argument to unset highlight
-
-function highlightPiece( piece ) {
-
-	if ( this.selectedPiece ) {
-
-		materials.setHighlightShader( this.selectedPiece, false );
-
-	}
-
-	if ( piece ) {
-
-		this.selectedPiece = piece;
-
-		materials.setHighlightShader( piece, true );
-
-	}
-
-}
-*/
 
 //
 
