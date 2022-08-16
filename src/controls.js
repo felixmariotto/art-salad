@@ -129,7 +129,7 @@ function highlightRayIntersects() {
 
 		this.puzzle.group.traverse( child => {
 
-			if ( child.isPiece ) {
+			if ( child.isPiece && raycaster.ray.intersectsBox( child.bbox ) ) {
 
 				child.origModel.raycast( raycaster, intersects );
 
