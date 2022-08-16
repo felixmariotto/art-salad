@@ -136,6 +136,12 @@ function setShuffledState() {
 
 	this.parts.forEach( part => {
 
+		part.rotation.set(
+			Math.random() * Math.PI * 2,
+			Math.random() * Math.PI * 2,
+			Math.random() * Math.PI * 2,
+		);
+
 		part.computeBBOX();
 		const center = part.bbox.getCenter( vec3A );
 
@@ -146,7 +152,6 @@ function setShuffledState() {
 		)
 
 		const translation = targetCenter.sub( center );
-
 		part.position.copy( translation );
 
 		cursor.x = cursor.x + 1;
