@@ -6,6 +6,8 @@ import controllerAssets from './controllerAssets.js';
 //
 
 const HAND_RADIUS = 0.1;
+const matrix4 = new THREE.Matrix4();
+const raycaster = new THREE.Raycaster();
 
 //
 
@@ -15,13 +17,31 @@ function Controls( renderer ) {
 		controllers: [],
 		group: new THREE.Group(),
 		update,
-		lookForHighlights,
+		highlightHandIntersects,
+		highlightRayIntersects,
 		setPuzzle
 	}
 
 	function update() {
 
-		controls.lookForHighlights();
+		if ( controls.puzzle ) {
+
+			// reset highlights before to highlights again if necessary right after
+
+			controls.puzzle.parts.forEach( part => {
+
+				materials.setHighlightShader( part, false );
+
+			} );
+
+			// look for for intersections
+
+			controls.highlightRayIntersects();
+
+			controls.highlightHandIntersects();
+
+		}
+
 
 		// if the user grips at least one part, we tell the puzzle to check for
 		// possible parts merging.
@@ -68,13 +88,58 @@ function setPuzzle( puzzle ) {
 
 //
 
-function lookForHighlights() {
+function highlightRayIntersects() {
 
-	this.puzzle.parts.forEach( part => {
+	this.controllers.forEach( controller => {
 
-		materials.setHighlightShader( part, false );
+		matrix4.identity().extractRotation( controller.raySpace.matrixWorld );
+
+		raycaster.ray.origin.setFromMatrixPosition( controller.raySpace.matrixWorld );
+		raycaster.ray.direction.set( 0, 0, - 1 ).applyMatrix4( matrix4 );
+
+		const intersects = [];
+
+		this.puzzle.group.traverse( child => {
+
+			if ( child.isPiece ) {
+
+				child.origModel.raycast( raycaster, intersects );
+
+			}
+
+		} );
+
+		if ( intersects.length ) {
+
+			intersects.sort( (a, b) => {
+
+				return a.distance - b.distance
+
+			} );
+
+			controller.setPointerAt( intersects[0].point );
+
+			intersects[0].object.traverseAncestors( ancestor => {
+
+				if ( ancestor.isPart ) {
+
+					const isNotFree = this.controllers.find( val => ancestor == val.grippedPart );
+
+					if ( !isNotFree ) materials.setHighlightShader( ancestor, true );
+
+				}
+
+			} );
+
+		}
 
 	} );
+
+}
+
+//
+
+function highlightHandIntersects() {
 
 	this.controllers.forEach( ( controller, i, controllers ) => {
 
@@ -101,6 +166,7 @@ function Controller( controls, renderer, i ) {
 	controller.release = release;
 	controller.intersectController = intersectController;
 	controller.setRayMode = setRayMode;
+	controller.setPointerAt = setPointerAt;
 	controller.controls = controls;
 
 	const raySpace = renderer.xr.getController( i );
@@ -160,6 +226,17 @@ function setRayMode( visiblity ) {
 
 	this.ray.visible = visiblity;
 	this.point.visible = visiblity;
+
+}
+
+//
+
+function setPointerAt( vec ) {
+
+	const localVec = this.raySpace.worldToLocal( vec );
+
+	this.point.position.copy( localVec );
+	this.point.visible = true;
 
 }
 
