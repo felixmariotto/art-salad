@@ -157,13 +157,15 @@ function setShuffledState() {
 
 		part.computeChildrenBBOX();
 
-		console.log( part.position )
-
 	} );
 
 }
 
-//
+/*
+Here we test if any part can be merged with the passed part.
+In order to do this, we detach the parts from whatever parent they were attached to ( possibly the controller ),
+and attach them to the world, so their position and rotation can be compared in the same space.
+*/
 
 function findPossibleMerging( part ) {
 
@@ -186,6 +188,8 @@ function findPossibleMerging( part ) {
 			part.quaternion.angleTo( oppositePart.quaternion ) < 0.5
 		) {
 
+			// in here we do the actual merging of one part into the passed part.
+
 			for ( let i=oppositePart.children.length -1 ; i>-1 ; i-- ) {
 
 				const child = oppositePart.children[i];
@@ -193,8 +197,6 @@ function findPossibleMerging( part ) {
 				part.add( child );
 
 			}
-
-			console.log( 'oppositePart must be destroyed and removed from controls knowledge')
 
 		}
 
