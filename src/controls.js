@@ -1,6 +1,7 @@
 
 import * as THREE from 'three';
 import materials from './materials.js';
+import controllerAssets from './controllerAssets.js';
 
 //
 
@@ -35,7 +36,7 @@ function Controls( renderer ) {
 
 		controls.controllers[i] = Controller( controls, renderer, i );
 
-		controls.group.add( controls.controllers[i] );
+		controls.group.add( controls.controllers[i], controls.controllers[i].raySpace );
 
 	}
 
@@ -99,19 +100,29 @@ function Controller( controls, renderer, i ) {
 	controller.grip = grip;
 	controller.release = release;
 	controller.intersectController = intersectController;
+	controller.setRayMode = setRayMode;
 	controller.controls = controls;
+
+	const raySpace = renderer.xr.getController( i );
+	controller.raySpace = raySpace;
+
+	controller.ray = controllerAssets.linesHelper.clone();
+	controller.point = controllerAssets.pointer.clone();
+	raySpace.add( controller.ray, controller.point );
+
+	controller.setRayMode( false );
 
 	controller.add( Hand() );
 
 	controller.addEventListener( 'selectstart', (e) => {
 
-		console.log( 'selectstart');
+		controller.setRayMode( true );
 
 	} );
 
 	controller.addEventListener( 'selectend', (e) => {
 
-		console.log( 'selectend');
+		controller.setRayMode( false );
 
 	} );
 
@@ -140,6 +151,15 @@ function Controller( controls, renderer, i ) {
 	} );
 
 	return controller
+
+}
+
+//
+
+function setRayMode( visiblity ) {
+
+	this.ray.visible = visiblity;
+	this.point.visible = visiblity;
 
 }
 
