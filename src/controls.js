@@ -36,12 +36,36 @@ function Controls( renderer ) {
 
 			// look for for intersections
 
-			controls.highlightRayIntersects();
-
 			controls.highlightHandIntersects();
+
+			const highlighted = controls.highlightRayIntersects();
+
+			if ( highlighted.length ) {
+
+				// check for joystick position to take action
+
+			}
 
 		}
 
+		// set each controller ray's visibility depending on wether the user is pressing
+		// the ray input.
+
+		controls.controllers.forEach( controller => {
+
+			if ( controller.isRayEnabled ) {
+
+				controller.ray.visible = true;
+				// controller.point.visible is also set in controller.highlightRayIntersects just above
+
+			} else {
+
+				controller.ray.visible = false;
+				controller.point.visible = false;
+
+			}
+
+		} );
 
 		// if the user grips at least one part, we tell the puzzle to check for
 		// possible parts merging.
@@ -90,7 +114,11 @@ function setPuzzle( puzzle ) {
 
 function highlightRayIntersects() {
 
+	const highlighteds = [];
+
 	this.controllers.forEach( controller => {
+
+		if ( !controller.isRayEnabled ) return
 
 		matrix4.identity().extractRotation( controller.raySpace.matrixWorld );
 
@@ -111,13 +139,23 @@ function highlightRayIntersects() {
 
 		if ( intersects.length ) {
 
+			// we want to highlight only the closest part
+
 			intersects.sort( (a, b) => {
 
 				return a.distance - b.distance
 
 			} );
 
-			controller.setPointerAt( intersects[0].point );
+			// set point position
+
+			const localVec = controller.raySpace.worldToLocal( intersects[0].point );
+
+			controller.point.position.copy( localVec );
+
+			controller.point.visible = true;
+
+			// highlight part
 
 			intersects[0].object.traverseAncestors( ancestor => {
 
@@ -127,13 +165,21 @@ function highlightRayIntersects() {
 
 					if ( !isNotFree ) materials.setHighlightShader( ancestor, true );
 
+					highlighteds.push( ancestor );
+
 				}
 
 			} );
 
+		} else {
+
+			controller.point.visible = false;
+
 		}
 
 	} );
+
+	return highlighteds
 
 }
 
@@ -165,8 +211,6 @@ function Controller( controls, renderer, i ) {
 	controller.grip = grip;
 	controller.release = release;
 	controller.intersectController = intersectController;
-	controller.setRayMode = setRayMode;
-	controller.setPointerAt = setPointerAt;
 	controller.controls = controls;
 
 	const raySpace = renderer.xr.getController( i );
@@ -176,19 +220,19 @@ function Controller( controls, renderer, i ) {
 	controller.point = controllerAssets.pointer.clone();
 	raySpace.add( controller.ray, controller.point );
 
-	controller.setRayMode( false );
+	controller.isRayEnabled = false;
 
 	controller.add( Hand() );
 
 	controller.addEventListener( 'selectstart', (e) => {
 
-		controller.setRayMode( true );
+		controller.isRayEnabled = true;
 
 	} );
 
 	controller.addEventListener( 'selectend', (e) => {
 
-		controller.setRayMode( false );
+		controller.isRayEnabled = false;
 
 	} );
 
@@ -217,26 +261,6 @@ function Controller( controls, renderer, i ) {
 	} );
 
 	return controller
-
-}
-
-//
-
-function setRayMode( visiblity ) {
-
-	this.ray.visible = visiblity;
-	this.point.visible = visiblity;
-
-}
-
-//
-
-function setPointerAt( vec ) {
-
-	const localVec = this.raySpace.worldToLocal( vec );
-
-	this.point.position.copy( localVec );
-	this.point.visible = true;
 
 }
 
