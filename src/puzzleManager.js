@@ -22,7 +22,7 @@ const STANDARD_PUZZLE_SIZE = 0.5;
 const STANDARD_PUZZLE_POSITION = new THREE.Vector3( 0, 1, -1 );
 
 const GRID_SIZE = 1.5;
-const GRID_CENTER = new THREE.Vector3( 0, 1, -0.8 );
+const GRID_CENTER = new THREE.Vector3( 0, 1, -1.3 );
 
 //
 

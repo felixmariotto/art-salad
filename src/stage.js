@@ -15,6 +15,9 @@ const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
 
 files.museumModel.then( model => {
 
+	model.rotation.y -= Math.PI * 0.5;
+	model.position.z -= 0.7;
+
 	stageGroup.add( model );
 
 } );
