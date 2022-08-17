@@ -46,13 +46,17 @@ function Controls( renderer ) {
 
 				// look for for parts to highlight depending on the controller position
 
-				if ( controller.isRayEnabled && controller.gamepad ) {
+				if ( !controller.grippedPart ) {
 
-					controller.highlightRayIntersects();
+					if ( controller.isRayEnabled && controller.gamepad ) {
 
-				} else {
+						controller.highlightRayIntersects();
 
-					controller.highlightHandIntersects();
+					} else {
+
+						controller.highlightHandIntersects();
+
+					}
 
 				}
 
@@ -83,7 +87,11 @@ function Controls( renderer ) {
 
 		controls.controllers.forEach( controller => {
 
-			if ( controller.isRayEnabled && controller.gamepad ) {
+			if (
+				!controller.grippedPart &&
+				controller.isRayEnabled &&
+				controller.gamepad
+			) {
 
 				controller.ray.visible = true;
 				// controller.point.visible is also set in controls.highlightRayIntersects just above
