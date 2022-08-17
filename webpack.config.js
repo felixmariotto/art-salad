@@ -25,7 +25,7 @@ module.exports = env => {
     }, 
 
     devServer: {
-      contentBase: path.resolve(__dirname, 'dist'),
+      static: path.resolve(__dirname, 'dist'),
     },
 
     plugins: [

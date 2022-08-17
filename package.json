@@ -4,21 +4,21 @@
   "description": "puzzle museum",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --open --env.NODE_ENV=dev",
+    "start": "webpack-dev-server --open --env NODE_ENV=dev",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npx webpack --config webpack.config.js --env.NODE_ENV=prod"
+    "build": "npx webpack --config webpack.config.js --env NODE_ENV=prod"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
     "file-loader": "^6.2.0",
-    "three": "^0.128.0",
-    "three-mesh-ui": "^4.6.1"
+    "three": "^0.143.0",
+    "three-mesh-ui": "^6.4.4"
   },
   "devDependencies": {
-    "html-webpack-plugin": "^4.3.0",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.10.3"
+    "html-webpack-plugin": "^5.1.0",
+    "webpack": "^5.69.1",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.7.4"
   }
 }
