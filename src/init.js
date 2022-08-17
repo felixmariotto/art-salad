@@ -34,9 +34,17 @@ const loopCallbacks = [];
 
 renderer.setAnimationLoop( loop );
 
-function loop() {
+let lastTime = 0;
+
+function loop( elapsedTime ) {
+
+	const delta = Math.min( elapsedTime - lastTime, 100 );
+	lastTime = elapsedTime;
+	const frameSpeed = ( 1000 / 60 ) / delta
+
 	renderer.render( scene, camera );
-	loopCallbacks.forEach( fn => fn() );
+
+	loopCallbacks.forEach( fn => fn( frameSpeed ) );
 
 	// camera.rotation.y += 0.01;
 };

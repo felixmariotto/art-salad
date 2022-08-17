@@ -6,7 +6,7 @@ import controllerAssets from './controllerAssets.js';
 //
 
 const HAND_RADIUS = 0.1;
-const TELEKINESIS_SPEED = 0.01;
+const TELEKINESIS_SPEED = 0.02;
 const vec3 = new THREE.Vector3();
 const matrix4 = new THREE.Matrix4();
 const raycaster = new THREE.Raycaster();
@@ -22,7 +22,7 @@ function Controls( renderer ) {
 		setPuzzle
 	}
 
-	function update() {
+	function update( frameSpeed ) {
 
 		if ( controls.puzzle ) {
 
@@ -40,36 +40,37 @@ function Controls( renderer ) {
 
 			} );
 
-			// look for for intersections
+			//
 
 			controls.controllers.forEach( controller => {
+
+				// look for for parts to highlight depending on the controller position
 
 				if ( controller.isRayEnabled && controller.gamepad ) {
 
 					controller.highlightRayIntersects();
 
-					if ( controller.highlighted ) {
-
-						// here we check if the user is pressing the joystick to attract or move away a puzzle part.
-
-						if (
-							controller.gamepad.axes &&
-							Math.abs( controller.gamepad.axes[3] ) > 0.5
-						) {
-
-							const direction = -1 * Math.sign( controller.gamepad.axes[3] )
-
-							controller.movePartInControllerDir( controller.highlighted, direction );
-
-							console.log( direction )
-
-						}
-
-					}
-
 				} else {
 
 					controller.highlightHandIntersects();
+
+				}
+
+				// here we check if the user is pressing the joystick to attract or move away a puzzle part.
+
+				if (
+					controller.grippedPart &&
+					controller.gamepad.axes &&
+					Math.abs( controller.gamepad.axes[3] ) > 0.5
+				) {
+
+					const direction = Math.sign( controller.gamepad.axes[3] );
+
+					controller.raySpace.attach( controller.grippedPart );
+
+					controller.grippedPart.position.z += direction * TELEKINESIS_SPEED * frameSpeed;
+
+					controller.attach( controller.grippedPart );
 
 				}
 
@@ -149,7 +150,6 @@ function Controller( controls, renderer, i ) {
 	controller.setupSource = setupSource;
 	controller.grip = grip;
 	controller.release = release;
-	controller.movePartInControllerDir = movePartInControllerDir;
 	controller.intersectController = intersectController;
 	controller.controls = controls;
 
@@ -279,7 +279,13 @@ function highlightHandIntersects() {
 
 		const isNotFree = this.controls.controllers.find( val => intersects[0] == val.grippedPart );
 
-		if ( !isNotFree ) materials.setHighlightShader( intersects[0], true );
+		if ( !isNotFree ) {
+
+			materials.setHighlightShader( intersects[0], true );
+
+			this.highlighted = intersects[0];
+
+		}
 
 	}
 
@@ -302,21 +308,20 @@ function setupSource( inputSource ) {
 
 function grip() {
 
-	const intersects = this.intersectController();
+	if ( this.highlighted ) {
 
-	if ( intersects.length > 0 ) {
-
+		/*
 		// before to attach the part to this controller, we must make sure that
 		// the selected part is not gripped by another controller.
 		// if so, we don't grip.
 
-		const isNotFree = this.controls.controllers.find( c => c.grippedPart == intersects[0] );
+		const isNotFree = this.controls.controllers.find( c => c.grippedPart == this.highlighted );
 
 		if ( isNotFree ) return
 
-		//
+		*/
 
-		this.grippedPart = intersects[0];
+		this.grippedPart = this.highlighted;
 
 		this.attach( this.grippedPart );
 
@@ -335,21 +340,6 @@ function release() {
 		this.grippedPart = null;
 
 	}
-
-}
-
-function movePartInControllerDir( part, direction ) {
-
-	part.computeBBOX();
-
-	const center = part.bbox.getCenter( vec3 );
-
-	const translationVec = center
-		.sub( this.position )
-		.normalize()
-		.multiplyScalar( direction * TELEKINESIS_SPEED );
-
-	part.translate( translationVec );
 
 }
 
