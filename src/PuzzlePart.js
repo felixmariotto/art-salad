@@ -15,6 +15,7 @@ export default function PuzzlePart( /* component(s) */ ) {
 	part.distanceToController = distanceToController;
 	part.computeBBOX = computeBBOX;
 	part.computeChildrenBBOX = computeChildrenBBOX;
+	part.translate = translate;
 	part.bbox = new THREE.Box3();
 
 	// we let PuzzlePart argument quite free, so here we sort everything up.
@@ -81,4 +82,16 @@ function computeBBOX() {
 
 	this.bbox.setFromObject( this, true );
 	
+}
+
+//
+
+function translate( vec ) {
+
+	this.position.add( vec );
+
+	this.computeChildrenBBOX();
+
+	this.computeBBOX();
+
 }

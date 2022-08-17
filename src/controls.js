@@ -6,6 +6,8 @@ import controllerAssets from './controllerAssets.js';
 //
 
 const HAND_RADIUS = 0.1;
+const TELEKINESIS_SPEED = 0.01;
+const vec3 = new THREE.Vector3();
 const matrix4 = new THREE.Matrix4();
 const raycaster = new THREE.Raycaster();
 
@@ -17,8 +19,6 @@ function Controls( renderer ) {
 		controllers: [],
 		group: new THREE.Group(),
 		update,
-		highlightHandIntersects,
-		highlightRayIntersects,
 		setPuzzle
 	}
 
@@ -34,17 +34,46 @@ function Controls( renderer ) {
 
 			} );
 
+			controls.controllers.forEach( controller => {
+
+				controller.highlighted = null;
+
+			} );
+
 			// look for for intersections
 
-			controls.highlightHandIntersects();
+			controls.controllers.forEach( controller => {
 
-			const highlighted = controls.highlightRayIntersects();
+				if ( controller.isRayEnabled && controller.gamepad ) {
 
-			if ( highlighted.length ) {
+					controller.highlightRayIntersects();
 
-				// check for joystick position to take action
+					if ( controller.highlighted ) {
 
-			}
+						// here we check if the user is pressing the joystick to attract or move away a puzzle part.
+
+						if (
+							controller.gamepad.axes &&
+							Math.abs( controller.gamepad.axes[3] ) > 0.5
+						) {
+
+							const direction = -1 * Math.sign( controller.gamepad.axes[3] )
+
+							controller.movePartInControllerDir( controller.highlighted, direction );
+
+							console.log( direction )
+
+						}
+
+					}
+
+				} else {
+
+					controller.highlightHandIntersects();
+
+				}
+
+			} );
 
 		}
 
@@ -53,10 +82,10 @@ function Controls( renderer ) {
 
 		controls.controllers.forEach( controller => {
 
-			if ( controller.isRayEnabled ) {
+			if ( controller.isRayEnabled && controller.gamepad ) {
 
 				controller.ray.visible = true;
-				// controller.point.visible is also set in controller.highlightRayIntersects just above
+				// controller.point.visible is also set in controls.highlightRayIntersects just above
 
 			} else {
 
@@ -112,104 +141,15 @@ function setPuzzle( puzzle ) {
 
 //
 
-function highlightRayIntersects() {
-
-	const highlighteds = [];
-
-	this.controllers.forEach( controller => {
-
-		if ( !controller.isRayEnabled ) return
-
-		matrix4.identity().extractRotation( controller.raySpace.matrixWorld );
-
-		raycaster.ray.origin.setFromMatrixPosition( controller.raySpace.matrixWorld );
-		raycaster.ray.direction.set( 0, 0, - 1 ).applyMatrix4( matrix4 );
-
-		const intersects = [];
-
-		this.puzzle.group.traverse( child => {
-
-			if ( child.isPiece && raycaster.ray.intersectsBox( child.bbox ) ) {
-
-				child.origModel.raycast( raycaster, intersects );
-
-			}
-
-		} );
-
-		if ( intersects.length ) {
-
-			// we want to highlight only the closest part
-
-			intersects.sort( (a, b) => {
-
-				return a.distance - b.distance
-
-			} );
-
-			// set point position
-
-			const localVec = controller.raySpace.worldToLocal( intersects[0].point );
-
-			controller.point.position.copy( localVec );
-
-			controller.point.visible = true;
-
-			// highlight part
-
-			intersects[0].object.traverseAncestors( ancestor => {
-
-				if ( ancestor.isPart ) {
-
-					const isNotFree = this.controllers.find( val => ancestor == val.grippedPart );
-
-					if ( !isNotFree ) materials.setHighlightShader( ancestor, true );
-
-					highlighteds.push( ancestor );
-
-				}
-
-			} );
-
-		} else {
-
-			controller.point.visible = false;
-
-		}
-
-	} );
-
-	return highlighteds
-
-}
-
-//
-
-function highlightHandIntersects() {
-
-	this.controllers.forEach( ( controller, i, controllers ) => {
-
-		const intersects = controller.intersectController();
-
-		if ( intersects.length ) {
-
-			const isNotFree = controllers.find( val => intersects[0] == val.grippedPart );
-
-			if ( !isNotFree ) materials.setHighlightShader( intersects[0], true );
-
-		}
-
-	} );
-
-}
-
-//
-
 function Controller( controls, renderer, i ) {
 
 	const controller = renderer.xr.getControllerGrip( i );
+	controller.highlightRayIntersects = highlightRayIntersects;
+	controller.highlightHandIntersects = highlightHandIntersects;
+	controller.setupSource = setupSource;
 	controller.grip = grip;
 	controller.release = release;
+	controller.movePartInControllerDir = movePartInControllerDir;
 	controller.intersectController = intersectController;
 	controller.controls = controls;
 
@@ -250,17 +190,111 @@ function Controller( controls, renderer, i ) {
 
 	controller.addEventListener( 'connected', (e) => {
 
-		console.log( 'setup source', e.data );
+		controller.setupSource( e.data );
 
 	} );
 
 	controller.addEventListener( 'disconnected', () => {
 
-		console.log('remove source')
+		// console.log('remove source')
 
 	} );
 
 	return controller
+
+}
+
+//
+
+function highlightRayIntersects() {
+
+	if ( !this.isRayEnabled ) return
+
+	matrix4.identity().extractRotation( this.raySpace.matrixWorld );
+
+	raycaster.ray.origin.setFromMatrixPosition( this.raySpace.matrixWorld );
+	raycaster.ray.direction.set( 0, 0, - 1 ).applyMatrix4( matrix4 );
+
+	const intersects = [];
+
+	this.controls.puzzle.group.traverse( child => {
+
+		if ( child.isPiece && raycaster.ray.intersectsBox( child.bbox ) ) {
+
+			child.origModel.raycast( raycaster, intersects );
+
+		}
+
+	} );
+
+	if ( intersects.length ) {
+
+		// we want to highlight only the closest part
+
+		intersects.sort( (a, b) => {
+
+			return a.distance - b.distance
+
+		} );
+
+		// set point position
+
+		const localVec = this.raySpace.worldToLocal( intersects[0].point );
+
+		this.point.position.copy( localVec );
+
+		this.point.visible = true;
+
+		// highlight part
+
+		intersects[0].object.traverseAncestors( ancestor => {
+
+			if ( ancestor.isPart ) {
+
+				const isNotFree = this.controls.controllers.find( val => ancestor == val.grippedPart );
+
+				if ( !isNotFree ) materials.setHighlightShader( ancestor, true );
+
+				this.highlighted = ancestor;
+
+			}
+
+		} );
+
+	} else {
+
+		this.point.visible = false;
+
+	}
+
+}
+
+//
+
+function highlightHandIntersects() {
+
+	const intersects = this.intersectController();
+
+	if ( intersects.length ) {
+
+		const isNotFree = this.controls.controllers.find( val => intersects[0] == val.grippedPart );
+
+		if ( !isNotFree ) materials.setHighlightShader( intersects[0], true );
+
+	}
+
+}
+
+// we keep a reference to the gamepad because it will be useful when the user
+// will want to attract a puzzle part to them using the joystick.
+
+function setupSource( inputSource ) {
+
+	this.inputSource = inputSource;
+
+	this.gamepad = inputSource.gamepad;
+
+	this.handedness = inputSource.handedness;
 
 }
 
@@ -301,6 +335,21 @@ function release() {
 		this.grippedPart = null;
 
 	}
+
+}
+
+function movePartInControllerDir( part, direction ) {
+
+	part.computeBBOX();
+
+	const center = part.bbox.getCenter( vec3 );
+
+	const translationVec = center
+		.sub( this.position )
+		.normalize()
+		.multiplyScalar( direction * TELEKINESIS_SPEED );
+
+	part.translate( translationVec );
 
 }
 
