@@ -2,7 +2,9 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-import puzzleModel from '../assets/test.glb';
+import doubleHeadSculpt from '../assets/double-head-sculpt.glb';
+import paintedTrash from '../assets/painted-trash.glb';
+
 import museumModel from '../assets/museum.glb';
 import environmentMap from '../assets/environment_map.jpg';
 
@@ -42,7 +44,8 @@ function getTexture( url ) {
 //
 
 export default {
-	puzzleModel: getGLTF( puzzleModel ),
+	doubleHeadSculpt: getGLTF( doubleHeadSculpt ),
+	paintedTrash: getGLTF( paintedTrash ),
 	museumModel: getGLTF( museumModel ),
 	environmentMap: getTexture( environmentMap )
 }

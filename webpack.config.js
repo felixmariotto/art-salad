@@ -46,7 +46,13 @@ module.exports = env => {
       ],
     },
 
-    devtool: devtool
+    devtool: devtool,
+
+    resolve: {
+      alias: {
+        'three-mesh-ui': path.resolve( __dirname, 'node_modules/three-mesh-ui/src/three-mesh-ui.js' ),
+      },
+    },
 
   }
 

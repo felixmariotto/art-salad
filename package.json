@@ -13,7 +13,7 @@
   "dependencies": {
     "file-loader": "^6.2.0",
     "three": "^0.143.0",
-    "three-mesh-ui": "^6.4.4"
+    "three-mesh-ui": "^6.4.5"
   },
   "devDependencies": {
     "html-webpack-plugin": "^5.1.0",

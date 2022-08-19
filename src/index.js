@@ -5,16 +5,17 @@ import Controls from './controls.js';
 import files from './files.js';
 import PuzzleManager from './PuzzleManager.js';
 import materials from './materials.js';
+import uiPanel from './uiPanel.js';
 
 //
 
-scene.add( stage );
-
 const controls = Controls( renderer );
 
-scene.add( controls.group );
+scene.add( stage, uiPanel, controls.group );
 
-files.puzzleModel.then( model => {
+//
+
+files.paintedTrash.then( model => {
 
 	const puzzle = PuzzleManager( model );
 	scene.add( puzzle.group );
