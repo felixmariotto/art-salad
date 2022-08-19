@@ -15,7 +15,7 @@ scene.add( stage, uiPanel, controls.group );
 
 //
 
-files.paintedTrash.then( model => {
+files.louviersCastel.then( model => {
 
 	const puzzle = PuzzleManager( model );
 	scene.add( puzzle.group );
