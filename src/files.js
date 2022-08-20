@@ -6,6 +6,8 @@ import doubleHeadSculpt from '../assets/double-head-sculpt.glb';
 import paintedTrash from '../assets/painted-trash.glb';
 import mexicoGraffiti from '../assets/mexico-graffiti.glb';
 import louviersCastel from '../assets/louviers-castel.glb';
+import seatedCupid from '../assets/seated-cupid.glb';
+import hydriaVase from '../assets/hydria-vase.glb';
 
 import museumModel from '../assets/museum.glb';
 import environmentMap from '../assets/environment_map.jpg';
@@ -50,6 +52,8 @@ export default {
 	paintedTrash: getGLTF( paintedTrash ),
 	mexicoGraffiti: getGLTF( mexicoGraffiti ),
 	louviersCastel: getGLTF( louviersCastel ),
+	seatedCupid: getGLTF( seatedCupid ),
+	hydriaVase: getGLTF( hydriaVase ),
 
 	museumModel: getGLTF( museumModel ),
 	environmentMap: getTexture( environmentMap )

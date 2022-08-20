@@ -15,7 +15,7 @@ scene.add( stage, uiPanel, controls.group );
 
 //
 
-files.louviersCastel.then( model => {
+files.hydriaVase.then( model => {
 
 	const puzzle = PuzzleManager( model );
 	scene.add( puzzle.group );
