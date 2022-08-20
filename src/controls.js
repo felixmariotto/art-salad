@@ -147,7 +147,7 @@ function Hand() {
 
 		void main() {   
 			float fresnelTerm = ( 1.0 - - min( dot( vPositionW, normalize( vNormalW ) ), 0.0 ) );    
-			gl_FragColor = vec4( 1.0, 1.0, 1.0, 1.0 ) * vec4( fresnelTerm );
+			gl_FragColor = vec4( vec3( .7 ), 1.0 ) * vec4( fresnelTerm );
 		}
 	`;
 
