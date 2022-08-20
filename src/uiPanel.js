@@ -19,7 +19,7 @@ const container = new ThreeMeshUI.Block( {
 
 
 container.position.set( 0, 1, -1.8 );
-container.rotation.x = -0.55;
+// container.rotation.x = -0.55;
 
 //
 

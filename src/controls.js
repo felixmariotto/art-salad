@@ -130,14 +130,40 @@ function Controls( renderer ) {
 
 function Hand() {
 
-	const material = new THREE.MeshPhongMaterial({
-		transparent: true,
-		opacity: 0.5
+	const vertexShader = `
+		varying vec3 vPositionW;
+		varying vec3 vNormalW;
+
+		void main() {
+			vPositionW = normalize( vec3( modelViewMatrix * vec4( position, 1.0 ) ).xyz );
+			vNormalW = normalize( normalMatrix * normal );
+			gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+		}
+	`;
+
+	const fragmentShader = `
+		varying vec3 vPositionW;
+		varying vec3 vNormalW;
+
+		void main() {   
+			float fresnelTerm = ( 1.0 - - min( dot( vPositionW, normalize( vNormalW ) ), 0.0 ) );    
+			gl_FragColor = vec4( 1.0, 1.0, 1.0, 1.0 ) * vec4( fresnelTerm );
+		}
+	`;
+
+
+	const material = new THREE.ShaderMaterial({
+		vertexShader,
+		fragmentShader,
+		transparent: true
 	});
 
 	const geometry = new THREE.IcosahedronGeometry( HAND_RADIUS, 5 );
 
-	return new THREE.Mesh( geometry, material );
+	const mesh = new THREE.Mesh( geometry, material );
+
+	return mesh
+
 }
 
 //
