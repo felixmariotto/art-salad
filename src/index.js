@@ -12,20 +12,24 @@ import * as THREE from 'three';
 //
 
 const controls = Controls( renderer );
+loopCallbacks.push( controls.update );
 
-scene.add( stage, uiPanel, controls.group );
+scene.add( stage, uiPanel.block, controls.group );
 
 //
 
+/*
 files.seatedCupid.then( model => {
 
 	const puzzle = PuzzleManager( model );
+
 	scene.add( puzzle.group );
+
 	materials.initPuzzle( puzzle );
 
 	puzzle.setShuffledState();
 
 	controls.setPuzzle( puzzle );
-	loopCallbacks.push( controls.update );
 
 } );
+*/

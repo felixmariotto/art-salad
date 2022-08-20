@@ -2,6 +2,7 @@
 import * as THREE from 'three';
 import materials from './materials.js';
 import controllerAssets from './controllerAssets.js';
+import uiPanel from './uiPanel.js'
 
 //
 
@@ -80,31 +81,62 @@ function Controls( renderer ) {
 
 			} );
 
-		}
+			// set each controller ray's visibility depending on wether the user is pressing
+			// the ray input.
 
-		// set each controller ray's visibility depending on wether the user is pressing
-		// the ray input.
+			controls.controllers.forEach( controller => {
 
-		controls.controllers.forEach( controller => {
+				if (
+					!controller.grippedPart &&
+					controller.isRayEnabled &&
+					controller.gamepad
+				) {
 
-			if (
-				!controller.grippedPart &&
-				controller.isRayEnabled &&
-				controller.gamepad
-			) {
+					controller.ray.visible = true;
+					// controller.point.visible is also set in controls.highlightRayIntersects just above
+
+				} else {
+
+					controller.ray.visible = false;
+					controller.point.visible = false;
+
+				}
+
+			} );
+
+		// if there is no puzzle, we always want the controller rays to be visible,
+		// to help the user interacting with the user interface.
+
+		} else {
+
+			controls.controllers.forEach( controller => {
 
 				controller.ray.visible = true;
-				// controller.point.visible is also set in controls.highlightRayIntersects just above
 
-			} else {
+				matrix4.identity().extractRotation( controller.raySpace.matrixWorld );
+				raycaster.ray.origin.setFromMatrixPosition( controller.raySpace.matrixWorld );
+				raycaster.ray.direction.set( 0, 0, - 1 ).applyMatrix4( matrix4 );
 
-				controller.ray.visible = false;
-				controller.point.visible = false;
+				controller.intersect = uiPanel.findIntersection( raycaster );
 
-			}
+				if ( controller.intersect ) {
 
-		} );
+					controller.point.visible = true;
 
+					controller.raySpace.worldToLocal( controller.intersect.point );
+
+					controller.point.position.copy( controller.intersect.point );
+
+				} else {
+
+					controller.point.visible = false;
+
+				}
+
+			} );
+
+		}
+		
 		// if the user grips at least one part, we tell the puzzle to check for
 		// possible parts merging.
 
@@ -245,7 +277,6 @@ function highlightRayIntersects() {
 	if ( !this.isRayEnabled ) return
 
 	matrix4.identity().extractRotation( this.raySpace.matrixWorld );
-
 	raycaster.ray.origin.setFromMatrixPosition( this.raySpace.matrixWorld );
 	raycaster.ray.direction.set( 0, 0, - 1 ).applyMatrix4( matrix4 );
 
