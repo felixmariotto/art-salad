@@ -9,7 +9,9 @@ import events from './events.js';
 //
 
 const puzzleManager = {
-	startTutorial
+	startTutorial,
+	startPuzzle,
+	clear
 }
 
 //
@@ -19,6 +21,20 @@ events.on( 'parts-assembled', e => {
 	if ( e.detail ) {
 
 		// the puzzle is finished
+
+		setTimeout( () => {
+
+			if ( puzzleManager.isRunningTutorial ) {
+
+				events.emit( 'tutorial-finished' );
+
+				puzzleManager.isRunningTutorial = false;
+
+			}
+
+			puzzleManager.clear();
+
+		}, 1000 );
 
 	} else {
 
@@ -30,7 +46,9 @@ events.on( 'parts-assembled', e => {
 
 function startTutorial() {
 	
-	startPuzzle( files.hydriaVase );
+	this.startPuzzle( files.hydriaVase );
+
+	this.isRunningTutorial = true;
 
 }
 
@@ -38,17 +56,27 @@ function startPuzzle( modelPromise ) {
 
 	modelPromise.then( model => {
 
-		const puzzle = PuzzleManager( model );
+		this.currentPuzzle = PuzzleManager( model );
 
-		scene.add( puzzle.group );
+		scene.add( this.currentPuzzle.group );
 
-		materials.initPuzzle( puzzle );
+		materials.initPuzzle( this.currentPuzzle );
 
-		puzzle.setShuffledState();
+		this.currentPuzzle.setShuffledState();
 
-		controls.setPuzzle( puzzle );
+		controls.setPuzzle( this.currentPuzzle );
 
 	} );
+
+}
+
+function clear() {
+
+	controls.setPuzzle( null );
+
+	scene.remove( this.currentPuzzle.group );
+
+	this.currentPuzzle = null;
 
 }
 
