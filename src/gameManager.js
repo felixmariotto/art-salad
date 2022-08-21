@@ -45,10 +45,10 @@ events.on( 'parts-assembled', e => {
 } );
 
 function startTutorial() {
-	
-	this.startPuzzle( files.hydriaVase );
 
 	this.isRunningTutorial = true;
+	
+	this.startPuzzle( files.hydriaVase );
 
 }
 

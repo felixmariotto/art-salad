@@ -14,8 +14,8 @@ const ANGLE_SPEED = 0.03;
 
 const HOME_POS = new THREE.Vector3( 0, 1, -1.8 );
 const HOME_QUAT = new THREE.Quaternion().setFromEuler( new THREE.Euler( 0, 0, 0 ) );
-const TUTO_POS = new THREE.Vector3( -1, 1, -1.8 );
-const TUTO_QUAT = new THREE.Quaternion().setFromEuler( new THREE.Euler( 0, 1, 0 ) );
+const TUTO_POS = new THREE.Vector3( 2.5, 1, 0 );
+const TUTO_QUAT = new THREE.Quaternion().setFromEuler( new THREE.Euler( 0, -Math.PI * 0.5, 0 ) );
 const vec3 = new THREE.Vector3();
 const quat = new THREE.Quaternion();
 
