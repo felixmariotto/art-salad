@@ -4,6 +4,7 @@ import ThreeMeshUI from 'three-mesh-ui';
 
 import params from './UI/params.js';
 import homePage from './UI/homepage.js';
+import tutorial from './UI/tutorial.js';
 
 //
 
@@ -23,7 +24,7 @@ container.position.set( 0, 1, -1.8 );
 ///////////////
 // MODULES
 
-container.add( homePage )
+container.add( tutorial )
 
 ///////////////
 // FUNCTIONS

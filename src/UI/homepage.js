@@ -2,7 +2,7 @@
 import * as THREE from 'three';
 import ThreeMeshUI from 'three-mesh-ui';
 import params from './params.js';
-import imageURL from '../../assets/home-background.jpg';
+import imageURL from '../../assets/UI-images/home-background.jpg';
 
 import FiraJSON from '../../assets/fonts/Fira.json';
 import FiraImage from '../../assets/fonts/Fira.png';
@@ -111,99 +111,6 @@ new THREE.TextureLoader().load( imageURL, texture => {
 	homePage.add( niceImage );
 
 } );
-
-
-
-
-/*
-const DIM_HIGH = 1.6;
-const MIN_HIGH = 1.1;
-const DIM_LOW = 0.25;
-
-const justificationLegend = [
-	{ id: 'start', color: 0xff9900 },
-	{ id: 'end', color: 0xff0099 },
-	{ id: 'center', color: 0x00ff99 },
-	{ id: "space-between", color: 0x99ff00 },
-	{ id: "space-around", color: 0x9900ff },
-	{ id: "space-evenly", color: 0x0099ff }
-];
-
-const homePage = makeTextPanel( 'column' );
-
-function makeTextPanel( contentDirection ) {
-
-	const container = new ThreeMeshUI.Block( {
-		height: DIM_HIGH + 0.2,
-		width: DIM_HIGH + 0.2,
-		contentDirection: contentDirection,
-		justifyContent: 'center',
-		backgroundOpacity: 1,
-		backgroundColor: new THREE.Color( 'grey' ),
-		hiddenOverflow: true
-	} );
-
-	container.position.set( 0, 1, -1.8 );
-	container.rotation.x = - 0.55;
-
-	for ( let i = 0; i < justificationLegend.length; i ++ ) {
-
-		const color = new THREE.Color( justificationLegend[ i ].color );
-		const id = justificationLegend[ i ].id;
-		const panel = buildJustifiedPanel( id, color, contentDirection === 'column' ? 'row' : 'column' );
-
-		container.add( panel );
-	}
-
-	return container;
-}
-
-function buildJustifiedPanel( id, color, contentDirection ) {
-
-	const panel = new ThreeMeshUI.Block( {
-		width: contentDirection === 'row' ? DIM_HIGH : DIM_LOW,
-		height: contentDirection === 'row' ? DIM_LOW : DIM_HIGH,
-		contentDirection: contentDirection,
-		justifyContent: id,
-		backgroundOpacity: 0.5,
-		padding: 0.02,
-		margin: 0.01,
-		offset:0.0001
-	} );
-
-	for ( let i = 0; i < 5; i ++ ) {
-
-		const blockText = new ThreeMeshUI.Block( {
-			width: 0.125,
-			height: 0.125,
-			margin: 0.01,
-			borderRadius: 0.02,
-			backgroundColor: color,
-			justifyContent: 'center',
-			alignItems: 'center',
-			offset:0.001
-		} );
-
-		panel.add( blockText );
-
-	}
-
-	return panel;
-}
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //
 
