@@ -53,7 +53,7 @@ export default {
 	// mexicoGraffiti: getGLTF( mexicoGraffiti ),
 	// louviersCastel: getGLTF( louviersCastel ),
 	seatedCupid: getGLTF( seatedCupid ),
-	// hydriaVase: getGLTF( hydriaVase ),
+	hydriaVase: getGLTF( hydriaVase ),
 
 	museumModel: getGLTF( museumModel ),
 	environmentMap: getTexture( environmentMap )

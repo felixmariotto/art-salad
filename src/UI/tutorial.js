@@ -44,7 +44,7 @@ const tutorial = new ThreeMeshUI.Block( {
 	height: params.panelHeight - PADDING_Y * 2,
 	backgroundColor: params.white,
 	backgroundOpacity: 1,
-	// fontColor: params.white,
+	fontColor: params.black,
 	// contentDirection: "column-reverse",
 	fontFamily: SourceJSON,
 	fontTexture: SourceImage,
@@ -69,7 +69,8 @@ data.forEach( lineData => {
 		width: ( params.panelWidth - PADDING_X * 2 ) - lineHeight,
 		height: lineHeight,
 		backgroundOpacity: 0,
-		justifyContent: 'center'
+		justifyContent: 'center',
+		textAlign: 'left'
 	} );
 
 	const text = new ThreeMeshUI.Text( {

@@ -1,4 +1,5 @@
 
+import { scene, renderer, loopCallbacks } from './init.js';
 import * as THREE from 'three';
 import materials from './materials.js';
 import controllerAssets from './controllerAssets.js';
@@ -14,6 +15,10 @@ const matrix4 = new THREE.Matrix4();
 const raycaster = new THREE.Raycaster();
 
 //
+
+const controls = Controls( renderer );
+scene.add( controls.group );
+loopCallbacks.push( controls.update );
 
 function Controls( renderer ) {
 
@@ -444,4 +449,4 @@ function intersectController() {
 
 //
 
-export default Controls
+export default controls
