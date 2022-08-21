@@ -12,6 +12,7 @@ import * as THREE from 'three';
 import PuzzlePiece from './PuzzlePiece.js';
 import PuzzlePart from './PuzzlePart.js';
 import materials from './materials.js';
+import events from './events.js';
 
 //
 
@@ -182,7 +183,11 @@ function findPossibleMerging( part ) {
 
 	this.parts.forEach( oppositePart => {
 
-		if ( part == oppositePart ) return
+		if (
+			part == oppositePart ||
+			!part.children.length ||
+			!oppositePart.children.length
+		) return
 
 		const oppositePartParent = oppositePart.parent;
 
@@ -202,6 +207,10 @@ function findPossibleMerging( part ) {
 				part.add( child );
 
 			}
+
+			const isFinished = ( part.children.length === this.pieces.length );
+
+			events.emit( 'parts-assembled', isFinished );
 
 		}
 

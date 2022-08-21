@@ -4,6 +4,7 @@ import controls from './controls.js';
 import files from './files.js';
 import materials from './materials.js';
 import PuzzleManager from './PuzzleManager.js';
+import events from './events.js';
 
 //
 
@@ -12,6 +13,20 @@ const puzzleManager = {
 }
 
 //
+
+events.on( 'parts-assembled', e => {
+
+	if ( e.detail ) {
+
+		// the puzzle is finished
+
+	} else {
+
+		// the puzzle is not finished yet
+
+	}
+
+} );
 
 function startTutorial() {
 	
