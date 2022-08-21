@@ -137,14 +137,14 @@ function Controls( renderer ) {
 
 			} );
 
+			// if the user grips at least one part, we tell the puzzle to check for
+			// possible parts merging.
+
+			const grippingC = controls.controllers.find( c => c.grippedPart );
+
+			if ( grippingC ) controls.puzzle.findPossibleMerging( grippingC.grippedPart );
+
 		}
-		
-		// if the user grips at least one part, we tell the puzzle to check for
-		// possible parts merging.
-
-		const grippingC = controls.controllers.find( c => c.grippedPart );
-
-		if ( grippingC ) controls.puzzle.findPossibleMerging( grippingC.grippedPart );
 
 	}
 
@@ -205,6 +205,18 @@ function Hand() {
 function setPuzzle( puzzle ) {
 
 	this.puzzle = puzzle;
+
+	this.controllers.forEach( controller => {
+
+		if ( controller.grippedPart && controller.grippedPart.parent ) {
+
+			controller.grippedPart.parent.remove( controller.grippedPart );
+
+		}
+
+		controller.grippedPart = null;
+
+	} );
 
 }
 
@@ -381,17 +393,6 @@ function setupSource( inputSource ) {
 function grip() {
 
 	if ( this.highlighted ) {
-
-		/*
-		// before to attach the part to this controller, we must make sure that
-		// the selected part is not gripped by another controller.
-		// if so, we don't grip.
-
-		const isNotFree = this.controls.controllers.find( c => c.grippedPart == this.highlighted );
-
-		if ( isNotFree ) return
-
-		*/
 
 		this.grippedPart = this.highlighted;
 

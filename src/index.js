@@ -22,7 +22,7 @@ events.on( 'clicked-ui', e => {
 
 events.on( 'tutorial-finished', e => {
 
-	console.log('finish tutorial')
+	uiPanel.setHomepage();
 
 } );
 

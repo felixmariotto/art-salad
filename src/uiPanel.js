@@ -140,12 +140,24 @@ function setTutorial() {
 
 }
 
+function setHomepage() {
+
+	clearContainer();
+
+	container.add( homepage );
+
+	targetPos = HOME_POS;
+	targetQuat = HOME_QUAT;
+
+}
+
 //
 
 const uiPanel = {
 	findIntersection,
 	block: container,
-	setTutorial
+	setTutorial,
+	setHomepage
 }
 
 export default uiPanel
