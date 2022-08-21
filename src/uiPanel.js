@@ -5,37 +5,33 @@ import ThreeMeshUI from 'three-mesh-ui';
 import FontJSON from '../assets/Roboto-msdf.json';
 import FontImage from '../assets/Roboto-msdf.png';
 
+import params from './UI/params.js';
+import homePage from './UI/homepage.js';
+
 //
 
 const container = new ThreeMeshUI.Block( {
-	width: 1.2,
-	height: 0.5,
-	padding: 0.05,
+	width: params.panelWidth,
+	height: params.panelHeight,
 	justifyContent: 'center',
 	textAlign: 'left',
 	fontFamily: FontJSON,
-	fontTexture: FontImage
+	fontTexture: FontImage,
+	fontColor: params.black,
+	backgroundColor: params.white,
+	backgroundOpacity: 1
 } );
-
 
 container.position.set( 0, 1, -1.8 );
 // container.rotation.x = -0.55;
 
-//
+///////////////
+// MODULES
 
-container.add(
-	new ThreeMeshUI.Text( {
-		content: 'This library supports line-break-friendly-characters,',
-		fontSize: 0.055
-	} ),
+container.add( homePage )
 
-	new ThreeMeshUI.Text( {
-		content: ' As well as multi-font-size lines with consistent vertical spacing.',
-		fontSize: 0.08
-	} )
-);
-
-//
+///////////////
+// FUNCTIONS
 
 function findIntersection( raycaster ) {
 

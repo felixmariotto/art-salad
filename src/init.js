@@ -1,5 +1,6 @@
 
 import * as THREE from 'three';
+import ThreeMeshUI from 'three-mesh-ui';
 
 import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
 import files from './files.js';
@@ -45,6 +46,8 @@ function loop( elapsedTime ) {
 	renderer.render( scene, camera );
 
 	loopCallbacks.forEach( fn => fn( frameSpeed ) );
+
+	ThreeMeshUI.update();
 
 	// camera.rotation.y += 0.01;
 };
