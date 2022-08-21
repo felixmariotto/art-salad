@@ -2,9 +2,6 @@
 import * as THREE from 'three';
 import ThreeMeshUI from 'three-mesh-ui';
 
-import FontJSON from '../assets/Roboto-msdf.json';
-import FontImage from '../assets/Roboto-msdf.png';
-
 import params from './UI/params.js';
 import homePage from './UI/homepage.js';
 
@@ -15,8 +12,6 @@ const container = new ThreeMeshUI.Block( {
 	height: params.panelHeight,
 	justifyContent: 'center',
 	textAlign: 'left',
-	fontFamily: FontJSON,
-	fontTexture: FontImage,
 	fontColor: params.black,
 	backgroundColor: params.white,
 	backgroundOpacity: 1

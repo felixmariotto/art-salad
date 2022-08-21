@@ -4,6 +4,11 @@ import ThreeMeshUI from 'three-mesh-ui';
 import params from './params.js';
 import imageURL from '../../assets/home-background.jpg';
 
+import FiraJSON from '../../assets/fonts/Fira.json';
+import FiraImage from '../../assets/fonts/Fira.png';
+import SourceJSON from '../../assets/fonts/Source.json';
+import SourceImage from '../../assets/fonts/Source.png';
+
 //
 
 
@@ -23,8 +28,10 @@ const homePage = new ThreeMeshUI.Block( {
 
 const lowerContainer = new ThreeMeshUI.Block( {
 	width: params.panelWidth - HOMEPAGE_PADDING * 2,
-	height: params.panelHeight * 0.3,
+	height: params.panelHeight * 0.4,
 	backgroundOpacity: 0,
+	fontFamily: SourceJSON,
+	fontTexture: SourceImage,
 	justifyContent: "space-between"
 } );
 
@@ -36,13 +43,16 @@ const titleContainer = new ThreeMeshUI.Block( {
 	width: params.panelWidth - HOMEPAGE_PADDING * 2,
 	height: 0.3,
 	backgroundOpacity: 0,
+	fontFamily: FiraJSON,
+	fontTexture: FiraImage,
 	fontColor: params.darkGrey,
 	alignItems: 'start'
 } );
 
 const title = new ThreeMeshUI.Text( {
 	content: 'Open Museum',
-	fontSize: 0.2
+	fontSize: 0.28,
+	letterSpacing: -0.1
 } );
 
 titleContainer.add( title );
