@@ -8,7 +8,7 @@ import * as THREE from 'three';
 //////////////////
 
 const material = new THREE.MeshBasicMaterial( {
-	color: 0xffffff,
+	color: new THREE.Color("grey"),
 	alphaMap: new THREE.CanvasTexture( generateRayTexture() ),
 	transparent: true
 } );

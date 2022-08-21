@@ -179,22 +179,30 @@ function Hand() {
 		varying vec3 vPositionW;
 		varying vec3 vNormalW;
 
+		uniform float alpha;
+
 		void main() {   
 			float fresnelTerm = ( 1.0 - - min( dot( vPositionW, normalize( vNormalW ) ), 0.0 ) );    
-			gl_FragColor = vec4( vec3( .7 ), 1.0 ) * vec4( fresnelTerm );
+			gl_FragColor = vec4( vec3( .7 ), 1.0 * alpha ) * vec4( fresnelTerm );
 		}
 	`;
 
+	const uniforms = {
+		alpha: { value: 1.0 }
+	}
 
 	const material = new THREE.ShaderMaterial({
 		vertexShader,
 		fragmentShader,
+		uniforms,
 		transparent: true
 	});
 
 	const geometry = new THREE.IcosahedronGeometry( HAND_RADIUS, 5 );
 
 	const mesh = new THREE.Mesh( geometry, material );
+
+	mesh.isHand = true;
 
 	return mesh
 
@@ -392,6 +400,18 @@ function setupSource( inputSource ) {
 
 function grip() {
 
+	this.traverse( child => {
+
+		if ( child.isHand ) {
+
+			child.scale.setScalar( 0.85 );
+
+			child.material.uniforms.alpha.value = 0.5;
+
+		}
+
+	} );
+
 	if ( this.highlighted ) {
 
 		this.grippedPart = this.highlighted;
@@ -403,6 +423,18 @@ function grip() {
 }
 
 function release() {
+
+	this.traverse( child => {
+
+		if ( child.isHand ) {
+
+			child.scale.setScalar( 1.0 );
+
+			child.material.uniforms.alpha.value = 1.0;
+
+		}
+
+	} );
 
 	if ( this.grippedPart ) {
 
