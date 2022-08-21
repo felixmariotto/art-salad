@@ -31,6 +31,34 @@ function Controls( renderer ) {
 
 	function update( frameSpeed ) {
 
+		controls.controllers.forEach( controller => {
+
+			controller.ray.visible = true;
+
+			matrix4.identity().extractRotation( controller.raySpace.matrixWorld );
+			raycaster.ray.origin.setFromMatrixPosition( controller.raySpace.matrixWorld );
+			raycaster.ray.direction.set( 0, 0, - 1 ).applyMatrix4( matrix4 );
+
+			controller.intersect = uiPanel.findIntersection( raycaster );
+
+			if ( controller.intersect ) {
+
+				controller.point.visible = true;
+
+				controller.raySpace.worldToLocal( controller.intersect.point );
+
+				controller.point.position.copy( controller.intersect.point );
+
+			} else {
+
+				controller.point.visible = false;
+
+			}
+
+		} );
+
+		//
+
 		if ( controls.puzzle ) {
 
 			// reset highlights before to highlights again if necessary right after
@@ -99,42 +127,10 @@ function Controls( renderer ) {
 				) {
 
 					controller.ray.visible = true;
-					// controller.point.visible is also set in controls.highlightRayIntersects just above
 
 				} else {
 
 					controller.ray.visible = false;
-					controller.point.visible = false;
-
-				}
-
-			} );
-
-		// if there is no puzzle, we always want the controller rays to be visible,
-		// to help the user interacting with the user interface.
-
-		} else {
-
-			controls.controllers.forEach( controller => {
-
-				controller.ray.visible = true;
-
-				matrix4.identity().extractRotation( controller.raySpace.matrixWorld );
-				raycaster.ray.origin.setFromMatrixPosition( controller.raySpace.matrixWorld );
-				raycaster.ray.direction.set( 0, 0, - 1 ).applyMatrix4( matrix4 );
-
-				controller.intersect = uiPanel.findIntersection( raycaster );
-
-				if ( controller.intersect ) {
-
-					controller.point.visible = true;
-
-					controller.raySpace.worldToLocal( controller.intersect.point );
-
-					controller.point.position.copy( controller.intersect.point );
-
-				} else {
-
 					controller.point.visible = false;
 
 				}
@@ -340,10 +336,6 @@ function highlightRayIntersects() {
 			}
 
 		} );
-
-	} else {
-
-		this.point.visible = false;
 
 	}
 
