@@ -2,7 +2,8 @@
 import * as THREE from 'three';
 import materials from './materials.js';
 import controllerAssets from './controllerAssets.js';
-import uiPanel from './uiPanel.js'
+import uiPanel from './uiPanel.js';
+import events from './events.js';
 
 //
 
@@ -233,6 +234,15 @@ function Controller( controls, renderer, i ) {
 	controller.addEventListener( 'selectstart', (e) => {
 
 		controller.isRayEnabled = true;
+
+		if ( controller.intersect ) {
+
+			events.emit( 'clicked-ui', {
+				controller,
+				element: controller.intersect.element
+			} );
+
+		}
 
 	} );
 

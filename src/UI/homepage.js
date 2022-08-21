@@ -83,6 +83,8 @@ function Button( title ) {
 		justifyContent: 'center'
 	} );
 
+	button.buttonName = title;
+
 	const buttonText = new ThreeMeshUI.Text( {
 		content: title,
 		fontSize: 0.08
