@@ -8,7 +8,7 @@ import events from './events.js';
 
 //
 
-const puzzleManager = {
+const gameManager = {
 	startTutorial,
 	startPuzzle,
 	clear
@@ -24,15 +24,15 @@ events.on( 'parts-assembled', e => {
 
 		setTimeout( () => {
 
-			if ( puzzleManager.isRunningTutorial ) {
+			if ( gameManager.isRunningTutorial ) {
 
 				events.emit( 'tutorial-finished' );
 
-				puzzleManager.isRunningTutorial = false;
+				gameManager.isRunningTutorial = false;
 
 			}
 
-			puzzleManager.clear();
+			gameManager.clear();
 
 		}, 1000 );
 
@@ -44,17 +44,19 @@ events.on( 'parts-assembled', e => {
 
 } );
 
+gameManager.startTutorial()
+
 function startTutorial() {
 
 	this.isRunningTutorial = true;
 	
-	this.startPuzzle( files.hydriaVase );
+	this.startPuzzle( "seatedCupid" );
 
 }
 
-function startPuzzle( modelPromise ) {
+function startPuzzle( modelName ) {
 
-	modelPromise.then( model => {
+	files.getModel( modelName ).then( model => {
 
 		this.currentPuzzle = PuzzleManager( model );
 
@@ -82,4 +84,4 @@ function clear() {
 
 //
 
-export default puzzleManager
+export default gameManager

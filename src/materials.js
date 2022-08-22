@@ -58,6 +58,8 @@ function initPuzzle( puzzle ) {
 
 	puzzle.pieces.forEach( piece => {
 
+
+		/*
 		// make background of original piece grey.
 
 		piece.origModel.material.onBeforeCompile = function ( shader ) {
@@ -77,6 +79,39 @@ function initPuzzle( puzzle ) {
 			`);
 
 		};
+		*/
+
+		const vert = `
+			varying vec2 vUv;
+
+			void main() {
+				vUv = uv;
+				gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+			}
+		`;
+
+		const frag = `
+			varying vec2 vUv;
+
+			uniform float bla;
+
+			void main() {
+				gl_FragColor = vec4( vUv, 1.0, 1.0 );
+			}
+		`;
+
+		const uni = {
+			bla: { value: 0.0 }
+		};
+
+		const shaderMat = new THREE.ShaderMaterial({
+			vertexShader: vert,
+			fragmentShader: frag,
+			uniforms: uni,
+			side: THREE.DoubleSide
+		} );
+
+		piece.origModel.material = shaderMat
 
 		// setup material for the piece outline
 

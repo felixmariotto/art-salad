@@ -9,65 +9,213 @@ import louviersCastel from '../assets/louviers-castel.glb';
 import seatedCupid from '../assets/seated-cupid.glb';
 import hydriaVase from '../assets/hydria-vase.glb';
 
-import museumModel from '../assets/museum.glb';
-import environmentMap from '../assets/environment_map.jpg';
+import museum from '../assets/museum.glb';
 
 //
 
-let useWorker, worker;
+let worker, onFileReady;
 
 const gltfLoader = new GLTFLoader();
-const textureLoader = new THREE.TextureLoader();
+const objectLoader = new THREE.ObjectLoader();
 
-//
+const modelURLs = {
+	museum,
+	doubleHeadSculpt,
+	paintedTrash,
+	mexicoGraffiti,
+	louviersCastel,
+	seatedCupid,
+	hydriaVase
+}
 
 if ( typeof Worker !== 'undefined' ) {
 
-	useWorker = true;
-
 	worker = new Worker( new URL('workers/worker.js', import.meta.url ) );
-
-	worker.postMessage( {
-		isFromMuseum: true
-	} );
 
 	worker.onmessage = function( e ) {
 
-		console.log( 'ggergeg', e.data );
+		const geometries = e.data.geometries;
+		const texture = e.data.texture;
+		const error = e.data.error;
+		const isInProgress = e.data.isInProgress;
+
+		if ( error ) console.log( error );
+
+		if ( geometries ) {
+
+			// create a new THREE.BufferGeometry from the shallow object sent by the worker
+
+			geometries.forEach( ( shallowGeometry, i, array) => {
+
+				const geometry = new THREE.BufferGeometry();
+				geometry.isProcessed = true;
+
+				if ( shallowGeometry.index ) {
+
+					const index = new THREE.BufferAttribute(
+						shallowGeometry.index.array,
+						shallowGeometry.index.itemSize,
+						false
+					);
+
+					geometry.setIndex( index );
+
+				}
+
+				for ( const attributeName of Object.keys( shallowGeometry.attributes ) ) {
+
+					const shallowAttribute = shallowGeometry.attributes[ attributeName ];
+
+					const attribute = new THREE.BufferAttribute(
+						shallowAttribute.array,
+						shallowAttribute.itemSize,
+						false
+					);
+
+					geometry.setAttribute( attributeName, attribute );
+
+				}
+
+				array[i] = geometry;
+
+				console.log( geometry )
+
+			} );
+
+			// recreate the material shared by all meshes of the puzzle
+
+			const material = new THREE.MeshBasicMaterial( {
+				map: new THREE.DataTexture(
+					texture.source.data,
+					texture.source.width,
+					texture.source.height,
+					texture.format,
+					texture.type,
+					texture.mapping,
+					texture.wrapS,
+					texture.wrapT,
+					texture.mapFilter,
+					texture.minFilter,
+					texture.anisotropy,
+					texture.encoding
+				)
+			} );
+
+			// create meshes from the geometries
+
+			const meshes = geometries.map( geometry => new THREE.Mesh( geometry, material ) );
+
+			const group = new THREE.Group().add( ...meshes );
+
+			//
+
+			if ( onFileReady ) onFileReady( group );
+
+		}
 
 	}
 
-} else {
-
-	useWorker = false;
-
 }
+
+const files = {
+	getModel,
+	getModelDirect
+};
 
 //
 
-function getGLTF( url ) {
+function getModel( modelName ) {
 
-	return new Promise( resolve => {
+	return new Promise( (resolve, reject) => {
 
-		gltfLoader.load( url, file => {
+		const url = modelURLs[ modelName ];
 
-			resolve( file.scene );
+		if ( !url ) reject( new Error('file url is not defined') )
 
-		} );
+		if ( worker ) {
+
+			onFileReady = ( file ) => {
+
+				resolve( file );
+
+				onFileReady = undefined;
+
+			}
+
+			worker.postMessage( { url } );
+
+		} else {
+
+			reject( new Error('WebWorker not supported by this browser') );
+
+		}
+		/*
+		else {
+
+			gltfLoader.load( url, 
+
+				function ( gltf ) {
+
+					resolve(   gltf.scene );
+    
+				},
+  
+				// called while loading is progressing
+				function ( xhr ) { 
+  
+					console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+    
+				},
+  
+				// called when loading has err  ors
+				function ( error  ) {
+ 
+					reject( error )
+
+				} 
+
+			);
+
+		}
+		*/
 
 	} );
 
 }
 
-function getTexture( url ) {
+// load a file without going through the webworker
 
-	return new Promise( resolve => {
+function getModelDirect( modelName ) {
 
-		textureLoader.load( url, file => {
+	return new Promise( (resolve, reject) => {
 
-			resolve( file  );
+		const url = modelURLs[ modelName ];
 
-		} );
+		if ( !url ) reject( new Error('file url is not defined') )
+
+		gltfLoader.load( url, 
+
+			function ( gltf ) {
+
+				resolve( gltf.scene );
+
+			},
+
+			// called while loading is progressing
+			function ( xhr ) {
+
+				//
+
+			},
+
+			// called when loading has errors
+			function ( error ) {
+
+				reject( error )
+
+			}
+
+		);
 
 	} );
 
@@ -75,14 +223,4 @@ function getTexture( url ) {
 
 //
 
-export default {
-	// doubleHeadSculpt: getGLTF( doubleHeadSculpt ),
-	// paintedTrash: getGLTF( paintedTrash ),
-	// mexicoGraffiti: getGLTF( mexicoGraffiti ),
-	// louviersCastel: getGLTF( louviersCastel ),
-	seatedCupid: getGLTF( seatedCupid ),
-	hydriaVase: getGLTF( hydriaVase ),
-
-	museumModel: getGLTF( museumModel ),
-	environmentMap: getTexture( environmentMap )
-}
+export default files

@@ -9,10 +9,6 @@ import files from './files.js';
 
 var scene = new THREE.Scene();
 scene.background = new THREE.Color( 0xc7c7c7 );
-files.environmentMap.then( map => {
-	map.mapping = THREE.EquirectangularReflectionMapping
-	scene.environment = map;
-} );
 
 /* Create the camera from which the scene will be seen */
 

@@ -30,86 +30,22 @@ const GRID_CENTER = new THREE.Vector3( 0, 1, -1.3 );
 function PuzzleManager( puzzleModel ) {
 
 	const puzzleManager = {
-		init,
 		precompute,
 		setShuffledState,
 		findPossibleMerging,
 		pieces: [],
 		parts: [],
-		group: new THREE.Group(),
+		group: puzzleModel,
 	}
 
-	puzzleManager.init( puzzleModel );
 	puzzleManager.precompute();
 
 	return puzzleManager
 
 }
 
-//
-
-function init( puzzleModel ) {
-	
-	this.group = new THREE.Group();
-
-	// firstly we take all the meshes from the imported model, and place them in a new global Group.
-
-	const toAdd = [];
-
-	puzzleModel.traverse( obj => {
-
-		if ( obj.geometry ) {
-
-			obj.updateWorldMatrix( true, false );
-			obj.geometry.applyMatrix4( obj.matrixWorld )
-
-			toAdd.push( obj )
-
-		}
-
-	} );
-
-	this.group.add( ...toAdd );
-
-	// then we compute the bounding box center point, and move the geometry to the center of the object.
-
-	const bbox = new THREE.Box3();
-	bbox.setFromObject( this.group, true );
-	const translation = bbox.getCenter( vec3A ).negate();
-
-	this.group.traverse( obj => {
-
-		if ( obj.geometry ) {
-			obj.geometry.translate(
-				translation.x,
-				translation.y,
-				translation.z
-			)
-		}
-
-	} );
-
-	// then we scale the geometry to a standard scale so that the user can grab all parts with their hands.
-
-	const bboxS = bbox.getSize( vec3A );
-	const average = ( bboxS.x + bboxS.y + bboxS.z ) / 3;
-	const scaleFactor = STANDARD_PUZZLE_SIZE / average;
-
-	this.group.traverse( obj => {
-
-		if ( obj.geometry ) {
-			obj.geometry.scale(
-				scaleFactor,
-				scaleFactor,
-				scaleFactor
-			)
-		}
-
-	} );
-
-}
-
-//
+// for each mesh in the mode, create a puzzle piece composed of three parts.
+// one part for normal rendering, two for outlines.
 
 function precompute() {
 
