@@ -94,9 +94,12 @@ if ( typeof Worker !== 'undefined' ) {
 				texture.anisotropy
 			);
 
-			console.log(  )
+			newTexture.encoding = THREE.sRGBEncoding;
 
-			const material = new THREE.MeshBasicMaterial( { map: newTexture } );
+			const material = new THREE.MeshBasicMaterial( {
+				map: newTexture,
+				side: THREE.DoubleSide
+			} );
 
 			// create meshes from the geometries
 

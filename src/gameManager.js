@@ -44,13 +44,11 @@ events.on( 'parts-assembled', e => {
 
 } );
 
-gameManager.startTutorial()
-
 function startTutorial() {
 
 	this.isRunningTutorial = true;
 	
-	this.startPuzzle( "seatedCupid" );
+	this.startPuzzle( "hydriaVase" );
 
 }
 
