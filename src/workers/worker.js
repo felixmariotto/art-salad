@@ -110,15 +110,11 @@ function parseGeometry( imported ) {
 
 	// prepare a nice arrays to send to main thread
 
-	// const geometries = group.children.map( child => child.geometry );
-
-	const geometries = [ group.children[0].geometry ];
+	const geometries = group.children.map( child => child.geometry );
 
 	const arrayBuffers = [];
 
 	geometries.forEach( geometry => {
-
-		console.log( geometry )
 
 		for ( const attributeName of Object.keys( geometry.attributes ) ) {
 

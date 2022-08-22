@@ -78,28 +78,25 @@ if ( typeof Worker !== 'undefined' ) {
 
 				array[i] = geometry;
 
-				console.log( geometry )
-
 			} );
 
 			// recreate the material shared by all meshes of the puzzle
 
-			const material = new THREE.MeshBasicMaterial( {
-				map: new THREE.DataTexture(
-					texture.source.data,
-					texture.source.width,
-					texture.source.height,
-					texture.format,
-					texture.type,
-					texture.mapping,
-					texture.wrapS,
-					texture.wrapT,
-					texture.mapFilter,
-					texture.minFilter,
-					texture.anisotropy,
-					texture.encoding
-				)
-			} );
+			const newTexture = new THREE.CanvasTexture(
+				texture.source.data,
+				texture.mapping,
+				texture.wrapS,
+				texture.wrapT,
+				texture.magFilter,
+				texture.minFilter,
+				texture.format,
+				texture.type,
+				texture.anisotropy
+			);
+
+			console.log(  )
+
+			const material = new THREE.MeshBasicMaterial( { map: newTexture } );
 
 			// create meshes from the geometries
 
@@ -162,7 +159,7 @@ function getModel( modelName ) {
   
 				// called while loading is progressing
 				function ( xhr ) { 
-  
+   
 					console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
     
 				},

@@ -58,8 +58,6 @@ function initPuzzle( puzzle ) {
 
 	puzzle.pieces.forEach( piece => {
 
-
-		/*
 		// make background of original piece grey.
 
 		piece.origModel.material.onBeforeCompile = function ( shader ) {
@@ -79,8 +77,9 @@ function initPuzzle( puzzle ) {
 			`);
 
 		};
-		*/
+		
 
+		/*
 		const vert = `
 			varying vec2 vUv;
 
@@ -112,6 +111,7 @@ function initPuzzle( puzzle ) {
 		} );
 
 		piece.origModel.material = shaderMat
+		*/
 
 		// setup material for the piece outline
 
