@@ -14,8 +14,36 @@ import environmentMap from '../assets/environment_map.jpg';
 
 //
 
+let useWorker, worker;
+
 const gltfLoader = new GLTFLoader();
 const textureLoader = new THREE.TextureLoader();
+
+//
+
+if ( typeof Worker !== 'undefined' ) {
+
+	useWorker = true;
+
+	worker = new Worker( new URL('workers/worker.js', import.meta.url ) );
+
+	worker.postMessage( {
+		isFromMuseum: true
+	} );
+
+	worker.onmessage = function( e ) {
+
+		console.log( 'ggergeg', e.data );
+
+	}
+
+} else {
+
+	useWorker = false;
+
+}
+
+//
 
 function getGLTF( url ) {
 

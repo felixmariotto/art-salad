@@ -17,11 +17,13 @@ module.exports = env => {
 
     mode: mode,
 
-    entry: path.resolve(__dirname, 'src'),
+    entry: {
+      'bundle': path.resolve(__dirname, 'src'),
+    },
 
     output: {
       path: path.resolve(__dirname, 'dist'),
-      filename: 'bundle.js'
+      filename: '[name].js'
     }, 
 
     devServer: {
