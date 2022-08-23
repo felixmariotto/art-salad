@@ -41,6 +41,27 @@ const modelInfos = {
 	nTomoMask: nTomoMaskInfo
 }
 
+// Here we just make sure that every file has all the attributes it is supposed to have
+// in order to display a rich documentation panel.
+
+for ( let x in modelInfos ) {
+
+	const info = modelInfos[ x ];
+
+	if (
+		!info.piecesNumber ||
+		!info.fileName ||
+		!info.artName ||
+		!info.artAuthor ||
+		!info.modelAuthor ||
+		!info.tags ||
+		!info.description
+	) {
+		console.warn( 'this file has a missing attribute : ', info )
+	}
+
+}
+
 //
 
 let worker, onFileReady;

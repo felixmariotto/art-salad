@@ -1,7 +1,9 @@
 {
-	"name": "Double Herm Statue",
-	"art-author": "unknown",
-	"model-author": "Geoffrey Marchal - Sketchfab",
+	"piecesNumber": 12,
+	"fileName": "doubleHeadSculpt",
+	"artName": "Double Herm Statue",
+	"artAuthor": "unknown",
+	"modelAuthor": "Geoffrey Marchal - Sketchfab",
 	"tags": ["sculpture", "antique", "europe"],
 	"description": "Double Herm, from Nemi or close by. 2nd century CE. marble. Ny Carlsberg Glyptotek (Copenhagen, Denmark). The two heads form a double herm. The strange being, one old and one young, have fins in their hair, around the mouth, and on the neck. They have been identified as personifications of Lake Albano and Lake Nemi respectively."
 }

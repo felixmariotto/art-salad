@@ -61,9 +61,9 @@ function handleButtonClick( buttonName ) {
 
 }
 
-
+/*
 setTimeout( ()=> {
 	uiPanel.setTutorial();
 	gameManager.startTutorial();
 }, 1000 );
-
+*/

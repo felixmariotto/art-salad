@@ -103,26 +103,4 @@ data.forEach( lineData => {
 
 } );
 
-/*
-
-new THREE.TextureLoader().load( imageURL, texture => {
-
-	const imageWidth = params.panelWidth * 0.4 - TUTORIAL_PADDING;
-
-	const niceImage = new ThreeMeshUI.Block( {
-		width: imageWidth,
-		height: imageWidth,
-		backgroundTexture: texture
-	} );
-
-	niceImage.autoLayout = false;
-	niceImage.position.x = ( params.panelWidth * 0.5 - TUTORIAL_PADDING ) - imageWidth * 0.5;
-	niceImage.position.y = ( params.panelHeight * 0.5 - TUTORIAL_PADDING ) - imageWidth * 0.5
-
-	tutorial.add( niceImage );
-
-} );
-
-*/
-
 export default tutorial

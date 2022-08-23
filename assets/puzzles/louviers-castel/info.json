@@ -1,7 +1,9 @@
 {
-	"name": "Chateau à Louviers",
-	"art-author": "unknown",
-	"model-author": "Lionel - Sketchfab",
+	"piecesNumber": 42,
+	"fileName": "louviersCastel",
+	"artName": "Chateau à Louviers",
+	"artAuthor": "unknown",
+	"modelAuthor": "Lionel - Sketchfab",
 	"tags": ["architecture", "europe"],
 	"description": "no information"
 }

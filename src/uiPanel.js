@@ -6,6 +6,7 @@ import ThreeMeshUI from 'three-mesh-ui';
 import params from './UI/params.js';
 import homepage from './UI/homepage.js';
 import tutorial from './UI/tutorial.js';
+import browser from './UI/browser.js';
 
 //
 
@@ -40,7 +41,7 @@ container.quaternion.copy( HOME_QUAT );
 ///////////////
 // MODULES
 
-container.add( homepage )
+container.add( browser )
 
 ///////////////
 // FUNCTIONS

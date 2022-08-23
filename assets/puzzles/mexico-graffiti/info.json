@@ -1,7 +1,9 @@
 {
-	"name": "Mexico Graffiti",
-	"art-author": "unknown",
-	"model-author": "photogrammexico - Sketchfab",
+	"piecesNumber": 24,
+	"fileName": "mexicoGraffiti",
+	"artName": "Mexico Graffiti",
+	"artAuthor": "unknown",
+	"modelAuthor": "photogrammexico - Sketchfab",
 	"tags": ["street art", "painting", "north america"],
 	"description": "Front wall of the Kirei Made Cafe, a japanese food restaurant in Monterrey, N.L., Mexico. This graffiti depicts the Day of the Dead (Spanish: Día de Muertos), a typical Mexican festival."
 }
