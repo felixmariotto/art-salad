@@ -12,7 +12,10 @@ scene.background = new THREE.Color( 0xc7c7c7 );
 
 /* Create the camera from which the scene will be seen */
 
-var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+const width = window.innerWidth;
+const height = window.innerHeight;
+
+var camera = new THREE.PerspectiveCamera( 75, width/height, 0.005, 50 );
 camera.position.set( 0, 1.6, 0 );
 camera.lookAt( 0, 1, -1.8 );
 
@@ -44,8 +47,7 @@ function loop( elapsedTime ) {
 	loopCallbacks.forEach( fn => fn( frameSpeed ) );
 
 	ThreeMeshUI.update();
-
-	// camera.rotation.y += 0.01;
+	
 };
 
 //

@@ -2,21 +2,23 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-import doubleHeadSculpt from '../assets/double-head-sculpt.glb';
-import paintedTrash from '../assets/painted-trash.glb';
-import mexicoGraffiti from '../assets/mexico-graffiti.glb';
-import louviersCastel from '../assets/louviers-castel.glb';
-import seatedCupid from '../assets/seated-cupid.glb';
-import hydriaVase from '../assets/hydria-vase.glb';
-
 import museum from '../assets/museum.glb';
 
-//
+import doubleHeadSculpt from '../assets/puzzles/double-head-sculpt/double-head-sculpt.glb';
+import paintedTrash from '../assets/puzzles/painted-trash/painted-trash.glb';
+import mexicoGraffiti from '../assets/puzzles/mexico-graffiti/mexico-graffiti.glb';
+import louviersCastel from '../assets/puzzles/louviers-castel/louviers-castel.glb';
+import seatedCupid from '../assets/puzzles/seated-cupid/seated-cupid.glb';
+import hydriaVase from '../assets/puzzles/hydria-vase/hydria-vase.glb';
+import nTomoMask from '../assets/puzzles/n-tomo-mask/n-tomo-mask.glb';
 
-let worker, onFileReady;
-
-const gltfLoader = new GLTFLoader();
-const objectLoader = new THREE.ObjectLoader();
+import doubleHeadSculptInfo from '../assets/puzzles/double-head-sculpt/info.json';
+import paintedTrashInfo from '../assets/puzzles/painted-trash/info.json';
+import mexicoGraffitiInfo from '../assets/puzzles/mexico-graffiti/info.json';
+import louviersCastelInfo from '../assets/puzzles/louviers-castel/info.json';
+import seatedCupidInfo from '../assets/puzzles/seated-cupid/info.json';
+import hydriaVaseInfo from '../assets/puzzles/hydria-vase/info.json';
+import nTomoMaskInfo from '../assets/puzzles/n-tomo-mask/info.json';
 
 const modelURLs = {
 	museum,
@@ -25,8 +27,26 @@ const modelURLs = {
 	mexicoGraffiti,
 	louviersCastel,
 	seatedCupid,
-	hydriaVase
+	hydriaVase,
+	nTomoMask
 }
+
+const modelInfos = {
+	doubleHeadSculpt: doubleHeadSculptInfo,
+	paintedTrash: paintedTrashInfo,
+	mexicoGraffiti: mexicoGraffitiInfo,
+	louviersCastel: louviersCastelInfo,
+	seatedCupid: seatedCupidInfo,
+	hydriaVase: hydriaVaseInfo,
+	nTomoMask: nTomoMaskInfo
+}
+
+//
+
+let worker, onFileReady;
+
+const gltfLoader = new GLTFLoader();
+const objectLoader = new THREE.ObjectLoader();
 
 if ( typeof Worker !== 'undefined' ) {
 
@@ -149,35 +169,6 @@ function getModel( modelName ) {
 			reject( new Error('WebWorker not supported by this browser') );
 
 		}
-		/*
-		else {
-
-			gltfLoader.load( url, 
-
-				function ( gltf ) {
-
-					resolve(   gltf.scene );
-    
-				},
-  
-				// called while loading is progressing
-				function ( xhr ) { 
-   
-					console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-    
-				},
-  
-				// called when loading has err  ors
-				function ( error  ) {
- 
-					reject( error )
-
-				} 
-
-			);
-
-		}
-		*/
 
 	} );
 

@@ -1,0 +1,11 @@
+Model Information:
+* title:	Mexican graffiti wall photogrammetry scan
+* source:	https://sketchfab.com/3d-models/mexican-graffiti-wall-photogrammetry-scan-e62fd46269de49f4b76031eee042daea
+* author:	photogrammexico (https://sketchfab.com/photogrammexico)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Mexican graffiti wall photogrammetry scan" (https://sketchfab.com/3d-models/mexican-graffiti-wall-photogrammetry-scan-e62fd46269de49f4b76031eee042daea) by photogrammexico (https://sketchfab.com/photogrammexico) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

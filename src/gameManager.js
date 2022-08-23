@@ -48,7 +48,7 @@ function startTutorial() {
 
 	this.isRunningTutorial = true;
 	
-	this.startPuzzle( "hydriaVase" );
+	this.startPuzzle( "nTomoMask" );
 
 }
 

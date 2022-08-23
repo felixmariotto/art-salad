@@ -1,0 +1,11 @@
+Model Information:
+* title:	Painted trash - Lisbon
+* source:	https://sketchfab.com/3d-models/painted-trash-lisbon-702afc34c99445f490aecd438f2302c5
+* author:	Yannoid (https://sketchfab.com/y.decouessin)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Painted trash - Lisbon" (https://sketchfab.com/3d-models/painted-trash-lisbon-702afc34c99445f490aecd438f2302c5) by Yannoid (https://sketchfab.com/y.decouessin) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
