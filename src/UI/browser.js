@@ -69,31 +69,63 @@ leftContainer.add( cellRow1, cellRow2 );
 const cellOpt = {
 	width: leftContainer.width * 0.5,
 	height: rowOpt.height,
+	padding: 0.035,
 	backgroundColor: new THREE.Color( 'purple' ),
 	backgroundOpacity: 1
 }
 
 const cellImgOpt = {
-	width: Math.min( cellOpt.height * 0.8, cellOpt.width ),
-	height: cellOpt.height * 0.8,
+	width: Math.min( ( cellOpt.height - cellOpt.padding * 2 ) * 0.8, cellOpt.width ),
+	height: ( cellOpt.height - cellOpt.padding * 2 ) * 0.8,
 	backgroundColor: new THREE.Color( 'red' ),
-	backgroundOpacity: 1
+	backgroundOpacity: 1,
+	justifyContent: 'end',
+	alignItems: 'end'
 }
 
-const cellText = {
+const cellTextContOpt = {
 	width: cellOpt.width,
-	height: cellOpt.height * 0.2,
+	height: ( cellOpt.height - cellOpt.padding * 2 ) * 0.2,
 	backgroundColor: new THREE.Color( 'orange' ),
-	backgroundOpacity: 1
+	backgroundOpacity: 1,
+	justifyContent: 'center',
+	textAlign: 'center'
 }
+
+const cellPiecesInfoOpt = {
+	width: 0.1,
+	height: 0.07,
+	backgroundColor: params.white,
+	backgroundOpacity: 1,
+	justifyContent: 'center',
+	textAlign: 'center'
+}
+
+const cells = [];
 
 function Cell() {
 
 	const cell = new ThreeMeshUI.Block( cellOpt );
 	const img = new ThreeMeshUI.Block( cellImgOpt );
-	const text = new ThreeMeshUI.Block( cellText );
+	const textContainer = new ThreeMeshUI.Block( cellTextContOpt );
+	const text = new ThreeMeshUI.Text( {} );
+	const piecesInfoCell = new ThreeMeshUI.Block( cellPiecesInfoOpt );
+	const piecesText = new ThreeMeshUI.Text( {} );
 
-	cell.add( img, text );
+	cell.populate = function ( data ) {
+
+		text.set( { content: data.artName } );
+		piecesText.set( { content: String( data.piecesNumber ) } );
+
+		console.log( data );
+
+	}
+
+	piecesInfoCell.add( piecesText );
+	img.add( piecesInfoCell );
+	textContainer.add( text );
+	cell.add( img, textContainer );
+	cells.push( cell );
 
 	return cell
 
@@ -103,6 +135,16 @@ cellRow1.add( Cell(), Cell() );
 cellRow2.add( Cell(), Cell() );
 
 //
+
+function populateCells( chunk ) {
+
+	cells.forEach( ( cell, i ) => {
+
+		cell.populate( chunk[ i ] );
+
+	} );
+
+}
 
 browser.init = function () {
 
@@ -125,9 +167,7 @@ browser.init = function () {
 
 	} );
 
-
-
-	console.log( chunks )
+	populateCells( chunks[ 0 ] );
 
 }
 
