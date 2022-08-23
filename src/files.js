@@ -31,22 +31,20 @@ const modelURLs = {
 	nTomoMask
 }
 
-const modelInfos = {
-	doubleHeadSculpt: doubleHeadSculptInfo,
-	paintedTrash: paintedTrashInfo,
-	mexicoGraffiti: mexicoGraffitiInfo,
-	louviersCastel: louviersCastelInfo,
-	seatedCupid: seatedCupidInfo,
-	hydriaVase: hydriaVaseInfo,
-	nTomoMask: nTomoMaskInfo
-}
+const modelInfos = [
+	doubleHeadSculptInfo,
+	paintedTrashInfo,
+	mexicoGraffitiInfo,
+	louviersCastelInfo,
+	seatedCupidInfo,
+	hydriaVaseInfo,
+	nTomoMaskInfo
+];
 
 // Here we just make sure that every file has all the attributes it is supposed to have
 // in order to display a rich documentation panel.
 
-for ( let x in modelInfos ) {
-
-	const info = modelInfos[ x ];
+modelInfos.forEach( info => {
 
 	if (
 		!info.piecesNumber ||
@@ -60,7 +58,7 @@ for ( let x in modelInfos ) {
 		console.warn( 'this file has a missing attribute : ', info )
 	}
 
-}
+} );
 
 //
 
@@ -158,11 +156,6 @@ if ( typeof Worker !== 'undefined' ) {
 
 }
 
-const files = {
-	getModel,
-	getModelDirect
-};
-
 //
 
 function getModel( modelName ) {
@@ -234,5 +227,11 @@ function getModelDirect( modelName ) {
 }
 
 //
+
+const files = {
+	getModel,
+	getModelDirect,
+	modelInfos
+};
 
 export default files
