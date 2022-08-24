@@ -4,10 +4,10 @@ import ThreeMeshUI from 'three-mesh-ui';
 import params from './params.js';
 import imageURL from '../../assets/UI-images/home-background.jpg';
 
-import FiraJSON from '../../assets/fonts/Fira.json';
-import FiraImage from '../../assets/fonts/Fira.png';
-import SourceJSON from '../../assets/fonts/Source.json';
-import SourceImage from '../../assets/fonts/Source.png';
+import firaJSON from '../../assets/fonts/Fira.json';
+import firaImage from '../../assets/fonts/Fira.png';
+import sourceJSON from '../../assets/fonts/Source.json';
+import sourceImage from '../../assets/fonts/Source.png';
 
 //
 
@@ -30,8 +30,8 @@ const lowerContainer = new ThreeMeshUI.Block( {
 	width: params.panelWidth - HOMEPAGE_PADDING * 2,
 	height: params.panelHeight * 0.4,
 	backgroundOpacity: 0,
-	fontFamily: SourceJSON,
-	fontTexture: SourceImage,
+	fontFamily: sourceJSON,
+	fontTexture: sourceImage,
 	justifyContent: "space-between"
 } );
 
@@ -43,8 +43,8 @@ const titleContainer = new ThreeMeshUI.Block( {
 	width: params.panelWidth - HOMEPAGE_PADDING * 2,
 	height: 0.3,
 	backgroundOpacity: 0,
-	fontFamily: FiraJSON,
-	fontTexture: FiraImage,
+	fontFamily: firaJSON,
+	fontTexture: firaImage,
 	fontColor: params.darkGrey,
 	alignItems: 'start'
 } );

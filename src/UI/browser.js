@@ -4,10 +4,12 @@ import ThreeMeshUI from 'three-mesh-ui';
 import params from './params.js';
 import files from '../files.js';
 
-import FiraJSON from '../../assets/fonts/Fira.json';
-import FiraImage from '../../assets/fonts/Fira.png';
-import SourceJSON from '../../assets/fonts/Source.json';
-import SourceImage from '../../assets/fonts/Source.png';
+import firaJSON from '../../assets/fonts/Fira.json';
+import firaImage from '../../assets/fonts/Fira.png';
+import sourceJSON from '../../assets/fonts/Source.json';
+import sourceImage from '../../assets/fonts/Source.png';
+import arrowLeftURL from '../../assets/UI-images/arrow-left.png';
+import arrowRightURL from '../../assets/UI-images/arrow-right.png';
 
 //
 
@@ -26,8 +28,8 @@ const browser = new ThreeMeshUI.Block( {
 	backgroundColor: new THREE.Color( 'red' ),// params.white,
 	backgroundOpacity: 1,
 	fontColor: params.black,
-	fontFamily: SourceJSON,
-	fontTexture: SourceImage,
+	fontFamily: sourceJSON,
+	fontTexture: sourceImage,
 	contentDirection: 'row'
 } );
 
@@ -134,6 +136,76 @@ function Cell() {
 cellRow1.add( Cell(), Cell() );
 cellRow2.add( Cell(), Cell() );
 
+// create navigation bar
+
+const navigationBar = new ThreeMeshUI.Block( {
+	width: leftContainer.width,
+	height: leftContainer.height * navigationHeight,
+	backgroundColor: new THREE.Color( 'cyan' ),
+	backgroundOpacity: 1,
+	contentDirection: "row",
+	justifyContent: "center"
+} );
+
+leftContainer.add( navigationBar );
+
+const arrowParams = {
+	width: navigationBar.height * 0.5,
+	height: navigationBar.height * 0.5,
+	backgroundColor: params.white,
+	backgroundOpacity: 1,
+	margin: 0.02
+}
+
+const arrowLeft = new ThreeMeshUI.Block( arrowParams );
+const arrowRight = new ThreeMeshUI.Block( arrowParams );
+
+const buttonsRow = new ThreeMeshUI.Block( {
+	width: 0.1,
+	height: navigationBar.height * 0.5,
+	backgroundOpacity: 0,
+	contentDirection: 'row',
+	justifyContent: 'space-evenly'
+} );
+
+navigationBar.add( arrowLeft, buttonsRow, arrowRight );
+
+textureLoader.load( arrowLeftURL, texture => {
+
+	arrowLeft.set( { backgroundTexture: texture } );
+
+} );
+
+textureLoader.load( arrowRightURL, texture => {
+
+	arrowRight.set( { backgroundTexture: texture } );
+
+} );
+
+function NavButton( number ) {
+
+	const button = new ThreeMeshUI.Block( {
+		width: navigationBar.height * 0.5,
+		height: navigationBar.height * 0.5,
+		backgroundColor: new THREE.Color('blue'),
+		backgroundOpacity: 1,
+		margin: 0.02,
+		justifyContent: 'center',
+		textAlign: 'center'
+	} );
+
+	const text = new ThreeMeshUI.Text( {
+		content: String( number ),
+		fontSize: 0.1,
+		fontColor: new THREE.Color('white')
+	} );
+
+	button.add( text );
+
+	return button
+
+}
+
 //
 
 function populateCells( chunk ) {
@@ -145,6 +217,20 @@ function populateCells( chunk ) {
 	} );
 
 }
+
+function populateNavigation( chunks ) {
+
+	for ( let i=0 ; i<chunks.length ; i++ ) {
+
+		buttonsRow.add( NavButton( i + 1 ) );
+
+	}
+
+	buttonsRow.set( { width: null } );
+
+}
+
+//
 
 browser.init = function () {
 
@@ -168,6 +254,7 @@ browser.init = function () {
 	} );
 
 	populateCells( chunks[ 0 ] );
+	populateNavigation( chunks );
 
 }
 

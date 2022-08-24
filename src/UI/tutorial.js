@@ -3,10 +3,10 @@ import * as THREE from 'three';
 import ThreeMeshUI from 'three-mesh-ui';
 import params from './params.js';
 
-import FiraJSON from '../../assets/fonts/Fira.json';
-import FiraImage from '../../assets/fonts/Fira.png';
-import SourceJSON from '../../assets/fonts/Source.json';
-import SourceImage from '../../assets/fonts/Source.png';
+import firaJSON from '../../assets/fonts/Fira.json';
+import firaImage from '../../assets/fonts/Fira.png';
+import sourceJSON from '../../assets/fonts/Source.json';
+import sourceImage from '../../assets/fonts/Source.png';
 
 import joystickURL from '../../assets/UI-images/joystick.jpg';
 import triggerURL from '../../assets/UI-images/trigger-button.jpg';
@@ -46,8 +46,8 @@ const tutorial = new ThreeMeshUI.Block( {
 	backgroundOpacity: 1,
 	fontColor: params.black,
 	// contentDirection: "column-reverse",
-	fontFamily: SourceJSON,
-	fontTexture: SourceImage,
+	fontFamily: sourceJSON,
+	fontTexture: sourceImage,
 	justifyContent: "space-between"
 } );
 
