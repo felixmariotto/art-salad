@@ -17,6 +17,7 @@ const PADDING_X = 0.04;
 const PADDING_Y = 0.04;
 const sectionsDivision = 0.65; // [ 0 - 1 ] division between left and right sections
 const navigationHeight = 0.2; // [ 0 - 1 ] height of the navigation bar at the bottom of the left panel
+const infoPadding = 0.05;
 
 const textureLoader = new THREE.TextureLoader();
 
@@ -46,7 +47,8 @@ const rightContainer = new ThreeMeshUI.Block( {
 	width: browser.width * ( 1 - sectionsDivision ),
 	height: browser.height,
 	backgroundColor: new THREE.Color( 'green' ),
-	backgroundOpacity: 1
+	backgroundOpacity: 1,
+	padding: infoPadding,
 } );
 
 browser.add( leftContainer, rightContainer );
@@ -119,7 +121,7 @@ function Cell() {
 		text.set( { content: data.artName } );
 		piecesText.set( { content: String( data.piecesNumber ) } );
 
-		console.log( data );
+		// console.log( data );
 
 	}
 
@@ -206,7 +208,86 @@ function NavButton( number ) {
 
 }
 
+// Right container layout, it's an information panel
+
+const infoImg = new ThreeMeshUI.Block( {
+	width: rightContainer.width - ( infoPadding * 7 ),
+	height: rightContainer.width - ( infoPadding * 7 ),
+	backgroundColor: new THREE.Color('red'),
+	backgroundOpacity: 1,
+	margin: infoPadding * 0.5
+} )
+
+const startButton = new ThreeMeshUI.Block( {
+	width: rightContainer.width - ( infoPadding * 7 ),
+	height: 0.15,
+	backgroundColor: new THREE.Color('yellow'),
+	backgroundOpacity: 1,
+	margin: infoPadding * 0.5,
+	justifyContent: 'center',
+	textAlign: 'center'
+} );
+
+startButton.add( new ThreeMeshUI.Text( {
+	content: "start puzzle",
+	fontSize: 0.08
+} ) );
+
+const infoPieces = InfoLine();
+const infoName = InfoLine();
+const infoAuth = InfoLine();
+const info3DAuth = InfoLine();
+const infoTags = InfoLine();
+const infoDesc = InfoLine( true );
+
+rightContainer.add(
+	infoImg,
+	infoPieces,
+	infoName,
+	infoAuth,
+	info3DAuth,
+	infoTags,
+	infoDesc,
+	startButton
+);
+
+function InfoLine( tall ) {
+
+	const line = new ThreeMeshUI.Block( {
+		width: rightContainer.width - ( infoPadding * 2 ),
+		height: tall ? 0.2 : 0.05,
+		backgroundColor: new THREE.Color( 'grey' ),
+		backgroundOpacity: 1,
+		margin: infoPadding * 0.25,
+		justifyContent: tall ? undefined : 'center'
+	} );
+
+	const text = new ThreeMeshUI.Text( { fontSize: 0.03, content: 'blabla' } );
+
+	line.userData.text = text
+
+	line.add( text );
+
+	return line
+
+}
+
 //
+
+function populateInfo( data ) {
+
+	const description = data.description.length > 100 ?
+		data.description.substring( 0, 100 ) + ' [...]' :
+		data.description
+
+	infoPieces.userData.text.set( { content: "Number of pieces : " + String( data.piecesNumber ) } );
+	infoName.userData.text.set( { content: "Name : " + data.artName } );
+	infoAuth.userData.text.set( { content: "Author : " + data.artAuthor } );
+	info3DAuth.userData.text.set( { content: "3D Author : " + data.modelAuthor } );
+	infoTags.userData.text.set( { content: "Tags : " + data.tags.join() } );
+	infoDesc.userData.text.set( { content: "Description : " + description } );
+
+}
 
 function populateCells( chunk ) {
 
@@ -255,6 +336,7 @@ browser.init = function () {
 
 	populateCells( chunks[ 0 ] );
 	populateNavigation( chunks );
+	populateInfo( chunks[ 0 ][ 0 ] );
 
 }
 
