@@ -20,6 +20,14 @@ import seatedCupidInfo from '../assets/puzzles/seated-cupid/info.json';
 import hydriaVaseInfo from '../assets/puzzles/hydria-vase/info.json';
 import nTomoMaskInfo from '../assets/puzzles/n-tomo-mask/info.json';
 
+import doubleHeadSculptImg from '../assets/puzzles/double-head-sculpt/thumbnail.jpg';
+import paintedTrashImg from '../assets/puzzles/painted-trash/thumbnail.jpg';
+import mexicoGraffitiImg from '../assets/puzzles/mexico-graffiti/thumbnail.jpg';
+import louviersCastelImg from '../assets/puzzles/louviers-castel/thumbnail.jpg';
+import seatedCupidImg from '../assets/puzzles/seated-cupid/thumbnail.jpg';
+import hydriaVaseImg from '../assets/puzzles/hydria-vase/thumbnail.jpg';
+import nTomoMaskImg from '../assets/puzzles/n-tomo-mask/thumbnail.jpg';
+
 const modelURLs = {
 	museum,
 	doubleHeadSculpt,
@@ -29,7 +37,7 @@ const modelURLs = {
 	seatedCupid,
 	hydriaVase,
 	nTomoMask
-}
+};
 
 const modelInfos = [
 	doubleHeadSculptInfo,
@@ -40,6 +48,16 @@ const modelInfos = [
 	hydriaVaseInfo,
 	nTomoMaskInfo
 ];
+
+const modelImgs = {
+	doubleHeadSculpt: doubleHeadSculptImg,
+	paintedTrash: paintedTrashImg,
+	mexicoGraffiti: mexicoGraffitiImg,
+	louviersCastel: louviersCastelImg,
+	seatedCupid: seatedCupidImg,
+	hydriaVase: hydriaVaseImg,
+	nTomoMask: nTomoMaskImg
+};
 
 // Here we just make sure that every file has all the attributes it is supposed to have
 // in order to display a rich documentation panel.
@@ -231,7 +249,8 @@ function getModelDirect( modelName ) {
 const files = {
 	getModel,
 	getModelDirect,
-	modelInfos
+	modelInfos,
+	modelImgs
 };
 
 export default files

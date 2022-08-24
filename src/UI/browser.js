@@ -18,6 +18,7 @@ const PADDING_Y = 0.04;
 const sectionsDivision = 0.65; // [ 0 - 1 ] division between left and right sections
 const navigationHeight = 0.2; // [ 0 - 1 ] height of the navigation bar at the bottom of the left panel
 const infoPadding = 0.05;
+const descriptionCharLimit = 150;
 
 const textureLoader = new THREE.TextureLoader();
 
@@ -81,7 +82,7 @@ const cellOpt = {
 const cellImgOpt = {
 	width: Math.min( ( cellOpt.height - cellOpt.padding * 2 ) * 0.8, cellOpt.width ),
 	height: ( cellOpt.height - cellOpt.padding * 2 ) * 0.8,
-	backgroundColor: new THREE.Color( 'red' ),
+	backgroundColor: params.white,
 	backgroundOpacity: 1,
 	justifyContent: 'end',
 	alignItems: 'end'
@@ -121,7 +122,11 @@ function Cell() {
 		text.set( { content: data.artName } );
 		piecesText.set( { content: String( data.piecesNumber ) } );
 
-		// console.log( data );
+		textureLoader.load( files.modelImgs[ data.fileName ], texture => {
+
+			img.set( { backgroundTexture: texture } );
+
+		} )
 
 	}
 
@@ -213,7 +218,7 @@ function NavButton( number ) {
 const infoImg = new ThreeMeshUI.Block( {
 	width: rightContainer.width - ( infoPadding * 7 ),
 	height: rightContainer.width - ( infoPadding * 7 ),
-	backgroundColor: new THREE.Color('red'),
+	backgroundColor: params.white,
 	backgroundOpacity: 1,
 	margin: infoPadding * 0.5
 } )
@@ -276,8 +281,8 @@ function InfoLine( tall ) {
 
 function populateInfo( data ) {
 
-	const description = data.description.length > 100 ?
-		data.description.substring( 0, 100 ) + ' [...]' :
+	const description = data.description.length > descriptionCharLimit ?
+		data.description.substring( 0, descriptionCharLimit ) + ' [...]' :
 		data.description
 
 	infoPieces.userData.text.set( { content: "Number of pieces : " + String( data.piecesNumber ) } );
@@ -286,6 +291,12 @@ function populateInfo( data ) {
 	info3DAuth.userData.text.set( { content: "3D Author : " + data.modelAuthor } );
 	infoTags.userData.text.set( { content: "Tags : " + data.tags.join() } );
 	infoDesc.userData.text.set( { content: "Description : " + description } );
+
+	textureLoader.load( files.modelImgs[ data.fileName ], texture => {
+
+		infoImg.set( { backgroundTexture: texture } );
+
+	} );
 
 }
 
