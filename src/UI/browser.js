@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import ThreeMeshUI from 'three-mesh-ui';
 import params from './params.js';
 import files from '../files.js';
+import events from '../events.js';
 
 import firaJSON from '../../assets/fonts/Fira.json';
 import firaImage from '../../assets/fonts/Fira.png';
@@ -109,7 +110,7 @@ const cellPiecesInfoOpt = {
 
 const cells = [];
 
-function Cell() {
+function Cell( id ) {
 
 	const cell = new ThreeMeshUI.Block( cellOpt );
 	const img = new ThreeMeshUI.Block( cellImgOpt );
@@ -119,8 +120,6 @@ function Cell() {
 	const piecesText = new ThreeMeshUI.Text( {} );
 
 	cell.populate = function ( data ) {
-
-		console.log( data )
 
 		text.set( { content: data.artName } );
 		piecesText.set( { content: String( data.piecesNumber ) } );
@@ -133,6 +132,8 @@ function Cell() {
 
 	}
 
+	cell.buttonName = 'browserCell-' + id;
+
 	piecesInfoCell.add( piecesText );
 	img.add( piecesInfoCell );
 	textContainer.add( text );
@@ -143,8 +144,8 @@ function Cell() {
 
 }
 
-cellRow1.add( Cell(), Cell(), Cell() );
-cellRow2.add( Cell(), Cell(), Cell() );
+cellRow1.add( Cell(1), Cell(2), Cell(3) );
+cellRow2.add( Cell(4), Cell(5), Cell(6) );
 
 // create navigation bar
 
@@ -168,6 +169,8 @@ const arrowParams = {
 
 const arrowLeft = new ThreeMeshUI.Block( arrowParams );
 const arrowRight = new ThreeMeshUI.Block( arrowParams );
+arrowLeft.buttonName = 'arrowLeft';
+arrowRight.buttonName = 'arrowRight';
 
 const buttonsRow = new ThreeMeshUI.Block( {
 	width: 0.1,
@@ -209,6 +212,8 @@ function NavButton( number ) {
 		fontColor: new THREE.Color('white')
 	} );
 
+	button.buttonName = 'browserNav-' + number;
+
 	button.add( text );
 
 	return button
@@ -243,6 +248,8 @@ startButton.add( new ThreeMeshUI.Text( {
 	fontSize: 0.07,
 	fontColor: params.white
 } ) );
+
+startButton.buttonName = 'startPuzzle';
 
 const infoPieces = InfoLine();
 const infoName = InfoLine();

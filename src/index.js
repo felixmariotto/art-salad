@@ -42,6 +42,18 @@ function findButton( element ) {
 
 function handleButtonClick( buttonName ) {
 
+	if ( buttonName.includes( 'browserNav' ) ) {
+
+		console.log( 'browserNav', Number( buttonName[ buttonName.length - 1 ] ) )
+
+	}
+
+	if ( buttonName.includes( 'browserCell' ) ) {
+
+		console.log( 'browserCell', Number( buttonName[ buttonName.length - 1 ] ) )
+
+	}
+
 	switch ( buttonName ) {
 
 		case 'Puzzles':
@@ -56,6 +68,20 @@ function handleButtonClick( buttonName ) {
 		case 'Github' :
 			console.log('go to Github');
 			break
+
+		case 'arrowLeft' :
+			console.log('arrowLeft');
+			break
+
+		case 'arrowRight' :
+			console.log('arrowRight');
+			break
+
+		case 'startPuzzle' :
+			console.log('startPuzzle');
+			break
+
+		default : return
 
 	}
 
