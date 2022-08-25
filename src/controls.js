@@ -43,6 +43,11 @@ function Controls( renderer ) {
 
 			if ( controller.intersect ) {
 
+				events.emit( 'hovered-ui', {
+					controller,
+					element: controller.intersect.element
+				} );
+
 				controller.point.visible = true;
 
 				controller.raySpace.worldToLocal( controller.intersect.point );

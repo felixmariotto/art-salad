@@ -79,11 +79,20 @@ const cellOpt = {
 	backgroundOpacity: 0
 }
 
+const cellHoveredOpt = {
+	borderWidth: 0.005
+}
+
+const cellIdleOpt = {
+	borderWidth: 0
+}
+
 const cellImgWidth = Math.min( cellOpt.width - 2 * cellOpt.padding, ( cellOpt.width - 2 * cellOpt.padding ) * cellImgTxtDiv );
 
 const cellImgOpt = {
 	width: cellImgWidth,
 	height: cellImgWidth,
+	borderWidth: 0,
 	backgroundColor: params.white,
 	backgroundOpacity: 1,
 	justifyContent: 'end',
@@ -93,6 +102,7 @@ const cellImgOpt = {
 const cellTextContOpt = {
 	width: cellOpt.width,
 	height: ( cellOpt.height - cellOpt.padding * 2 ) * 0.1,
+	borderWidth: 0,
 	backgroundOpacity: 0,
 	justifyContent: 'center',
 	textAlign: 'center'
@@ -109,6 +119,7 @@ const cellPiecesInfoOpt = {
 }
 
 const cells = [];
+browser.cells = cells;
 
 function Cell( id ) {
 
@@ -118,6 +129,9 @@ function Cell( id ) {
 	const text = new ThreeMeshUI.Text( { fontSize: 0.045 } );
 	const piecesInfoCell = new ThreeMeshUI.Block( cellPiecesInfoOpt );
 	const piecesText = new ThreeMeshUI.Text( {} );
+
+	cell.setupState( { state: 'hovered', attributes: cellHoveredOpt } );
+	cell.setupState( { state: 'idle', attributes: cellIdleOpt } );
 
 	cell.populate = function ( data ) {
 
@@ -162,15 +176,32 @@ leftContainer.add( navigationBar );
 const arrowParams = {
 	width: navigationBar.height * 0.4,
 	height: navigationBar.height * 0.4,
-	backgroundColor: params.white,
-	backgroundOpacity: 1,
 	margin: 0.02
 }
+
+const arrowHoveredParams = { 
+	width: navigationBar.height * 0.5,
+	height: navigationBar.height * 0.5,
+};
+
+const arrowIdleParams = { 
+	width: navigationBar.height * 0.4,
+	height: navigationBar.height * 0.4,
+};
 
 const arrowLeft = new ThreeMeshUI.Block( arrowParams );
 const arrowRight = new ThreeMeshUI.Block( arrowParams );
 arrowLeft.buttonName = 'arrowLeft';
 arrowRight.buttonName = 'arrowRight';
+
+const arrows = [ arrowLeft, arrowRight ];
+
+arrows.forEach( arrow => {
+
+	arrow.setupState( { state: 'hovered', attributes: arrowHoveredParams } );
+	arrow.setupState( { state: 'idle', attributes: arrowIdleParams } );
+
+} );
 
 const buttonsRow = new ThreeMeshUI.Block( {
 	width: 0.1,
@@ -243,13 +274,27 @@ const startButton = new ThreeMeshUI.Block( {
 	textAlign: 'center'
 } );
 
+startButton.buttonName = 'startPuzzle';
+
+startButton.setupState( {
+	state: 'hovered',
+	attributes: {
+		backgroundColor: params.mediumGrey
+	}
+} );
+
+startButton.setupState( {
+	state: 'idle',
+	attributes: {
+		backgroundColor: params.black
+	}
+} );
+
 startButton.add( new ThreeMeshUI.Text( {
 	content: "start puzzle",
 	fontSize: 0.07,
 	fontColor: params.white
 } ) );
-
-startButton.buttonName = 'startPuzzle';
 
 const infoPieces = InfoLine();
 const infoName = InfoLine();
@@ -336,6 +381,54 @@ function populateNavigation( chunks ) {
 }
 
 //
+
+browser.frameUpdate = function ( frameSpeed ) {
+
+	cells.forEach( cell => {
+
+		if ( cell.isHovered ) {
+
+			cell.setState('hovered');
+
+		} else {
+
+			cell.setState('idle');
+
+		}
+
+		cell.isHovered = false;
+
+	} );
+
+	arrows.forEach( arrow => {
+
+		if ( arrow.isHovered ) {
+
+			arrow.setState('hovered');
+
+		} else {
+
+			arrow.setState('idle');
+
+		}
+
+		arrow.isHovered = false;
+
+	} );
+
+	if ( startButton.isHovered ) {
+
+		startButton.setState( 'hovered' );
+
+	} else {
+
+		startButton.setState( 'idle' );
+
+	}
+
+	startButton.isHovered = false;
+
+}
 
 browser.init = function () {
 

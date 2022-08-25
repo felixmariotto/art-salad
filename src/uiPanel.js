@@ -2,6 +2,8 @@
 import { loopCallbacks } from './init.js';
 import * as THREE from 'three';
 import ThreeMeshUI from 'three-mesh-ui';
+import gameManager from './gameManager.js';
+import events from './events.js';
 
 import params from './UI/params.js';
 import homepage from './UI/homepage.js';
@@ -38,10 +40,117 @@ const container = new ThreeMeshUI.Block( {
 container.position.copy( HOME_POS );
 container.quaternion.copy( HOME_QUAT );
 
-///////////////
-// MODULES
-
 container.add( browser )
+
+///////////////
+// EVENTS
+
+events.on( 'clicked-ui', e => {
+
+	findButton( e.detail.element, handleButtonClick );
+
+} );
+
+events.on( 'hovered-ui', e => {
+
+	findButton( e.detail.element, handleButtonHovered );
+
+} );
+
+events.on( 'tutorial-finished', e => {
+
+	uiPanel.setHomepage();
+
+} );
+
+function findButton( element, callback ) {
+
+	if ( element.buttonName ) {
+
+		callback( element.buttonName, element )
+
+	} else if ( element.parent ) {
+
+		findButton( element.parent, callback );
+
+	}
+
+}
+
+function handleButtonClick( buttonName, button ) {
+
+	if ( buttonName.includes( 'browserNav' ) ) {
+
+		console.log( 'browserNav', Number( buttonName[ buttonName.length - 1 ] ) )
+
+	}
+
+	if ( buttonName.includes( 'browserCell' ) ) {
+
+		console.log( 'browserCell', Number( buttonName[ buttonName.length - 1 ] ) )
+
+	}
+
+	switch ( buttonName ) {
+
+		case 'Puzzles':
+			console.log('go to puzzles page');
+			break
+
+		case 'Tutorial' :
+			setTutorial();
+			gameManager.startTutorial();
+			break
+
+		case 'Github' :
+			console.log('go to Github');
+			break
+
+		case 'arrowLeft' :
+			console.log('arrowLeft');
+			break
+
+		case 'arrowRight' :
+			console.log('arrowRight');
+			break
+
+		case 'startPuzzle' :
+			console.log('startPuzzle');
+			break
+
+		default : return
+
+	}
+
+}
+
+function handleButtonHovered( buttonName, button ) {
+
+	if ( buttonName.includes( 'browserNav' ) ) {
+
+		// Number( buttonName[ buttonName.length - 1 ] ) - 1
+
+	}
+
+	if ( buttonName.includes( 'browserCell' ) ) {
+
+		browser.cells[ Number( buttonName[ buttonName.length - 1 ] ) - 1 ].isHovered = true;
+
+	}
+
+	switch ( buttonName ) {
+
+		case 'arrowLeft' :
+		case 'arrowRight' :
+		case 'startPuzzle' :
+			button.isHovered = true;
+			break
+
+		default : return
+
+	}
+
+}
 
 ///////////////
 // FUNCTIONS
@@ -49,6 +158,8 @@ container.add( browser )
 loopCallbacks.push( update );
 
 function update( frameSpeed ) {
+
+	browser.frameUpdate( frameSpeed );
 
 	if ( !container.position.equals( targetPos ) ) {
 
