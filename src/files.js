@@ -7,56 +7,62 @@ import museum from '../assets/museum.glb';
 import doubleHeadSculpt from '../assets/puzzles/double-head-sculpt/double-head-sculpt.glb';
 import paintedTrash from '../assets/puzzles/painted-trash/painted-trash.glb';
 import mexicoGraffiti from '../assets/puzzles/mexico-graffiti/mexico-graffiti.glb';
-import louviersCastel from '../assets/puzzles/louviers-castel/louviers-castel.glb';
+import louviersCastle from '../assets/puzzles/louviers-castle/louviers-castle.glb';
 import seatedCupid from '../assets/puzzles/seated-cupid/seated-cupid.glb';
 import hydriaVase from '../assets/puzzles/hydria-vase/hydria-vase.glb';
 import nTomoMask from '../assets/puzzles/n-tomo-mask/n-tomo-mask.glb';
+import pentecostRederos from '../assets/puzzles/pentecost-rederos/pentecost-rederos.glb';
 
 import doubleHeadSculptInfo from '../assets/puzzles/double-head-sculpt/info.json';
 import paintedTrashInfo from '../assets/puzzles/painted-trash/info.json';
 import mexicoGraffitiInfo from '../assets/puzzles/mexico-graffiti/info.json';
-import louviersCastelInfo from '../assets/puzzles/louviers-castel/info.json';
+import louviersCastleInfo from '../assets/puzzles/louviers-castle/info.json';
 import seatedCupidInfo from '../assets/puzzles/seated-cupid/info.json';
 import hydriaVaseInfo from '../assets/puzzles/hydria-vase/info.json';
 import nTomoMaskInfo from '../assets/puzzles/n-tomo-mask/info.json';
+import pentecostRederosInfo from '../assets/puzzles/pentecost-rederos/info.json';
 
 import doubleHeadSculptImg from '../assets/puzzles/double-head-sculpt/thumbnail.jpg';
 import paintedTrashImg from '../assets/puzzles/painted-trash/thumbnail.jpg';
 import mexicoGraffitiImg from '../assets/puzzles/mexico-graffiti/thumbnail.jpg';
-import louviersCastelImg from '../assets/puzzles/louviers-castel/thumbnail.jpg';
+import louviersCastleImg from '../assets/puzzles/louviers-castle/thumbnail.jpg';
 import seatedCupidImg from '../assets/puzzles/seated-cupid/thumbnail.jpg';
 import hydriaVaseImg from '../assets/puzzles/hydria-vase/thumbnail.jpg';
 import nTomoMaskImg from '../assets/puzzles/n-tomo-mask/thumbnail.jpg';
+import pentecostRederosImg from '../assets/puzzles/pentecost-rederos/thumbnail.jpg';
 
 const modelURLs = {
 	museum,
 	doubleHeadSculpt,
 	paintedTrash,
 	mexicoGraffiti,
-	louviersCastel,
+	louviersCastle,
 	seatedCupid,
 	hydriaVase,
-	nTomoMask
+	nTomoMask,
+	pentecostRederos
 };
 
 const modelInfos = [
 	doubleHeadSculptInfo,
 	paintedTrashInfo,
 	mexicoGraffitiInfo,
-	louviersCastelInfo,
+	louviersCastleInfo,
 	seatedCupidInfo,
 	hydriaVaseInfo,
-	nTomoMaskInfo
+	nTomoMaskInfo,
+	pentecostRederosInfo
 ];
 
 const modelImgs = {
 	doubleHeadSculpt: doubleHeadSculptImg,
 	paintedTrash: paintedTrashImg,
 	mexicoGraffiti: mexicoGraffitiImg,
-	louviersCastel: louviersCastelImg,
+	louviersCastle: louviersCastleImg,
 	seatedCupid: seatedCupidImg,
 	hydriaVase: hydriaVaseImg,
-	nTomoMask: nTomoMaskImg
+	nTomoMask: nTomoMaskImg,
+	pentecostRederosImg
 };
 
 // Here we just make sure that every file has all the attributes it is supposed to have

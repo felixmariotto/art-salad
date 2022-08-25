@@ -1,0 +1,11 @@
+Model Information:
+* title:	La Pentecosta, Museu de Manresa
+* source:	https://sketchfab.com/3d-models/la-pentecosta-museu-de-manresa-543efbae91394b80a2438b738f79195e
+* author:	Giravolt (https://sketchfab.com/giravolt)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "La Pentecosta, Museu de Manresa" (https://sketchfab.com/3d-models/la-pentecosta-museu-de-manresa-543efbae91394b80a2438b738f79195e) by Giravolt (https://sketchfab.com/giravolt) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
