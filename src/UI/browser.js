@@ -28,7 +28,7 @@ const textureLoader = new THREE.TextureLoader();
 const browser = new ThreeMeshUI.Block( {
 	width: params.panelWidth - PADDING_X * 2,
 	height: params.panelHeight - PADDING_Y * 2,
-	backgroundColor: new THREE.Color( 'red' ),// params.white,
+	backgroundColor: params.white,
 	backgroundOpacity: 1,
 	fontColor: params.black,
 	fontFamily: sourceJSON,
@@ -42,15 +42,14 @@ const leftContainer = new ThreeMeshUI.Block( {
 	width: browser.width * sectionsDivision,
 	height: browser.height,
 	padding: 0.03,
-	backgroundColor: new THREE.Color( 'blue' ),
-	backgroundOpacity: 1
+	backgroundOpacity: 0
 } );
 
 const rightContainer = new ThreeMeshUI.Block( {
 	width: browser.width * ( 1 - sectionsDivision ),
 	height: browser.height,
-	backgroundColor: new THREE.Color( 'green' ),
-	backgroundOpacity: 1,
+	borderWidth: 0.005,
+	backgroundOpacity: 0,
 	padding: infoPadding,
 } );
 
@@ -61,8 +60,7 @@ browser.add( leftContainer, rightContainer );
 const rowOpt = {
 	width: leftContainer.width - 2 * leftContainer.padding,
 	height: ( leftContainer.height - 2 * leftContainer.padding ) * ( 1 - navigationHeight ) * 0.5,
-	backgroundColor: new THREE.Color( 'yellow' ),
-	backgroundOpacity: 1,
+	backgroundOpacity: 0,
 	contentDirection: "row"
 };
 
@@ -77,8 +75,7 @@ const cellOpt = {
 	width: rowOpt.width * ( 1 / 3 ),
 	height: rowOpt.height,
 	padding: 0.035,
-	backgroundColor: new THREE.Color( 'purple' ),
-	backgroundOpacity: 1
+	backgroundOpacity: 0
 }
 
 const cellImgWidth = Math.min( cellOpt.width - 2 * cellOpt.padding, ( cellOpt.width - 2 * cellOpt.padding ) * cellImgTxtDiv );
@@ -95,8 +92,7 @@ const cellImgOpt = {
 const cellTextContOpt = {
 	width: cellOpt.width,
 	height: ( cellOpt.height - cellOpt.padding * 2 ) * 0.1,
-	backgroundColor: new THREE.Color( 'orange' ),
-	backgroundOpacity: 1,
+	backgroundOpacity: 0,
 	justifyContent: 'center',
 	textAlign: 'center'
 }
@@ -104,7 +100,8 @@ const cellTextContOpt = {
 const cellPiecesInfoOpt = {
 	width: 0.1,
 	height: 0.07,
-	backgroundColor: params.white,
+	backgroundColor: params.black,
+	fontColor: params.white,
 	backgroundOpacity: 1,
 	justifyContent: 'center',
 	textAlign: 'center'
@@ -154,8 +151,7 @@ cellRow2.add( Cell(), Cell(), Cell() );
 const navigationBar = new ThreeMeshUI.Block( {
 	width: leftContainer.width,
 	height: leftContainer.height * navigationHeight,
-	backgroundColor: new THREE.Color( 'cyan' ),
-	backgroundOpacity: 1,
+	backgroundOpacity: 0,
 	contentDirection: "row",
 	justifyContent: "center"
 } );
@@ -163,8 +159,8 @@ const navigationBar = new ThreeMeshUI.Block( {
 leftContainer.add( navigationBar );
 
 const arrowParams = {
-	width: navigationBar.height * 0.5,
-	height: navigationBar.height * 0.5,
+	width: navigationBar.height * 0.4,
+	height: navigationBar.height * 0.4,
 	backgroundColor: params.white,
 	backgroundOpacity: 1,
 	margin: 0.02
@@ -198,9 +194,9 @@ textureLoader.load( arrowRightURL, texture => {
 function NavButton( number ) {
 
 	const button = new ThreeMeshUI.Block( {
-		width: navigationBar.height * 0.5,
-		height: navigationBar.height * 0.5,
-		backgroundColor: new THREE.Color('blue'),
+		width: navigationBar.height * 0.4,
+		height: navigationBar.height * 0.4,
+		backgroundColor: params.black,
 		backgroundOpacity: 1,
 		margin: 0.02,
 		justifyContent: 'center',
@@ -224,6 +220,7 @@ function NavButton( number ) {
 const infoImg = new ThreeMeshUI.Block( {
 	width: rightContainer.width - ( infoPadding * 7 ),
 	height: rightContainer.width - ( infoPadding * 7 ),
+	borderWidth: 0,
 	backgroundColor: params.white,
 	backgroundOpacity: 1,
 	margin: infoPadding * 0.5
@@ -232,7 +229,9 @@ const infoImg = new ThreeMeshUI.Block( {
 const startButton = new ThreeMeshUI.Block( {
 	width: rightContainer.width - ( infoPadding * 7 ),
 	height: 0.15,
-	backgroundColor: new THREE.Color('yellow'),
+	borderWidth: 0,
+	borderRadius: 0.05,
+	backgroundColor: params.black,
 	backgroundOpacity: 1,
 	margin: infoPadding * 0.5,
 	justifyContent: 'center',
@@ -241,7 +240,8 @@ const startButton = new ThreeMeshUI.Block( {
 
 startButton.add( new ThreeMeshUI.Text( {
 	content: "start puzzle",
-	fontSize: 0.08
+	fontSize: 0.07,
+	fontColor: params.white
 } ) );
 
 const infoPieces = InfoLine();
@@ -267,8 +267,8 @@ function InfoLine( tall ) {
 	const line = new ThreeMeshUI.Block( {
 		width: rightContainer.width - ( infoPadding * 2 ),
 		height: tall ? 0.3 : 0.05,
-		backgroundColor: new THREE.Color( 'grey' ),
-		backgroundOpacity: 1,
+		borderWidth: 0,
+		backgroundOpacity: 0,
 		margin: infoPadding * 0.25,
 		justifyContent: tall ? undefined : 'center'
 	} );
