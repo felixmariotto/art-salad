@@ -115,7 +115,8 @@ const cellPiecesInfoOpt = {
 	fontColor: params.white,
 	backgroundOpacity: 1,
 	justifyContent: 'center',
-	textAlign: 'center'
+	textAlign: 'center',
+	offset: 0.001
 }
 
 const cells = [];
@@ -136,7 +137,7 @@ function Cell( id ) {
 	cell.populate = function ( data ) {
 
 		text.set( { content: data.artName } );
-		piecesText.set( { content: String( data.piecesNumber ) } );
+		piecesText.set( { content: String( data.piecesNumber ), offset: 0.001 } );
 
 		textureLoader.load( files.modelImgs[ data.fileName ], texture => {
 
@@ -264,7 +265,8 @@ function NavButton( number ) {
 
 	const text = new ThreeMeshUI.Text( {
 		content: String( number ),
-		fontSize: 0.1
+		fontSize: 0.1,
+		offset: 0
 	} );
 
 	button.buttonName = 'browserNav-' + number;
@@ -317,7 +319,8 @@ startButton.setupState( {
 startButton.add( new ThreeMeshUI.Text( {
 	content: "start puzzle",
 	fontSize: 0.07,
-	fontColor: params.white
+	fontColor: params.white,
+	offset: 0
 } ) );
 
 const infoPieces = InfoLine();
