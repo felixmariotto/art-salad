@@ -385,47 +385,16 @@ function populateNavigation( chunks ) {
 browser.frameUpdate = function ( frameSpeed ) {
 
 	cells.forEach( cell => {
-
-		if ( cell.isHovered ) {
-
-			cell.setState('hovered');
-
-		} else {
-
-			cell.setState('idle');
-
-		}
-
+		cell.setState( cell.isHovered ? 'hovered' : 'idle' );
 		cell.isHovered = false;
-
 	} );
 
 	arrows.forEach( arrow => {
-
-		if ( arrow.isHovered ) {
-
-			arrow.setState('hovered');
-
-		} else {
-
-			arrow.setState('idle');
-
-		}
-
+		arrow.setState( arrow.isHovered ? 'hovered' : 'idle' );
 		arrow.isHovered = false;
-
 	} );
 
-	if ( startButton.isHovered ) {
-
-		startButton.setState( 'hovered' );
-
-	} else {
-
-		startButton.setState( 'idle' );
-
-	}
-
+	startButton.setState( startButton.isHovered ? 'hovered' : 'idle' );
 	startButton.isHovered = false;
 
 }
