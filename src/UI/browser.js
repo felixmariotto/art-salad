@@ -225,27 +225,51 @@ textureLoader.load( arrowRightURL, texture => {
 
 } );
 
+//
+
+const navButtonParams = {
+	width: navigationBar.height * 0.4,
+	height: navigationBar.height * 0.4,
+	backgroundColor: params.black,
+	backgroundOpacity: 1,
+	margin: 0.02,
+	justifyContent: 'center',
+	textAlign: 'center'
+};
+
+const navButtonHoveredParams = {
+	backgroundColor: params.mediumGrey,
+	fontColor: params.white
+}
+
+const navButtonSeletedParams = {
+	backgroundColor: params.black,
+	fontColor: params.white
+}
+
+const navButtonIdleParams = {
+	backgroundColor: params.white,
+	fontColor: params.black
+}
+
+const navButtons = [];
+browser.navButtons = navButtons;
+
 function NavButton( number ) {
 
-	const button = new ThreeMeshUI.Block( {
-		width: navigationBar.height * 0.4,
-		height: navigationBar.height * 0.4,
-		backgroundColor: params.black,
-		backgroundOpacity: 1,
-		margin: 0.02,
-		justifyContent: 'center',
-		textAlign: 'center'
-	} );
+	const button = new ThreeMeshUI.Block( navButtonParams );
+	button.setupState( { state: 'hovered', attributes: navButtonHoveredParams } );
+	button.setupState( { state: 'selected', attributes: navButtonSeletedParams } );
+	button.setupState( { state: 'idle', attributes: navButtonIdleParams } );
 
 	const text = new ThreeMeshUI.Text( {
 		content: String( number ),
-		fontSize: 0.1,
-		fontColor: new THREE.Color('white')
+		fontSize: 0.1
 	} );
 
 	button.buttonName = 'browserNav-' + number;
-
 	button.add( text );
+	navButtons.push( button );
 
 	return button
 
@@ -383,6 +407,11 @@ function populateNavigation( chunks ) {
 //
 
 browser.frameUpdate = function ( frameSpeed ) {
+
+	navButtons.forEach( button => {
+		button.setState( button.isHovered ? 'hovered' : 'idle' );
+		button.isHovered = false;
+	} );
 
 	cells.forEach( cell => {
 		cell.setState( cell.isHovered ? 'hovered' : 'idle' );

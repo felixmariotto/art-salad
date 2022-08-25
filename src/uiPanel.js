@@ -128,7 +128,7 @@ function handleButtonHovered( buttonName, button ) {
 
 	if ( buttonName.includes( 'browserNav' ) ) {
 
-		// Number( buttonName[ buttonName.length - 1 ] ) - 1
+		browser.navButtons[ Number( buttonName[ buttonName.length - 1 ] ) - 1 ].isHovered = true;
 
 	}
 
