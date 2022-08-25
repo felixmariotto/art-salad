@@ -15,10 +15,11 @@ import arrowRightURL from '../../assets/UI-images/arrow-right.png';
 
 const PADDING_X = 0.04;
 const PADDING_Y = 0.04;
-const sectionsDivision = 0.65; // [ 0 - 1 ] division between left and right sections
-const navigationHeight = 0.2; // [ 0 - 1 ] height of the navigation bar at the bottom of the left panel
-const infoPadding = 0.05;
+const sectionsDivision = 0.72; // [ 0 - 1 ] division between left and right sections
+const navigationHeight = 0.22; // [ 0 - 1 ] height of the navigation bar at the bottom of the left panel
+const infoPadding = 0.03;
 const descriptionCharLimit = 150;
+const cellImgTxtDiv = 0.9; // [ 0 - 1 ] Y division between a cell image and the name of the puzzle right bellow
 
 const textureLoader = new THREE.TextureLoader();
 
@@ -40,6 +41,7 @@ const browser = new ThreeMeshUI.Block( {
 const leftContainer = new ThreeMeshUI.Block( {
 	width: browser.width * sectionsDivision,
 	height: browser.height,
+	padding: 0.03,
 	backgroundColor: new THREE.Color( 'blue' ),
 	backgroundOpacity: 1
 } );
@@ -57,8 +59,8 @@ browser.add( leftContainer, rightContainer );
 // create two rows inside the left container, to host the model cells
 
 const rowOpt = {
-	width: leftContainer.width,
-	height: leftContainer.height * ( 1 - navigationHeight ) * 0.5,
+	width: leftContainer.width - 2 * leftContainer.padding,
+	height: ( leftContainer.height - 2 * leftContainer.padding ) * ( 1 - navigationHeight ) * 0.5,
 	backgroundColor: new THREE.Color( 'yellow' ),
 	backgroundOpacity: 1,
 	contentDirection: "row"
@@ -72,16 +74,18 @@ leftContainer.add( cellRow1, cellRow2 );
 // model cells
 
 const cellOpt = {
-	width: leftContainer.width * 0.5,
+	width: rowOpt.width * ( 1 / 3 ),
 	height: rowOpt.height,
 	padding: 0.035,
 	backgroundColor: new THREE.Color( 'purple' ),
 	backgroundOpacity: 1
 }
 
+const cellImgWidth = Math.min( cellOpt.width - 2 * cellOpt.padding, ( cellOpt.width - 2 * cellOpt.padding ) * cellImgTxtDiv );
+
 const cellImgOpt = {
-	width: Math.min( ( cellOpt.height - cellOpt.padding * 2 ) * 0.8, cellOpt.width ),
-	height: ( cellOpt.height - cellOpt.padding * 2 ) * 0.8,
+	width: cellImgWidth,
+	height: cellImgWidth,
 	backgroundColor: params.white,
 	backgroundOpacity: 1,
 	justifyContent: 'end',
@@ -90,7 +94,7 @@ const cellImgOpt = {
 
 const cellTextContOpt = {
 	width: cellOpt.width,
-	height: ( cellOpt.height - cellOpt.padding * 2 ) * 0.2,
+	height: ( cellOpt.height - cellOpt.padding * 2 ) * 0.1,
 	backgroundColor: new THREE.Color( 'orange' ),
 	backgroundOpacity: 1,
 	justifyContent: 'center',
@@ -113,11 +117,13 @@ function Cell() {
 	const cell = new ThreeMeshUI.Block( cellOpt );
 	const img = new ThreeMeshUI.Block( cellImgOpt );
 	const textContainer = new ThreeMeshUI.Block( cellTextContOpt );
-	const text = new ThreeMeshUI.Text( {} );
+	const text = new ThreeMeshUI.Text( { fontSize: 0.045 } );
 	const piecesInfoCell = new ThreeMeshUI.Block( cellPiecesInfoOpt );
 	const piecesText = new ThreeMeshUI.Text( {} );
 
 	cell.populate = function ( data ) {
+
+		console.log( data )
 
 		text.set( { content: data.artName } );
 		piecesText.set( { content: String( data.piecesNumber ) } );
@@ -140,8 +146,8 @@ function Cell() {
 
 }
 
-cellRow1.add( Cell(), Cell() );
-cellRow2.add( Cell(), Cell() );
+cellRow1.add( Cell(), Cell(), Cell() );
+cellRow2.add( Cell(), Cell(), Cell() );
 
 // create navigation bar
 
@@ -260,14 +266,14 @@ function InfoLine( tall ) {
 
 	const line = new ThreeMeshUI.Block( {
 		width: rightContainer.width - ( infoPadding * 2 ),
-		height: tall ? 0.2 : 0.05,
+		height: tall ? 0.3 : 0.05,
 		backgroundColor: new THREE.Color( 'grey' ),
 		backgroundOpacity: 1,
 		margin: infoPadding * 0.25,
 		justifyContent: tall ? undefined : 'center'
 	} );
 
-	const text = new ThreeMeshUI.Text( { fontSize: 0.03, content: 'blabla' } );
+	const text = new ThreeMeshUI.Text( { fontSize: 0.033 } );
 
 	line.userData.text = text
 
@@ -334,7 +340,7 @@ browser.init = function () {
 
 		let lastChunk = chunks[ chunks.length - 1 ];
 
-		if ( lastChunk.length == 4 ) {
+		if ( lastChunk.length == 6 ) {
 
 			lastChunk = [];
 			chunks.push( lastChunk );
