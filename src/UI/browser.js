@@ -133,17 +133,44 @@ function Cell( id ) {
 
 	cell.setupState( { state: 'hovered', attributes: cellHoveredOpt } );
 	cell.setupState( { state: 'idle', attributes: cellIdleOpt } );
+	piecesInfoCell.setupState( { state: 'enabled', attributes: { backgroundOpacity: 1 } } );
+	piecesInfoCell.setupState( { state: 'disabled', attributes: { backgroundOpacity: 0 } } );
+
+	// must use this hack because synchroniusly loading texture make it possible to call
+	// cell.emptyData before texture is loaded, which would make emptyData ignored.
+	let mustDropTexture = false;
 
 	cell.populate = function ( data ) {
+
+		mustDropTexture = false;
+
+		piecesInfoCell.setState( 'enabled' );
 
 		text.set( { content: data.artName } );
 		piecesText.set( { content: String( data.piecesNumber ), offset: 0.001 } );
 
 		textureLoader.load( files.modelImgs[ data.fileName ], texture => {
 
+			if ( mustDropTexture ) return
+
 			img.set( { backgroundTexture: texture } );
 
 		} )
+
+	}
+
+	cell.setDisabledState = function () {
+
+		piecesInfoCell.setState( 'disabled' );
+
+	}
+
+	cell.emptyData = function () {
+
+		mustDropTexture = true;
+
+		img.set( { backgroundTexture: null } );
+		text.set( { content: '' } );
 
 	}
 
@@ -362,6 +389,73 @@ function InfoLine( tall ) {
 
 }
 
+//////////////
+// FUNCTIONS
+
+function frameUpdate( frameSpeed ) {
+
+	navButtons.forEach( button => {
+		button.setState( button.isHovered ? 'hovered' : 'idle' );
+		button.isHovered = false;
+	} );
+
+	cells.forEach( cell => {
+		cell.setState( cell.isHovered ? 'hovered' : 'idle' );
+		cell.isHovered = false;
+	} );
+
+	arrows.forEach( arrow => {
+		arrow.setState( arrow.isHovered ? 'hovered' : 'idle' );
+		arrow.isHovered = false;
+	} );
+
+	startButton.setState( startButton.isHovered ? 'hovered' : 'idle' );
+	startButton.isHovered = false;
+
+}
+
+//
+
+function init() {
+
+	// divide model info objects into arrays of length 4.
+
+	this.chunks = [[]];
+
+	files.modelInfos.forEach( (info, i) => {
+
+		let lastChunk = this.chunks[ this.chunks.length - 1 ];
+
+		if ( lastChunk.length == 6 ) {
+
+			lastChunk = [];
+			this.chunks.push( lastChunk );
+
+		}
+
+		lastChunk.push( info );
+
+	} );
+
+	this.setChunk( 0 );
+	this.setChunk( 1 );
+	this.setChunk( 0 );
+
+	let counter = 0;
+
+	setInterval( ()=> {
+
+		counter ++
+		this.setChunk( counter % 2 );
+
+	}, 500 );
+
+
+	// populateNavigation( chunks );
+	// populateInfo( chunks[ 0 ][ 0 ] );
+
+}
+
 //
 
 function populateInfo( data ) {
@@ -385,11 +479,21 @@ function populateInfo( data ) {
 
 }
 
-function populateCells( chunk ) {
+function setChunk( id ) {
 
-	cells.forEach( ( cell, i ) => {
+	const chunk = this.chunks[ id ];
 
-		cell.populate( chunk[ i ] );
+	cells.forEach( cell => {
+
+		cell.emptyData();
+
+		cell.setDisabledState();
+
+	} );
+
+	chunk.forEach( ( info, i ) => {
+
+		cells[ i ].populate( info );
 
 	} );
 
@@ -409,54 +513,9 @@ function populateNavigation( chunks ) {
 
 //
 
-browser.frameUpdate = function ( frameSpeed ) {
-
-	navButtons.forEach( button => {
-		button.setState( button.isHovered ? 'hovered' : 'idle' );
-		button.isHovered = false;
-	} );
-
-	cells.forEach( cell => {
-		cell.setState( cell.isHovered ? 'hovered' : 'idle' );
-		cell.isHovered = false;
-	} );
-
-	arrows.forEach( arrow => {
-		arrow.setState( arrow.isHovered ? 'hovered' : 'idle' );
-		arrow.isHovered = false;
-	} );
-
-	startButton.setState( startButton.isHovered ? 'hovered' : 'idle' );
-	startButton.isHovered = false;
-
-}
-
-browser.init = function () {
-
-	// divide model info objects into arrays of length 4.
-
-	const chunks = [[]];
-
-	files.modelInfos.forEach( (info, i) => {
-
-		let lastChunk = chunks[ chunks.length - 1 ];
-
-		if ( lastChunk.length == 6 ) {
-
-			lastChunk = [];
-			chunks.push( lastChunk );
-
-		}
-
-		lastChunk.push( info );
-
-	} );
-
-	populateCells( chunks[ 0 ] );
-	populateNavigation( chunks );
-	populateInfo( chunks[ 0 ][ 0 ] );
-
-}
+browser.frameUpdate = frameUpdate;
+browser.init = init;
+browser.setChunk = setChunk
 
 browser.init();
 

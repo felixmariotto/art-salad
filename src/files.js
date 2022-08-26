@@ -62,7 +62,7 @@ const modelImgs = {
 	seatedCupid: seatedCupidImg,
 	hydriaVase: hydriaVaseImg,
 	nTomoMask: nTomoMaskImg,
-	pentecostRederosImg
+	pentecostRederos: pentecostRederosImg
 };
 
 // Here we just make sure that every file has all the attributes it is supposed to have
