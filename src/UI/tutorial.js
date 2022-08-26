@@ -74,7 +74,8 @@ data.forEach( lineData => {
 	} );
 
 	const text = new ThreeMeshUI.Text( {
-		content: lineData.text
+		content: lineData.text,
+		offset: 0
 	} );
 
 	const imageContainer = new ThreeMeshUI.Block( {

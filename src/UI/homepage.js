@@ -52,7 +52,8 @@ const titleContainer = new ThreeMeshUI.Block( {
 const title = new ThreeMeshUI.Text( {
 	content: 'Open Museum',
 	fontSize: 0.28,
-	letterSpacing: -0.1
+	letterSpacing: -0.1,
+	offset: 0
 } );
 
 titleContainer.add( title );
@@ -69,7 +70,8 @@ const menuContainer = new ThreeMeshUI.Block( {
 	// alignItems: 'start'
 } );
 
-menuContainer.add( Button( 'Tutorial' ), Button( 'Puzzles' ), Button( 'Github' ) )
+homePage.ghButton = Button( 'Github' );
+menuContainer.add( Button( 'Tutorial' ), Button( 'Puzzles' ), homePage.ghButton )
 lowerContainer.add( menuContainer );
 
 function Button( title ) {
@@ -83,12 +85,14 @@ function Button( title ) {
 		justifyContent: 'center'
 	} );
 
-	button.buttonName = title;
-
 	const buttonText = new ThreeMeshUI.Text( {
 		content: title,
-		fontSize: 0.08
+		fontSize: 0.08,
+		offset: 0
 	} );
+
+	button.buttonName = title;
+	button.text = buttonText;
 
 	button.add( buttonText );
 

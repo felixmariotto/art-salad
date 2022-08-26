@@ -459,9 +459,9 @@ function init() {
 
 	this.setChunk( 0 );
 
-	// this.populateInfo( 1 );
-	// this.populateInfo( 2 );
-	// this.populateInfo( null );
+	this.populateInfo( 1 );
+	this.populateInfo( 2 );
+	this.populateInfo( null );
 
 }
 
@@ -475,22 +475,22 @@ function populateInfo( id ) {
 
 		mustDropInfoTexture = false;
 
-		const data = this.currentChunk[ id ];
+		this.currentPuzzle = this.currentChunk[ id ];
 
-		const description = data.description.length > descriptionCharLimit ?
-			data.description.substring( 0, descriptionCharLimit ) + ' [...]' :
-			data.description
+		const description = this.currentPuzzle.description.length > descriptionCharLimit ?
+			this.currentPuzzle.description.substring( 0, descriptionCharLimit ) + ' [...]' :
+			this.currentPuzzle.description
 
-		infoPieces.userData.text.set( { content: "Number of pieces : " + String( data.piecesNumber ) } );
-		infoName.userData.text.set( { content: "Name : " + data.artName } );
-		infoAuth.userData.text.set( { content: "Author : " + data.artAuthor } );
-		info3DAuth.userData.text.set( { content: "3D Author : " + data.modelAuthor } );
-		infoTags.userData.text.set( { content: "Tags : " + data.tags.join() } );
+		infoPieces.userData.text.set( { content: "Number of pieces : " + String( this.currentPuzzle.piecesNumber ) } );
+		infoName.userData.text.set( { content: "Name : " + this.currentPuzzle.artName } );
+		infoAuth.userData.text.set( { content: "Author : " + this.currentPuzzle.artAuthor } );
+		info3DAuth.userData.text.set( { content: "3D Author : " + this.currentPuzzle.modelAuthor } );
+		infoTags.userData.text.set( { content: "Tags : " + this.currentPuzzle.tags.join() } );
 		infoDesc.userData.text.set( { content: "Description : " + description } );
 
 		startButton.isDisabled = false;
 
-		textureLoader.load( files.modelImgs[ data.fileName ], texture => {
+		textureLoader.load( files.modelImgs[ this.currentPuzzle.fileName ], texture => {
 
 			if ( mustDropInfoTexture ) return
 

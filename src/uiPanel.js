@@ -40,7 +40,7 @@ const container = new ThreeMeshUI.Block( {
 container.position.copy( HOME_POS );
 container.quaternion.copy( HOME_QUAT );
 
-container.add( browser )
+container.add( homepage )
 
 ///////////////
 // EVENTS
@@ -94,7 +94,7 @@ function handleButtonClick( buttonName, button ) {
 	switch ( buttonName ) {
 
 		case 'Puzzles':
-			console.log('go to puzzles page');
+			setBrowser();
 			break
 
 		case 'Tutorial' :
@@ -103,7 +103,7 @@ function handleButtonClick( buttonName, button ) {
 			break
 
 		case 'Github' :
-			console.log('go to Github');
+			openGithubLink();
 			break
 
 		case 'arrowLeft' :
@@ -115,7 +115,7 @@ function handleButtonClick( buttonName, button ) {
 			break
 
 		case 'startPuzzle' :
-			console.log('startPuzzle');
+			console.log('startPuzzle', browser.currentPuzzle);
 			break
 
 		default : return
@@ -260,6 +260,35 @@ function setHomepage() {
 
 	targetPos = HOME_POS;
 	targetQuat = HOME_QUAT;
+
+}
+
+function setBrowser() {
+
+	clearContainer();
+
+	container.add( browser );
+
+	targetPos = HOME_POS;
+	targetQuat = HOME_QUAT;
+
+}
+
+function openGithubLink() {
+
+	if ( document ) {
+
+		const a = document.createElement('A');
+		a.href = 'https://github.com/felixmariotto/puzzle-museum';
+		a.target = '_blank';
+		a.click();
+
+		homepage.ghButton.text.set( {
+			content: 'Exit VR to see GH page',
+			fontSize: 0.05
+		} );
+
+	}
 
 }
 
