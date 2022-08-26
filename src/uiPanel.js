@@ -9,21 +9,22 @@ import params from './UI/params.js';
 import homepage from './UI/homepage.js';
 import tutorial from './UI/tutorial.js';
 import browser from './UI/browser.js';
+import infoPanel from './UI/info.js';
 
 //
 
 const TRANSLATION_SPEED = 0.03;
 const ANGLE_SPEED = 0.03;
 
-const HOME_POS = new THREE.Vector3( 0, 1, -1.8 );
-const HOME_QUAT = new THREE.Quaternion().setFromEuler( new THREE.Euler( 0, 0, 0 ) );
-const TUTO_POS = new THREE.Vector3( 2.5, 1, 0 );
-const TUTO_QUAT = new THREE.Quaternion().setFromEuler( new THREE.Euler( 0, -Math.PI * 0.5, 0 ) );
+const CENTRE_POS = new THREE.Vector3( 0, 1, -1.8 );
+const CENTRE_QUAT = new THREE.Quaternion().setFromEuler( new THREE.Euler( 0, 0, 0 ) );
+const RIGHT_POS = new THREE.Vector3( 2.5, 1, 0 );
+const RIGHT_QUAT = new THREE.Quaternion().setFromEuler( new THREE.Euler( 0, -Math.PI * 0.5, 0 ) );
 const vec3 = new THREE.Vector3();
 const quat = new THREE.Quaternion();
 
-let targetPos = HOME_POS;
-let targetQuat = HOME_QUAT;
+let targetPos = CENTRE_POS;
+let targetQuat = CENTRE_QUAT;
 
 //
 
@@ -37,8 +38,8 @@ const container = new ThreeMeshUI.Block( {
 	backgroundOpacity: 1
 } );
 
-container.position.copy( HOME_POS );
-container.quaternion.copy( HOME_QUAT );
+container.position.copy( CENTRE_POS );
+container.quaternion.copy( CENTRE_QUAT );
 
 container.add( homepage )
 
@@ -115,7 +116,8 @@ function handleButtonClick( buttonName, button ) {
 			break
 
 		case 'startPuzzle' :
-			console.log('startPuzzle', browser.currentPuzzle);
+			setInfoPanel( browser.currentPuzzle.fileName );
+			gameManager.startPuzzle( browser.currentPuzzle.fileName );
 			break
 
 		default : return
@@ -167,7 +169,7 @@ function update( frameSpeed ) {
 
 		vec3
 		.copy( targetPos )
-		.sub( container.position )
+		.sub( container.position );
 
 		const newLength = Math.min( vec3.length(), nominalLength );
 
@@ -247,8 +249,8 @@ function setTutorial() {
 
 	container.add( tutorial );
 
-	targetPos = TUTO_POS;
-	targetQuat = TUTO_QUAT;
+	targetPos = RIGHT_POS;
+	targetQuat = RIGHT_QUAT;
 
 }
 
@@ -258,8 +260,8 @@ function setHomepage() {
 
 	container.add( homepage );
 
-	targetPos = HOME_POS;
-	targetQuat = HOME_QUAT;
+	targetPos = CENTRE_POS;
+	targetQuat = CENTRE_QUAT;
 
 }
 
@@ -269,10 +271,25 @@ function setBrowser() {
 
 	container.add( browser );
 
-	targetPos = HOME_POS;
-	targetQuat = HOME_QUAT;
+	targetPos = CENTRE_POS;
+	targetQuat = CENTRE_QUAT;
 
 }
+
+function setInfoPanel( modelName ) {
+
+	clearContainer();
+
+	infoPanel.setInfo( modelName )
+
+	container.add( infoPanel );
+
+	// targetPos = RIGHT_POS;
+	// targetQuat = RIGHT_QUAT;
+
+}
+
+setInfoPanel( 'doubleHeadSculpt' )
 
 function openGithubLink() {
 
