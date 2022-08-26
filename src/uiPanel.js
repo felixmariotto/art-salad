@@ -81,7 +81,7 @@ function handleButtonClick( buttonName, button ) {
 
 	if ( buttonName.includes( 'browserNav' ) ) {
 
-		console.log( 'browserNav', Number( buttonName[ buttonName.length - 1 ] ) )
+		browser.setChunk( Number( buttonName[ buttonName.length - 1 ] ) - 1 );
 
 	}
 
@@ -107,11 +107,11 @@ function handleButtonClick( buttonName, button ) {
 			break
 
 		case 'arrowLeft' :
-			console.log('arrowLeft');
+			browser.setChunk( 'down' );
 			break
 
 		case 'arrowRight' :
-			console.log('arrowRight');
+			browser.setChunk( 'up' );
 			break
 
 		case 'startPuzzle' :

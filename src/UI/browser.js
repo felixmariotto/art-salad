@@ -442,18 +442,6 @@ function init() {
 	this.populateNavigation();
 
 	this.setChunk( 0 );
-	this.setChunk( 1 );
-	this.setChunk( 0 );
-
-	let counter = 0;
-
-	setInterval( ()=> {
-
-		counter ++
-		this.setChunk( counter % 2 );
-
-	}, 500 );
-
 
 	// 
 	// populateInfo( chunks[ 0 ][ 0 ] );
@@ -485,7 +473,38 @@ function populateInfo( data ) {
 
 function setChunk( id ) {
 
-	const chunk = this.chunks[ id ];
+	const currentID = this.chunks.indexOf( this.currentChunk );
+
+	if ( typeof id == 'string' ) {
+
+		if ( !this.currentChunk ) {
+
+			console.error( new Error('setChunk argument is wrong') );
+			return
+
+		}
+
+		switch ( id ) {
+
+			case 'up' :
+				id = Math.min( currentID + 1, this.chunks.length - 1 );
+				break
+
+			case 'down' :
+				id = Math.max( currentID - 1, 0 );
+				break
+
+			default :
+				console.error( new Error('setChunk argument is wrong') );
+				break
+
+		}
+
+	};
+
+	if ( currentID == id ) return
+
+	this.currentChunk = this.chunks[ id ];
 
 	cells.forEach( cell => {
 
@@ -495,7 +514,7 @@ function setChunk( id ) {
 
 	} );
 
-	chunk.forEach( ( info, i ) => {
+	this.currentChunk.forEach( ( info, i ) => {
 
 		cells[ i ].populate( info );
 
