@@ -87,7 +87,7 @@ function handleButtonClick( buttonName, button ) {
 
 	if ( buttonName.includes( 'browserCell' ) ) {
 
-		console.log( 'browserCell', Number( buttonName[ buttonName.length - 1 ] ) )
+		browser.populateInfo( Number( buttonName[ buttonName.length - 1 ] ) - 1 );
 
 	}
 

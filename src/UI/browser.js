@@ -313,7 +313,9 @@ const infoImg = new ThreeMeshUI.Block( {
 	backgroundColor: params.white,
 	backgroundOpacity: 1,
 	margin: infoPadding * 0.5
-} )
+} );
+
+let mustDropInfoTexture = false;
 
 const startButton = new ThreeMeshUI.Block( {
 	width: rightContainer.width - ( infoPadding * 7 ),
@@ -328,18 +330,28 @@ const startButton = new ThreeMeshUI.Block( {
 } );
 
 startButton.buttonName = 'startPuzzle';
+startButton.isDisabled = true;
 
 startButton.setupState( {
 	state: 'hovered',
 	attributes: {
-		backgroundColor: params.mediumGrey
+		backgroundColor: params.mediumGrey,
+		backgroundOpacity: 1
 	}
 } );
 
 startButton.setupState( {
 	state: 'idle',
 	attributes: {
-		backgroundColor: params.black
+		backgroundColor: params.black,
+		backgroundOpacity: 1
+	}
+} );
+
+startButton.setupState( {
+	state: 'disabled',
+	attributes: {
+		backgroundOpacity: 0
 	}
 } );
 
@@ -401,8 +413,10 @@ function frameUpdate( frameSpeed ) {
 		button.isHovered = false;
 	} );
 
-	cells.forEach( cell => {
-		cell.setState( cell.isHovered ? 'hovered' : 'idle' );
+	cells.forEach( ( cell, i ) => {
+		let state = cell.isHovered ? 'hovered' : 'idle';
+		if ( !this.currentChunk || !this.currentChunk[i] ) state = 'idle';
+		cell.setState( state );
 		cell.isHovered = false;
 	} );
 
@@ -411,7 +425,9 @@ function frameUpdate( frameSpeed ) {
 		arrow.isHovered = false;
 	} );
 
-	startButton.setState( startButton.isHovered ? 'hovered' : 'idle' );
+	if ( startButton.isDisabled ) startButton.setState( 'disabled' );
+	else if ( startButton.isHovered ) startButton.setState( 'hovered' );
+	else startButton.setState( 'idle' );
 	startButton.isHovered = false;
 
 }
@@ -443,31 +459,61 @@ function init() {
 
 	this.setChunk( 0 );
 
-	// 
-	// populateInfo( chunks[ 0 ][ 0 ] );
+	// this.populateInfo( 1 );
+	// this.populateInfo( 2 );
+	// this.populateInfo( null );
 
 }
 
 //
 
-function populateInfo( data ) {
+function populateInfo( id ) {
 
-	const description = data.description.length > descriptionCharLimit ?
-		data.description.substring( 0, descriptionCharLimit ) + ' [...]' :
-		data.description
+	if ( typeof id === 'number' ) {
 
-	infoPieces.userData.text.set( { content: "Number of pieces : " + String( data.piecesNumber ) } );
-	infoName.userData.text.set( { content: "Name : " + data.artName } );
-	infoAuth.userData.text.set( { content: "Author : " + data.artAuthor } );
-	info3DAuth.userData.text.set( { content: "3D Author : " + data.modelAuthor } );
-	infoTags.userData.text.set( { content: "Tags : " + data.tags.join() } );
-	infoDesc.userData.text.set( { content: "Description : " + description } );
+		if ( !this.chunks || !this.currentChunk ) return
 
-	textureLoader.load( files.modelImgs[ data.fileName ], texture => {
+		mustDropInfoTexture = false;
 
-		infoImg.set( { backgroundTexture: texture } );
+		const data = this.currentChunk[ id ];
 
-	} );
+		const description = data.description.length > descriptionCharLimit ?
+			data.description.substring( 0, descriptionCharLimit ) + ' [...]' :
+			data.description
+
+		infoPieces.userData.text.set( { content: "Number of pieces : " + String( data.piecesNumber ) } );
+		infoName.userData.text.set( { content: "Name : " + data.artName } );
+		infoAuth.userData.text.set( { content: "Author : " + data.artAuthor } );
+		info3DAuth.userData.text.set( { content: "3D Author : " + data.modelAuthor } );
+		infoTags.userData.text.set( { content: "Tags : " + data.tags.join() } );
+		infoDesc.userData.text.set( { content: "Description : " + description } );
+
+		startButton.isDisabled = false;
+
+		textureLoader.load( files.modelImgs[ data.fileName ], texture => {
+
+			if ( mustDropInfoTexture ) return
+
+			infoImg.set( { backgroundTexture: texture } );
+
+		} );
+
+	} else {
+
+		mustDropInfoTexture = true;
+
+		infoPieces.userData.text.set( { content: '' } );
+		infoName.userData.text.set( { content: '' } );
+		infoAuth.userData.text.set( { content: '' } );
+		info3DAuth.userData.text.set( { content: '' } );
+		infoTags.userData.text.set( { content: '' } );
+		infoDesc.userData.text.set( { content: '' } );
+
+		startButton.isDisabled = true;
+
+		infoImg.set( { backgroundTexture: null } );
+
+	}
 
 }
 
@@ -545,6 +591,7 @@ browser.frameUpdate = frameUpdate;
 browser.init = init;
 browser.setChunk = setChunk;
 browser.populateNavigation = populateNavigation;
+browser.populateInfo = populateInfo;
 
 browser.init();
 
