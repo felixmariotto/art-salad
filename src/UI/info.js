@@ -39,7 +39,8 @@ const topSection = new ThreeMeshUI.Block({
 	width: titleContainer.width,
 	height: infoPanel.height * 0.45,
 	margin: PADDING * 0.5,
-	backgroundColor: new THREE.Color('orange')
+	backgroundOpacity: 0,
+	contentDirection: 'row'
 });
 
 let bottomHeight = ( infoPanel.height - infoPanel.padding * 2 );
@@ -50,10 +51,41 @@ const bottomSection = new ThreeMeshUI.Block({
 	width: titleContainer.width,
 	height: bottomHeight,
 	margin: PADDING * 0.5,
-	backgroundColor: new THREE.Color('blue')
+	backgroundOpacity: 0,
+	contentDirection: 'row-reverse'
 });
 
-infoPanel.add( titleContainer, topSection, bottomSection )
+infoPanel.add( titleContainer, topSection, bottomSection );
+
+//
+
+const image = new ThreeMeshUI.Block({
+	width: topSection.height,
+	height: topSection.height,
+	backgroundColor: new THREE.Color('red'),
+	offset: 0
+});
+
+const description = new ThreeMeshUI.Block({
+	width: topSection.width - image.width - PADDING,
+	height: topSection.height,
+	margin: PADDING,
+	backgroundColor: new THREE.Color('purple'),
+	offset: 0
+});
+
+topSection.add( image, description );
+
+//
+
+const dataPanel = new ThreeMeshUI.Block({
+	width: description.width,
+	height: bottomSection.height,
+	backgroundColor: new THREE.Color('cyan'),
+	offset: 0
+});
+
+bottomSection.add( dataPanel );
 
 //
 
