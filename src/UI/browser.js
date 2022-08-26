@@ -155,7 +155,7 @@ function Cell( id ) {
 
 			img.set( { backgroundTexture: texture } );
 
-		} )
+		} );
 
 	}
 
@@ -395,7 +395,9 @@ function InfoLine( tall ) {
 function frameUpdate( frameSpeed ) {
 
 	navButtons.forEach( button => {
-		button.setState( button.isHovered ? 'hovered' : 'idle' );
+		if ( button.isSelected ) button.setState( 'selected' );
+		else if ( button.isHovered ) button.setState( 'hovered' );
+		else button.setState( 'idle' );
 		button.isHovered = false;
 	} );
 
@@ -422,7 +424,7 @@ function init() {
 
 	this.chunks = [[]];
 
-	files.modelInfos.forEach( (info, i) => {
+	files.modelInfos.forEach( ( info, i ) => {
 
 		let lastChunk = this.chunks[ this.chunks.length - 1 ];
 
@@ -436,6 +438,8 @@ function init() {
 		lastChunk.push( info );
 
 	} );
+
+	this.populateNavigation();
 
 	this.setChunk( 0 );
 	this.setChunk( 1 );
@@ -451,7 +455,7 @@ function init() {
 	}, 500 );
 
 
-	// populateNavigation( chunks );
+	// 
 	// populateInfo( chunks[ 0 ][ 0 ] );
 
 }
@@ -497,11 +501,16 @@ function setChunk( id ) {
 
 	} );
 
+	navButtons.forEach( ( button, i ) => {
+		if ( i == id ) button.isSelected = true;
+		else button.isSelected = false;
+	} );
+
 }
 
-function populateNavigation( chunks ) {
+function populateNavigation() {
 
-	for ( let i=0 ; i<chunks.length ; i++ ) {
+	for ( let i = 0 ; i < this.chunks.length ; i++ ) {
 
 		buttonsRow.add( NavButton( i + 1 ) );
 
@@ -515,7 +524,8 @@ function populateNavigation( chunks ) {
 
 browser.frameUpdate = frameUpdate;
 browser.init = init;
-browser.setChunk = setChunk
+browser.setChunk = setChunk;
+browser.populateNavigation = populateNavigation;
 
 browser.init();
 
