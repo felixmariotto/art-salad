@@ -12,6 +12,8 @@ import seatedCupid from '../assets/puzzles/seated-cupid/seated-cupid.glb';
 import hydriaVase from '../assets/puzzles/hydria-vase/hydria-vase.glb';
 import nTomoMask from '../assets/puzzles/n-tomo-mask/n-tomo-mask.glb';
 import pentecostRederos from '../assets/puzzles/pentecost-rederos/pentecost-rederos.glb';
+import nazcaVessel from '../assets/puzzles/nazca-vessel/nazca-vessel.glb';
+import paleoEngraving from '../assets/puzzles/paleolithic-engraving/paleolithic-engraving.glb';
 
 import doubleHeadSculptInfo from '../assets/puzzles/double-head-sculpt/info.json';
 import paintedTrashInfo from '../assets/puzzles/painted-trash/info.json';
@@ -21,6 +23,8 @@ import seatedCupidInfo from '../assets/puzzles/seated-cupid/info.json';
 import hydriaVaseInfo from '../assets/puzzles/hydria-vase/info.json';
 import nTomoMaskInfo from '../assets/puzzles/n-tomo-mask/info.json';
 import pentecostRederosInfo from '../assets/puzzles/pentecost-rederos/info.json';
+import nazcaVesselInfo from '../assets/puzzles/nazca-vessel/info.json';
+import paleoEngravingInfo from '../assets/puzzles/paleolithic-engraving/info.json';
 
 import doubleHeadSculptImg from '../assets/puzzles/double-head-sculpt/thumbnail.jpg';
 import paintedTrashImg from '../assets/puzzles/painted-trash/thumbnail.jpg';
@@ -30,6 +34,8 @@ import seatedCupidImg from '../assets/puzzles/seated-cupid/thumbnail.jpg';
 import hydriaVaseImg from '../assets/puzzles/hydria-vase/thumbnail.jpg';
 import nTomoMaskImg from '../assets/puzzles/n-tomo-mask/thumbnail.jpg';
 import pentecostRederosImg from '../assets/puzzles/pentecost-rederos/thumbnail.jpg';
+import nazcaVesselImg from '../assets/puzzles/nazca-vessel/thumbnail.jpg';
+import paleoEngravingImg from '../assets/puzzles/paleolithic-engraving/thumbnail.jpg';
 
 const modelURLs = {
 	museum,
@@ -40,7 +46,9 @@ const modelURLs = {
 	seatedCupid,
 	hydriaVase,
 	nTomoMask,
-	pentecostRederos
+	pentecostRederos,
+	nazcaVessel,
+	paleoEngraving
 };
 
 const modelInfos = [
@@ -51,7 +59,9 @@ const modelInfos = [
 	seatedCupidInfo,
 	hydriaVaseInfo,
 	nTomoMaskInfo,
-	pentecostRederosInfo
+	pentecostRederosInfo,
+	nazcaVesselInfo,
+	paleoEngravingInfo
 ];
 
 const modelImgs = {
@@ -62,7 +72,9 @@ const modelImgs = {
 	seatedCupid: seatedCupidImg,
 	hydriaVase: hydriaVaseImg,
 	nTomoMask: nTomoMaskImg,
-	pentecostRederos: pentecostRederosImg
+	pentecostRederos: pentecostRederosImg,
+	nazcaVessel: nazcaVesselImg,
+	paleoEngraving: paleoEngravingImg
 };
 
 // Here we just make sure that every file has all the attributes it is supposed to have

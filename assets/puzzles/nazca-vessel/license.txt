@@ -1,0 +1,11 @@
+Model Information:
+* title:	Atuell, MUEC
+* source:	https://sketchfab.com/3d-models/atuell-muec-df3023ca75d74f8b89f7ef6382977a8c
+* author:	Giravolt (https://sketchfab.com/giravolt)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Atuell, MUEC" (https://sketchfab.com/3d-models/atuell-muec-df3023ca75d74f8b89f7ef6382977a8c) by Giravolt (https://sketchfab.com/giravolt) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

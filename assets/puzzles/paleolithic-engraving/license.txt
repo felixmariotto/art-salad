@@ -1,0 +1,11 @@
+Model Information:
+* title:	Cova de la Font Major. Gravat del cavall
+* source:	https://sketchfab.com/3d-models/cova-de-la-font-major-gravat-del-cavall-9a44d200825a44559abd476dd2c308dd
+* author:	Giravolt (https://sketchfab.com/giravolt)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Cova de la Font Major. Gravat del cavall" (https://sketchfab.com/3d-models/cova-de-la-font-major-gravat-del-cavall-9a44d200825a44559abd476dd2c308dd) by Giravolt (https://sketchfab.com/giravolt) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
