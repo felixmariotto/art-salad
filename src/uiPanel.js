@@ -284,12 +284,10 @@ function setInfoPanel( modelName ) {
 
 	container.add( infoPanel );
 
-	// targetPos = RIGHT_POS;
-	// targetQuat = RIGHT_QUAT;
+	targetPos = RIGHT_POS;
+	targetQuat = RIGHT_QUAT;
 
 }
-
-setInfoPanel( 'doubleHeadSculpt' )
 
 function openGithubLink() {
 

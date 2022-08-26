@@ -28,51 +28,67 @@ const infoPanel = new ThreeMeshUI.Block( {
 	fontTexture: sourceImage,
 } );
 
-const titleContainer = new ThreeMeshUI.Block({
+const title = new ThreeMeshUI.Block({
 	width: infoPanel.width - PADDING * 2,
 	height: 0.15,
 	margin: PADDING * 0.5,
-	backgroundColor: new THREE.Color('green')
+	backgroundOpacity: 0,
+	justifyContent: 'center',
+	textAlign: 'center',
+	fontFamily: firaJSON,
+	fontTexture: firaImage,
 });
 
+title.text = new ThreeMeshUI.Text({
+	fontSize: 0.1,
+	letterSpacing: -0.07,
+});
+
+title.add( title.text );
+
 const topSection = new ThreeMeshUI.Block({
-	width: titleContainer.width,
+	width: title.width,
 	height: infoPanel.height * 0.45,
 	margin: PADDING * 0.5,
 	backgroundOpacity: 0,
-	contentDirection: 'row'
+	contentDirection: 'row-reverse',
+	offset: 0
 });
 
 let bottomHeight = ( infoPanel.height - infoPanel.padding * 2 );
-bottomHeight -= ( titleContainer.height + titleContainer.margin * 2 );
+bottomHeight -= ( title.height + title.margin * 2 );
 bottomHeight -= ( topSection.height + topSection.margin * 2 ) + PADDING;
 
 const bottomSection = new ThreeMeshUI.Block({
-	width: titleContainer.width,
+	width: title.width,
 	height: bottomHeight,
 	margin: PADDING * 0.5,
 	backgroundOpacity: 0,
-	contentDirection: 'row-reverse'
+	contentDirection: 'row',
+	offset: 0
 });
 
-infoPanel.add( titleContainer, topSection, bottomSection );
+infoPanel.add( title, topSection, bottomSection );
 
 //
 
 const image = new ThreeMeshUI.Block({
 	width: topSection.height,
-	height: topSection.height,
-	backgroundColor: new THREE.Color('red'),
-	offset: 0
+	height: topSection.height
 });
 
 const description = new ThreeMeshUI.Block({
 	width: topSection.width - image.width - PADDING,
 	height: topSection.height,
 	margin: PADDING,
-	backgroundColor: new THREE.Color('purple'),
-	offset: 0
+	backgroundOpacity: 0
 });
+
+description.text = new ThreeMeshUI.Text({
+	fontSize: 0.04
+});
+
+description.add( description.text );
 
 topSection.add( image, description );
 
@@ -81,9 +97,14 @@ topSection.add( image, description );
 const dataPanel = new ThreeMeshUI.Block({
 	width: description.width,
 	height: bottomSection.height,
-	backgroundColor: new THREE.Color('cyan'),
-	offset: 0
+	backgroundOpacity: 0
 });
+
+dataPanel.text = new ThreeMeshUI.Text({
+	fontSize: 0.04
+});
+
+dataPanel.add( dataPanel.text );
 
 bottomSection.add( dataPanel );
 
@@ -93,7 +114,22 @@ function setInfo( modelName ) {
 
 	const info = files.modelInfos.find( inf => ( inf.fileName === modelName ) );
 
-	console.log( info )
+	title.text.set( { content: info.artName } );
+	description.text.set( { content: info.description } );
+
+	let dataText = '';
+	dataText += 'Number of pieces: ' + info.piecesNumber + '\n';
+	dataText += 'Artwork name: ' + info.artName + '\n';
+	dataText += 'Artwork author: ' + info.artAuthor + '\n';
+	dataText += '3D author: ' + info.modelAuthor + '\n';
+	dataText += 'Tags: ' + info.tags.join(', ') + '\n';
+	dataPanel.text.set({ content: dataText });
+
+	textureLoader.load( files.modelImgs[ info.fileName ], texture => {
+
+		image.set( { backgroundTexture: texture } );
+
+	} );
 
 }
 
