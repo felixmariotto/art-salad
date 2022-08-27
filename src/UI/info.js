@@ -11,7 +11,7 @@ import sourceImage from '../../assets/fonts/Source.png';
 
 //
 
-const PADDING = 0.05;
+const PADDING = 0.035;
 
 const textureLoader = new THREE.TextureLoader();
 
@@ -30,7 +30,7 @@ const infoPanel = new ThreeMeshUI.Block( {
 
 const title = new ThreeMeshUI.Block({
 	width: infoPanel.width - PADDING * 2,
-	height: 0.15,
+	height: 0.12,
 	margin: PADDING * 0.5,
 	backgroundOpacity: 0,
 	justifyContent: 'center',
@@ -48,7 +48,7 @@ title.add( title.text );
 
 const topSection = new ThreeMeshUI.Block({
 	width: title.width,
-	height: infoPanel.height * 0.45,
+	height: infoPanel.height * 0.6,
 	margin: PADDING * 0.5,
 	backgroundOpacity: 0,
 	contentDirection: 'row-reverse',
@@ -81,11 +81,12 @@ const description = new ThreeMeshUI.Block({
 	width: topSection.width - image.width - PADDING,
 	height: topSection.height,
 	margin: PADDING,
-	backgroundOpacity: 0
+	backgroundOpacity: 0,
+	bestFit: 'shrink'
 });
 
 description.text = new ThreeMeshUI.Text({
-	fontSize: 0.04
+	fontSize: 0.05
 });
 
 description.add( description.text );
@@ -101,7 +102,7 @@ const dataPanel = new ThreeMeshUI.Block({
 });
 
 dataPanel.text = new ThreeMeshUI.Text({
-	fontSize: 0.04
+	fontSize: 0.05
 });
 
 dataPanel.add( dataPanel.text );
