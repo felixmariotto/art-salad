@@ -12,8 +12,6 @@ import * as THREE from 'three';
 
 scene.add( stage, UI.block, UI.loadingGroup );
 
-console.log( UI.loadingGroup )
-
 //
 
 /*

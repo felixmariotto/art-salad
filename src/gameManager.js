@@ -48,7 +48,7 @@ function startTutorial() {
 
 	this.isRunningTutorial = true;
 	
-	this.startPuzzle( "pentecostRederos" /* "hydriaVase" */ );
+	this.startPuzzle( "hydriaVase" );
 
 }
 

@@ -67,7 +67,7 @@ events.on( 'hovered-ui', e => {
 
 events.on( 'tutorial-finished', e => {
 
-	uiPanel.setHomepage();
+	UI.setHomepage();
 
 } );
 

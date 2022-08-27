@@ -551,8 +551,6 @@ function setChunk( id ) {
 		else button.isSelected = false;
 	} );
 
-	this.populateInfo( 0 )
-
 }
 
 function populateNavigation() {
