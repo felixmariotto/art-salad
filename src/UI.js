@@ -12,6 +12,10 @@ import browser from './UI/browser.js';
 import infoPanel from './UI/info.js';
 import loading from './UI/loading.js';
 
+import sourceJSON from '../assets/fonts/Source.json';
+import sourceImage from '../assets/fonts/Source.png';
+import exitIconURL from '../assets/UI-images/exit-icon.png';
+
 //
 
 const TRANSLATION_SPEED = 0.03;
@@ -27,6 +31,8 @@ const quat = new THREE.Quaternion();
 let targetPos = CENTRE_POS;
 let targetQuat = CENTRE_QUAT;
 
+const textureLoader = new THREE.TextureLoader();
+
 //
 
 const loadingGroup = new THREE.Group();
@@ -34,6 +40,8 @@ loadingGroup.position.copy( CENTRE_POS );
 loadingGroup.quaternion.copy( CENTRE_QUAT );
 
 //
+
+const group = new THREE.Group();
 
 const container = new ThreeMeshUI.Block( {
 	width: params.panelWidth,
@@ -45,10 +53,61 @@ const container = new ThreeMeshUI.Block( {
 	backgroundOpacity: 1
 } );
 
-container.position.copy( CENTRE_POS );
-container.quaternion.copy( CENTRE_QUAT );
+group.position.copy( CENTRE_POS );
+group.quaternion.copy( CENTRE_QUAT );
 
+group.add( container );
 container.add( homepage )
+
+// EXIT BUTTON
+
+const exitContainer = new ThreeMeshUI.Block( {
+	width: 0.8,
+	height: 0.15,
+	fontFamily: sourceJSON,
+	fontTexture: sourceImage,
+	backgroundColor: params.white,
+	backgroundOpacity: 1,
+	borderRadius: 0.075,
+	justifyContent: 'center'
+} );
+
+const exitText = new ThreeMeshUI.Text( {
+	content: 'Quit puzzle ',
+	fontSize: 0.09,
+	fontColor: params.black
+} );
+
+exitText.onAfterUpdate = function () { this.position.y += 0.0085 }
+
+const exitIcon = new ThreeMeshUI.InlineBlock( {
+	width: 0.09,
+	height: 0.09,
+	borderRadius: 0,
+	backgroundColor: params.white
+} );
+
+exitIcon.onAfterUpdate = function () { this.position.y -= 0.003 }
+
+textureLoader.load( exitIconURL, texture => {
+
+	exitIcon.set( { backgroundTexture: texture } );
+
+} );
+
+exitContainer.add(
+	exitText,
+	new ThreeMeshUI.Text( {
+		content: ' ',
+		fontSize: 0.09,
+		fontColor: params.black
+	} ),
+	exitIcon
+);
+
+exitContainer.position.y += ( params.panelHeight + exitContainer.height ) * 0.5 + 0.05;
+
+group.add( exitContainer );
 
 ///////////////
 // EVENTS
@@ -183,37 +242,37 @@ function update( frameSpeed ) {
 	browser.animate( frameSpeed );
 	loading.animate( frameSpeed );
 
-	if ( !container.position.equals( targetPos ) ) {
+	if ( !group.position.equals( targetPos ) ) {
 
 		const nominalLength = TRANSLATION_SPEED * frameSpeed;
 
 		vec3
 		.copy( targetPos )
-		.sub( container.position );
+		.sub( group.position );
 
 		const newLength = Math.min( vec3.length(), nominalLength );
 
 		if ( newLength !== nominalLength ) {
 
-			container.position.copy( targetPos );
+			group.position.copy( targetPos );
 
 		} else {
 
 			vec3.setLength( newLength );
 
-			container.position.add( vec3 );
+			group.position.add( vec3 );
 
 		}
 
 	}
 
-	if ( !container.quaternion.equals( targetQuat ) ) {
+	if ( !group.quaternion.equals( targetQuat ) ) {
 
 		const nominalAngle = ANGLE_SPEED * frameSpeed;
 
-		const leftAngle = container.quaternion.angleTo( targetQuat );
+		const leftAngle = group.quaternion.angleTo( targetQuat );
 
-		container.quaternion.rotateTowards(
+		group.quaternion.rotateTowards(
 			targetQuat,
 			Math.min( leftAngle, nominalAngle )
 		)
@@ -331,7 +390,7 @@ function openGithubLink() {
 
 const UI = {
 	findIntersection,
-	block: container,
+	group,
 	setTutorial,
 	setHomepage,
 	loadingGroup

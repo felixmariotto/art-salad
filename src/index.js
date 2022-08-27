@@ -10,7 +10,7 @@ import * as THREE from 'three';
 
 //
 
-scene.add( stage, UI.block, UI.loadingGroup );
+scene.add( stage, UI.group, UI.loadingGroup );
 
 //
 
