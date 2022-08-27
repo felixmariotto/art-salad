@@ -33,6 +33,7 @@ function PuzzleManager( puzzleModel ) {
 		precompute,
 		setShuffledState,
 		findPossibleMerging,
+		clear,
 		pieces: [],
 		parts: [],
 		group: puzzleModel,
@@ -155,6 +156,38 @@ function findPossibleMerging( part ) {
 	} );
 
 	partParent.attach( part );
+
+}
+
+//
+
+function clear() {
+
+	this.group.traverse( child => {
+
+		if ( child.geometry ) {
+			child.geometry.dispose();
+		}
+
+		if ( child.material ) {
+
+			if ( child.material.map ) {
+
+				// console.log( 'there is a texture here', child.material.map )
+
+				child.material.map.dispose();
+
+				child.material.map.source.data.close();
+
+			}
+
+			child.material.dispose();
+		}
+
+	} );
+
+	this.pieces = null;
+	this.parts = null;
 
 }
 

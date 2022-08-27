@@ -111,6 +111,8 @@ bottomSection.add( dataPanel );
 
 //
 
+let previousTexture;
+
 function setInfo( modelName ) {
 
 	const info = files.modelInfos.find( inf => ( inf.fileName === modelName ) );
@@ -126,11 +128,7 @@ function setInfo( modelName ) {
 	dataText += 'Tags: ' + info.tags.join(', ') + '\n';
 	dataPanel.text.set({ content: dataText });
 
-	textureLoader.load( files.modelImgs[ info.fileName ], texture => {
-
-		image.set( { backgroundTexture: texture } );
-
-	} );
+	image.set( { backgroundTexture: files.modelThumbTextures[ info.fileName ] } );
 
 }
 

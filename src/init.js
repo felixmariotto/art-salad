@@ -47,7 +47,7 @@ function loop( elapsedTime ) {
 	loopCallbacks.forEach( fn => fn( frameSpeed ) );
 
 	ThreeMeshUI.update();
-	
+
 };
 
 //

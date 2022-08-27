@@ -274,7 +274,8 @@ const files = {
 	getModel,
 	getModelDirect,
 	modelInfos,
-	modelImgs
+	modelImgs,
+	modelThumbTextures: []
 };
 
 export default files

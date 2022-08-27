@@ -158,13 +158,12 @@ events.on( 'start-puzzle', e => {
 
 	group.add( exitContainer );
 
-} );
+} );	
 
 events.on( 'exit-puzzle-request', e => {
 
 	group.remove( exitContainer );
 	setBrowser();
-	gameManager.clear();
 
 } );
 

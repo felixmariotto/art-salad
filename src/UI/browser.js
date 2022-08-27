@@ -150,13 +150,23 @@ function Cell( id ) {
 		text.set( { content: data.artName } );
 		piecesText.set( { content: String( data.piecesNumber ), offset: 0.001 } );
 
-		textureLoader.load( files.modelImgs[ data.fileName ], texture => {
+		if ( files.modelThumbTextures[ data.fileName ] ) {
 
-			if ( mustDropTexture ) return
+			img.set( { backgroundTexture: files.modelThumbTextures[ data.fileName ] } );
 
-			img.set( { backgroundTexture: texture } );
+		} else {
 
-		} );
+			textureLoader.load( files.modelImgs[ data.fileName ], texture => {
+
+				files.modelThumbTextures[ data.fileName ] = texture;
+
+				if ( mustDropTexture ) return
+
+				img.set( { backgroundTexture: texture } );
+
+			} );
+
+		}
 
 	}
 
@@ -454,15 +464,6 @@ function populateInfo( id ) {
 		const description = this.currentPuzzle.description.length > descriptionCharLimit ?
 			this.currentPuzzle.description.substring( 0, descriptionCharLimit ) + ' [...]' :
 			this.currentPuzzle.description
-
-			/*
-		infoPieces.userData.text.set( { content: "Number of pieces : " + String( this.currentPuzzle.piecesNumber ) } );
-		infoName.userData.text.set( { content: "Name : " + this.currentPuzzle.artName } );
-		infoAuth.userData.text.set( { content: "Author : " + this.currentPuzzle.artAuthor } );
-		info3DAuth.userData.text.set( { content: "3D Author : " + this.currentPuzzle.modelAuthor } );
-		infoTags.userData.text.set( { content: "Tags : " + this.currentPuzzle.tags.join() } );
-		infoDesc.userData.text.set( { content: "Description : " + description } );
-		*/
 
 		let dataText = '';
 		dataText += 'Number of pieces: ' + this.currentPuzzle.piecesNumber + '\n';

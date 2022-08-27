@@ -7,7 +7,7 @@ import PuzzleManager from './PuzzleManager.js';
 import events from './events.js';
 
 //
-
+	
 const gameManager = {
 	startTutorial,
 	startPuzzle,
@@ -30,9 +30,9 @@ events.on( 'parts-assembled', e => {
 
 				gameManager.isRunningTutorial = false;
 
-			}
+				gameManager.clear();
 
-			gameManager.clear();
+			}
 
 		}, 1000 );
 
@@ -46,7 +46,9 @@ events.on( 'parts-assembled', e => {
 
 events.on( 'exit-puzzle-request', e => {
 
-	console.log('exit puzzle and go back to menu')
+	gameManager.isRunningTutorial = false;
+
+	gameManager.clear();
 
 } );
 
@@ -86,6 +88,8 @@ function clear() {
 	controls.setPuzzle( null );
 
 	scene.remove( this.currentPuzzle.group );
+
+	this.currentPuzzle.clear();
 
 	this.currentPuzzle = null;
 
