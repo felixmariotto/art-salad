@@ -33,40 +33,11 @@ function Controls( renderer ) {
 
 		controls.controllers.forEach( controller => {
 
-			controller.ray.visible = true;
-
-			matrix4.identity().extractRotation( controller.raySpace.matrixWorld );
-			raycaster.ray.origin.setFromMatrixPosition( controller.raySpace.matrixWorld );
-			raycaster.ray.direction.set( 0, 0, - 1 ).applyMatrix4( matrix4 );
-
-			controller.intersect = UI.findIntersection( raycaster );
-
-			if ( controller.intersect ) {
-
-				events.emit( 'hovered-ui', {
-					controller,
-					element: controller.intersect.element
-				} );
-
-				controller.point.visible = true;
-
-				controller.raySpace.worldToLocal( controller.intersect.point );
-
-				controller.point.position.copy( controller.intersect.point );
-
-			} else {
-
-				controller.point.visible = false;
-
-			}
+			controller.point.visible = false;
 
 		} );
 
-		//
-
 		if ( controls.puzzle ) {
-
-			// console.log( controls.puzzle.group.children[0] )
 
 			// reset highlights before to highlights again if necessary right after
 
@@ -152,6 +123,34 @@ function Controls( renderer ) {
 			if ( grippingC ) controls.puzzle.findPossibleMerging( grippingC.grippedPart );
 
 		}
+
+		controls.controllers.forEach( controller => {
+
+			if ( !controls.puzzle ) controller.ray.visible = false;
+
+			matrix4.identity().extractRotation( controller.raySpace.matrixWorld );
+			raycaster.ray.origin.setFromMatrixPosition( controller.raySpace.matrixWorld );
+			raycaster.ray.direction.set( 0, 0, - 1 ).applyMatrix4( matrix4 );
+
+			controller.intersect = UI.findIntersection( raycaster );
+
+			if ( controller.intersect ) {
+
+				events.emit( 'hovered-ui', {
+					controller,
+					element: controller.intersect.element
+				} );
+
+				controller.ray.visible = true;
+				controller.point.visible = true;
+
+				controller.raySpace.worldToLocal( controller.intersect.point );
+
+				controller.point.position.copy( controller.intersect.point );
+
+			}
+
+		} );
 
 	}
 

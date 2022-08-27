@@ -119,7 +119,7 @@ exitContainer.add(
 
 exitContainer.position.y += ( params.panelHeight + exitContainer.height ) * 0.5 + 0.05;
 
-group.add( exitContainer );
+// group.add( exitContainer );
 
 ///////////////
 // EVENTS
@@ -163,6 +163,8 @@ events.on( 'start-puzzle', e => {
 events.on( 'exit-puzzle-request', e => {
 
 	group.remove( exitContainer );
+	setBrowser();
+	gameManager.clear();
 
 } );
 
