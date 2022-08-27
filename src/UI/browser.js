@@ -378,7 +378,7 @@ rightContainer.add( infoImg, infoContainer, startButton );
 //////////////
 // FUNCTIONS
 
-function frameUpdate( frameSpeed ) {
+function animate( frameSpeed ) {
 
 	navButtons.forEach( button => {
 		if ( button.isSelected ) button.setState( 'selected' );
@@ -569,7 +569,7 @@ function populateNavigation() {
 
 //
 
-browser.frameUpdate = frameUpdate;
+browser.animate = animate;
 browser.init = init;
 browser.setChunk = setChunk;
 browser.populateNavigation = populateNavigation;

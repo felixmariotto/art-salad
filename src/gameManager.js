@@ -48,11 +48,13 @@ function startTutorial() {
 
 	this.isRunningTutorial = true;
 	
-	this.startPuzzle( "hydriaVase" );
+	this.startPuzzle( "pentecostRederos" /* "hydriaVase" */ );
 
 }
 
 function startPuzzle( modelName ) {
+
+	events.emit( 'start-loading' );
 
 	files.getModel( modelName ).then( model => {
 
@@ -65,6 +67,8 @@ function startPuzzle( modelName ) {
 		this.currentPuzzle.setShuffledState();
 
 		controls.setPuzzle( this.currentPuzzle );
+
+		events.emit( 'end-loading' );
 
 	} );
 

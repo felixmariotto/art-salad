@@ -10,6 +10,7 @@ import homepage from './UI/homepage.js';
 import tutorial from './UI/tutorial.js';
 import browser from './UI/browser.js';
 import infoPanel from './UI/info.js';
+import loading from './UI/loading.js';
 
 //
 
@@ -25,6 +26,12 @@ const quat = new THREE.Quaternion();
 
 let targetPos = CENTRE_POS;
 let targetQuat = CENTRE_QUAT;
+
+//
+
+const loadingGroup = new THREE.Group();
+loadingGroup.position.copy( CENTRE_POS );
+loadingGroup.quaternion.copy( CENTRE_QUAT );
 
 //
 
@@ -61,6 +68,18 @@ events.on( 'hovered-ui', e => {
 events.on( 'tutorial-finished', e => {
 
 	uiPanel.setHomepage();
+
+} );
+
+events.on( 'start-loading', e => {
+
+	loadingGroup.add( loading );
+
+} );
+
+events.on( 'end-loading', e => {
+
+	loadingGroup.remove( loading );
 
 } );
 
@@ -161,7 +180,8 @@ loopCallbacks.push( update );
 
 function update( frameSpeed ) {
 
-	browser.frameUpdate( frameSpeed );
+	browser.animate( frameSpeed );
+	loading.animate( frameSpeed );
 
 	if ( !container.position.equals( targetPos ) ) {
 
@@ -309,11 +329,12 @@ function openGithubLink() {
 
 //
 
-const uiPanel = {
+const UI = {
 	findIntersection,
 	block: container,
 	setTutorial,
-	setHomepage
+	setHomepage,
+	loadingGroup
 }
 
-export default uiPanel
+export default UI

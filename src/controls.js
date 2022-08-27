@@ -3,7 +3,7 @@ import { scene, renderer, loopCallbacks } from './init.js';
 import * as THREE from 'three';
 import materials from './materials.js';
 import controllerAssets from './controllerAssets.js';
-import uiPanel from './uiPanel.js';
+import UI from './UI.js';
 import events from './events.js';
 
 //
@@ -39,7 +39,7 @@ function Controls( renderer ) {
 			raycaster.ray.origin.setFromMatrixPosition( controller.raySpace.matrixWorld );
 			raycaster.ray.direction.set( 0, 0, - 1 ).applyMatrix4( matrix4 );
 
-			controller.intersect = uiPanel.findIntersection( raycaster );
+			controller.intersect = UI.findIntersection( raycaster );
 
 			if ( controller.intersect ) {
 
