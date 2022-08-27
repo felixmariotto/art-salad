@@ -72,13 +72,25 @@ const exitContainer = new ThreeMeshUI.Block( {
 	justifyContent: 'center'
 } );
 
+exitContainer.buttonName = 'exitPuzzle';
+
+exitContainer.setupState( {
+	state: 'hovered',
+	attributes: { backgroundColor: params.warningColor }
+} );
+
+exitContainer.setupState( {
+	state: 'idle',
+	attributes: { backgroundColor: params.white }
+} );
+
 const exitText = new ThreeMeshUI.Text( {
 	content: 'Quit puzzle ',
 	fontSize: 0.09,
 	fontColor: params.black
 } );
 
-exitText.onAfterUpdate = function () { this.position.y += 0.0085 }
+exitText.onAfterUpdate = function () { this.position.y = 0.02 }
 
 const exitIcon = new ThreeMeshUI.InlineBlock( {
 	width: 0.09,
@@ -87,7 +99,7 @@ const exitIcon = new ThreeMeshUI.InlineBlock( {
 	backgroundColor: params.white
 } );
 
-exitIcon.onAfterUpdate = function () { this.position.y -= 0.003 }
+exitIcon.onAfterUpdate = function () { this.position.y = -0.005 }
 
 textureLoader.load( exitIconURL, texture => {
 
@@ -139,6 +151,18 @@ events.on( 'start-loading', e => {
 events.on( 'end-loading', e => {
 
 	loadingGroup.remove( loading );
+
+} );
+
+events.on( 'start-puzzle', e => {
+
+	group.add( exitContainer );
+
+} );
+
+events.on( 'exit-puzzle-request', e => {
+
+	group.remove( exitContainer );
 
 } );
 
@@ -198,6 +222,10 @@ function handleButtonClick( buttonName, button ) {
 			gameManager.startPuzzle( browser.currentPuzzle.fileName );
 			break
 
+		case 'exitPuzzle' :
+			events.emit( 'exit-puzzle-request' );
+			break
+
 		default : return
 
 	}
@@ -226,6 +254,10 @@ function handleButtonHovered( buttonName, button ) {
 			button.isHovered = true;
 			break
 
+		case 'exitPuzzle' :
+			exitContainer.isHovered = true;
+			break
+
 		default : return
 
 	}
@@ -238,6 +270,19 @@ function handleButtonHovered( buttonName, button ) {
 loopCallbacks.push( update );
 
 function update( frameSpeed ) {
+
+	if ( exitContainer.isHovered ) {
+
+		exitContainer.isHovered = false;
+		exitContainer.setState( 'hovered' );
+
+	} else {
+
+		exitContainer.setState( 'idle' );
+
+	}
+
+	//
 
 	browser.animate( frameSpeed );
 	loading.animate( frameSpeed );
@@ -295,7 +340,7 @@ function clearContainer() {
 
 function findIntersection( raycaster ) {
 
-	const intersects = raycaster.intersectObject( container, true );
+	const intersects = raycaster.intersectObject( group, true );
 
 	if ( intersects.length ) {
 

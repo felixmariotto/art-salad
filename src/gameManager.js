@@ -44,6 +44,12 @@ events.on( 'parts-assembled', e => {
 
 } );
 
+events.on( 'exit-puzzle-request', e => {
+
+	console.log('exit puzzle and go back to menu')
+
+} );
+
 function startTutorial() {
 
 	this.isRunningTutorial = true;
@@ -69,6 +75,7 @@ function startPuzzle( modelName ) {
 		controls.setPuzzle( this.currentPuzzle );
 
 		events.emit( 'end-loading' );
+		events.emit( 'start-puzzle' );
 
 	} );
 
