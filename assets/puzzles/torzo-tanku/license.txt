@@ -1,0 +1,11 @@
+Model Information:
+* title:	10dkg of Tank – David Černý, Prague
+* source:	https://sketchfab.com/3d-models/10dkg-of-tank-david-cerny-prague-43d5cd4343c140938f7b39fc4c53f4db
+* author:	Andrej Boleslavský (https://sketchfab.com/AndrejBoleslavsky)
+
+Model License:
+* license type:	CC-BY-NC-SA-4.0 (http://creativecommons.org/licenses/by-nc-sa/4.0/)
+* requirements:	Author must be credited. No commercial use. Modified versions must have the same license.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "10dkg of Tank – David Černý, Prague" (https://sketchfab.com/3d-models/10dkg-of-tank-david-cerny-prague-43d5cd4343c140938f7b39fc4c53f4db) by Andrej Boleslavský (https://sketchfab.com/AndrejBoleslavsky) licensed under CC-BY-NC-SA-4.0 (http://creativecommons.org/licenses/by-nc-sa/4.0/)

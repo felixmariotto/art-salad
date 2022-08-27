@@ -14,6 +14,7 @@ import nTomoMask from '../assets/puzzles/n-tomo-mask/n-tomo-mask.glb';
 import pentecostRederos from '../assets/puzzles/pentecost-rederos/pentecost-rederos.glb';
 import nazcaVessel from '../assets/puzzles/nazca-vessel/nazca-vessel.glb';
 import paleoEngraving from '../assets/puzzles/paleolithic-engraving/paleolithic-engraving.glb';
+import torzoTanku from '../assets/puzzles/torzo-tanku/torzo-tanku.glb';
 
 import doubleHeadSculptInfo from '../assets/puzzles/double-head-sculpt/info.json';
 import paintedTrashInfo from '../assets/puzzles/painted-trash/info.json';
@@ -25,6 +26,7 @@ import nTomoMaskInfo from '../assets/puzzles/n-tomo-mask/info.json';
 import pentecostRederosInfo from '../assets/puzzles/pentecost-rederos/info.json';
 import nazcaVesselInfo from '../assets/puzzles/nazca-vessel/info.json';
 import paleoEngravingInfo from '../assets/puzzles/paleolithic-engraving/info.json';
+import torzoTankuInfo from '../assets/puzzles/torzo-tanku/info.json';
 
 import doubleHeadSculptImg from '../assets/puzzles/double-head-sculpt/thumbnail.jpg';
 import paintedTrashImg from '../assets/puzzles/painted-trash/thumbnail.jpg';
@@ -36,6 +38,7 @@ import nTomoMaskImg from '../assets/puzzles/n-tomo-mask/thumbnail.jpg';
 import pentecostRederosImg from '../assets/puzzles/pentecost-rederos/thumbnail.jpg';
 import nazcaVesselImg from '../assets/puzzles/nazca-vessel/thumbnail.jpg';
 import paleoEngravingImg from '../assets/puzzles/paleolithic-engraving/thumbnail.jpg';
+import torzoTankuImg from '../assets/puzzles/torzo-tanku/thumbnail.jpg';
 
 const modelURLs = {
 	museum,
@@ -48,7 +51,8 @@ const modelURLs = {
 	nTomoMask,
 	pentecostRederos,
 	nazcaVessel,
-	paleoEngraving
+	paleoEngraving,
+	torzoTanku
 };
 
 const modelInfos = [
@@ -61,7 +65,8 @@ const modelInfos = [
 	nTomoMaskInfo,
 	pentecostRederosInfo,
 	nazcaVesselInfo,
-	paleoEngravingInfo
+	paleoEngravingInfo,
+	torzoTankuInfo
 ];
 
 const modelImgs = {
@@ -74,7 +79,8 @@ const modelImgs = {
 	nTomoMask: nTomoMaskImg,
 	pentecostRederos: pentecostRederosImg,
 	nazcaVessel: nazcaVesselImg,
-	paleoEngraving: paleoEngravingImg
+	paleoEngraving: paleoEngravingImg,
+	torzoTanku: torzoTankuImg
 };
 
 // Here we just make sure that every file has all the attributes it is supposed to have
