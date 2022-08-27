@@ -52,6 +52,7 @@ const rightContainer = new ThreeMeshUI.Block( {
 	borderWidth: 0.005,
 	backgroundOpacity: 0,
 	padding: infoPadding,
+	// justifyContent: 'space-between'
 } );
 
 browser.add( leftContainer, rightContainer );
@@ -362,44 +363,17 @@ startButton.add( new ThreeMeshUI.Text( {
 	offset: 0
 } ) );
 
-const infoPieces = InfoLine();
-const infoName = InfoLine();
-const infoAuth = InfoLine();
-const info3DAuth = InfoLine();
-const infoTags = InfoLine();
-const infoDesc = InfoLine( true );
+const infoContainer = new ThreeMeshUI.Block( {
+	width: rightContainer.width - ( infoPadding * 2 ),
+	height: ( rightContainer.height - infoImg.height - startButton.height ) * 0.83,
+	borderWidth: 0,
+	backgroundOpacity: 0,
+	margin: infoPadding * 0.25
+} );
 
-rightContainer.add(
-	infoImg,
-	infoPieces,
-	infoName,
-	infoAuth,
-	info3DAuth,
-	infoTags,
-	infoDesc,
-	startButton
-);
-
-function InfoLine( tall ) {
-
-	const line = new ThreeMeshUI.Block( {
-		width: rightContainer.width - ( infoPadding * 2 ),
-		height: tall ? 0.3 : 0.05,
-		borderWidth: 0,
-		backgroundOpacity: 0,
-		margin: infoPadding * 0.25,
-		justifyContent: tall ? undefined : 'center'
-	} );
-
-	const text = new ThreeMeshUI.Text( { fontSize: 0.033 } );
-
-	line.userData.text = text
-
-	line.add( text );
-
-	return line
-
-}
+infoContainer.text = new ThreeMeshUI.Text( { fontSize: 0.036 } );
+infoContainer.add( infoContainer.text );
+rightContainer.add( infoImg, infoContainer, startButton );
 
 //////////////
 // FUNCTIONS
@@ -481,12 +455,23 @@ function populateInfo( id ) {
 			this.currentPuzzle.description.substring( 0, descriptionCharLimit ) + ' [...]' :
 			this.currentPuzzle.description
 
+			/*
 		infoPieces.userData.text.set( { content: "Number of pieces : " + String( this.currentPuzzle.piecesNumber ) } );
 		infoName.userData.text.set( { content: "Name : " + this.currentPuzzle.artName } );
 		infoAuth.userData.text.set( { content: "Author : " + this.currentPuzzle.artAuthor } );
 		info3DAuth.userData.text.set( { content: "3D Author : " + this.currentPuzzle.modelAuthor } );
 		infoTags.userData.text.set( { content: "Tags : " + this.currentPuzzle.tags.join() } );
 		infoDesc.userData.text.set( { content: "Description : " + description } );
+		*/
+
+		let dataText = '';
+		dataText += 'Number of pieces: ' + this.currentPuzzle.piecesNumber + '\n';
+		dataText += 'Artwork name: ' + this.currentPuzzle.artName + '\n';
+		dataText += 'Artwork author: ' + this.currentPuzzle.artAuthor + '\n';
+		dataText += '3D author: ' + this.currentPuzzle.modelAuthor + '\n';
+		dataText += 'Tags: ' + this.currentPuzzle.tags.join(', ') + '\n';
+		dataText += 'Description: ' + description;
+		infoContainer.text.set( { content: dataText } );
 
 		startButton.isDisabled = false;
 
@@ -502,12 +487,7 @@ function populateInfo( id ) {
 
 		mustDropInfoTexture = true;
 
-		infoPieces.userData.text.set( { content: '' } );
-		infoName.userData.text.set( { content: '' } );
-		infoAuth.userData.text.set( { content: '' } );
-		info3DAuth.userData.text.set( { content: '' } );
-		infoTags.userData.text.set( { content: '' } );
-		infoDesc.userData.text.set( { content: '' } );
+		infoContainer.text.set( { content: '' } );
 
 		startButton.isDisabled = true;
 
@@ -570,6 +550,8 @@ function setChunk( id ) {
 		if ( i == id ) button.isSelected = true;
 		else button.isSelected = false;
 	} );
+
+	this.populateInfo( 0 )
 
 }
 

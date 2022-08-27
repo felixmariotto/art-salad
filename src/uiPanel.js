@@ -41,7 +41,7 @@ const container = new ThreeMeshUI.Block( {
 container.position.copy( CENTRE_POS );
 container.quaternion.copy( CENTRE_QUAT );
 
-container.add( homepage )
+container.add( browser )
 
 ///////////////
 // EVENTS
