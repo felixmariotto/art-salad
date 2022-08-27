@@ -19,12 +19,12 @@ const outlineVertex = `
 		}
 
 		vec2 offset = norm.xy;
-		offset = normalize( offset ) * 0.01;
+		offset = normalize( offset ) * 0.005;
 
 		vUv = uv;
 		vNormal = normalMatrix * norm;
 		vPos = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-		vPos.z += 0.01;
+		vPos.z += 0.001;
 		vPos.x += offset.x;
 		vPos.y += offset.y;
 		gl_Position = vPos;

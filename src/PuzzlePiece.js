@@ -15,6 +15,8 @@ export default function PuzzlePiece( model ) {
 	piece.bgModel1 = model.clone();
 	piece.bgModel2 = model.clone();
 
+	// piece.origModel.visible = false;
+
 	piece.add( piece.origModel, piece.bgModel1, piece.bgModel2 );
 
 	piece.bbox = new THREE.Box3();

@@ -66,6 +66,8 @@ function Controls( renderer ) {
 
 		if ( controls.puzzle ) {
 
+			// console.log( controls.puzzle.group.children[0] )
+
 			// reset highlights before to highlights again if necessary right after
 
 			controls.puzzle.parts.forEach( part => {
