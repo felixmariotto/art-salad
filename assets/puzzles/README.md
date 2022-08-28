@@ -47,4 +47,3 @@ Image specs:
 - must be JPG
 - 512x512 pixels
 
-## Test it locally before to submit
