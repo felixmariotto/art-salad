@@ -27,4 +27,24 @@ If you want lights and shadows on the surface of your model, bake them on the te
 
 Split the puzzle in parts so it's fun to assemble back. If there is a recognizable feature somewhere, split it so players can notice it on two different pieces and try to assemble them. The number of parts to make from your model depends on the level of details. A big brutalist building without many features will not be fun if there is too many parts with no feature to differentiate them, whereas a very intricate ornamented reliquary is a good opportunity to make lots of pieces with their own recognizable features. As a rule of thumb, very simple shape 15 parts, very complexe shape 100 parts. Don't make over 100 parts, because of technical limitations (draw calls).
 
+## Meta information
+
+Art Salad don't only want to let users have fun, but also wants to teach, so it's necessary to add some meta information in an info.json placed in the same folder as your model. [example](https://github.com/felixmariotto/art-salad/blob/master/assets/puzzles/hydria-vase/info.json)
+
+Information to add :
+- ***piecesNumber:*** Number of pieces in your puzzle.
+- ***artName:*** Name of the piece of art. If unknown, make up some name.
+- ***artAuthor:*** Name of the original artist. If unknown write "unknown", but do some research first, it's important to credit artists.
+- ***modelAuthor:*** Name of the creator of the model, it should be the same as the name written in the license.
+- ***tags:*** Currently there is no search feature, but to make it easier to implement in the future you can add a few broadly descriptive keywords. I think it's good to at least give the continent of creation like "south america" or "asia", the era like "antique" or "middle age", and the type of art like "architecture" or "furniture".
+- ***description:*** Here you can type a long explanation of what this piece of art is, its history, some anecdotes, materials, etc.. Just like a museum information panel. It's allowed to write only one or two lines, but only if you got very few information and have no choice. Again this application is not just a game, it can be used for teaching.
+
+## Thumbnail
+
+You must add a thumbnail image to be displayed in the model browser within the application. Make it sexy so users want to play your puzzle. Make a solid grey background for a consistent experience, since other models thumbnails also have grey background. [example](https://github.com/felixmariotto/art-salad/blob/master/assets/puzzles/hydria-vase/thumbnail.jpg)
+
+Image specs:
+- must be JPG
+- 512x512 pixels
+
 ## Test it locally before to submit
