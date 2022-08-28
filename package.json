@@ -1,14 +1,14 @@
 {
-  "name": "puzzle museum",
+  "name": "art salad",
   "version": "0.0.0",
-  "description": "puzzle museum",
+  "description": "interactive museum of art",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --open --env NODE_ENV=dev",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx webpack --config webpack.config.js --env NODE_ENV=prod"
   },
-  "author": "",
+  "author": "Felix Mariotto",
   "license": "MIT",
   "dependencies": {
     "file-loader": "^6.2.0",

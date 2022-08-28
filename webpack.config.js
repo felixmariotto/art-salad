@@ -32,7 +32,6 @@ module.exports = env => {
 
     plugins: [
       new HtmlWebpackPlugin({
-        title: "three.js VR starter app",
         template: path.resolve(__dirname, 'src/template.html')
       })
     ],
