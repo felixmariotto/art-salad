@@ -43,8 +43,7 @@ onmessage = function( e ) {
 const vec3A = new THREE.Vector3();
 const vec3B = new THREE.Vector3();
 
-const STANDARD_PUZZLE_SIZE = 0.5;
-const STANDARD_PUZZLE_POSITION = new THREE.Vector3( 0, 1, -1 );
+const STANDARD_PUZZLE_SIZE = 1;
 
 function parseGeometry( imported ) {
 
@@ -59,10 +58,15 @@ function parseGeometry( imported ) {
 
 		if ( obj.geometry ) {
 
-			obj.updateWorldMatrix( true, false );
-			obj.geometry.applyMatrix4( obj.matrixWorld )
+			obj.updateWorldMatrix( true, true );
+			obj.geometry.applyMatrix4( obj.matrixWorld );
 
-			toAdd.push( obj )
+			const mesh = new THREE.Mesh(
+				obj.geometry,
+				obj.material
+			)
+
+			toAdd.push( mesh )
 
 		}
 
@@ -75,6 +79,7 @@ function parseGeometry( imported ) {
 	// then we compute the bounding box center point, and move the geometry to the center of the object.
 
 	const bbox = new THREE.Box3();
+	group.updateWorldMatrix( true );
 	bbox.setFromObject( group, true );
 	const translation = bbox.getCenter( vec3A ).negate();
 
@@ -92,9 +97,8 @@ function parseGeometry( imported ) {
 
 	// then we scale the geometry to a standard scale so that the user can grab all parts with their hands.
 
-	const bboxS = bbox.getSize( vec3A );
-	const average = ( bboxS.x + bboxS.y + bboxS.z ) / 3;
-	const scaleFactor = STANDARD_PUZZLE_SIZE / average;
+	const diagonalDist = bbox.min.distanceTo( bbox.max );
+	const scaleFactor = STANDARD_PUZZLE_SIZE / diagonalDist;
 
 	group.traverse( obj => {
 
@@ -139,4 +143,3 @@ function parseGeometry( imported ) {
 	return [ geometries, arrayBuffers, texture, textureData ]
 
 }
-

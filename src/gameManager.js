@@ -3,7 +3,7 @@ import { scene, renderer, loopCallbacks } from './init.js';
 import controls from './controls.js';
 import files from './files.js';
 import materials from './materials.js';
-import PuzzleManager from './PuzzleManager.js';
+import PuzzleManager from './puzzleManager.js';
 import events from './events.js';
 
 //
@@ -62,22 +62,28 @@ function startTutorial() {
 
 function startPuzzle( modelName ) {
 
-	events.emit( 'start-loading' );
+	return new Promise( resolve => {
 
-	files.getModel( modelName ).then( model => {
+		events.emit( 'start-loading' );
 
-		this.currentPuzzle = PuzzleManager( model );
+		files.getModel( modelName ).then( model => {
 
-		scene.add( this.currentPuzzle.group );
+			this.currentPuzzle = PuzzleManager( model );
 
-		materials.initPuzzle( this.currentPuzzle );
+			scene.add( this.currentPuzzle.group );
 
-		this.currentPuzzle.setShuffledState();
+			materials.initPuzzle( this.currentPuzzle );
 
-		controls.setPuzzle( this.currentPuzzle );
+			this.currentPuzzle.setShuffledState();
 
-		events.emit( 'end-loading' );
-		events.emit( 'start-puzzle' );
+			controls.setPuzzle( this.currentPuzzle );
+
+			events.emit( 'end-loading' );
+			events.emit( 'start-puzzle' );
+
+			resolve( this.currentPuzzle );
+
+		} );
 
 	} );
 
