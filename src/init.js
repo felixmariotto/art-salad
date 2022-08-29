@@ -2,7 +2,7 @@
 import * as THREE from 'three';
 import ThreeMeshUI from 'three-mesh-ui';
 
-import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
+import { VRButton } from './VRButton.js';
 import files from './files.js';
 
 /* Create the container object, the scene */
@@ -25,7 +25,7 @@ var renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize( window.innerWidth, window.innerHeight );
 renderer.xr.enabled = true;
 renderer.outputEncoding = THREE.sRGBEncoding;
-document.body.appendChild(VRButton.createButton(renderer));
+document.body.appendChild( VRButton.createButton( renderer ) );
 document.body.appendChild( renderer.domElement );
 
 window.onresize = function () {
@@ -36,14 +36,6 @@ window.onresize = function () {
 	renderer.setSize( window.innerWidth, window.innerHeight );
 
 };
-
-/*
-renderer.xr.addEventListener( 'sessionend', () => {
-
-	console.log('end')
-
-} );
-*/
 
 /* Render loop (called ~60 times/second, or more in VR) */
 
