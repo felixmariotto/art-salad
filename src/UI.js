@@ -70,7 +70,8 @@ const container = new ThreeMeshUI.Block( {
 	textAlign: 'left',
 	fontColor: params.black,
 	backgroundColor: params.white,
-	backgroundOpacity: 1
+	backgroundOpacity: 1,
+	borderRadius: 0.05
 } );
 
 group.position.copy( CENTRE_POS );
@@ -231,10 +232,6 @@ function handleButtonClick( buttonName, button ) {
 		case 'Tutorial' :
 			setTutorial();
 			gameManager.startTutorial();
-			break
-
-		case 'Github' :
-			openGithubLink();
 			break
 
 		case 'arrowLeft' :
@@ -447,24 +444,6 @@ function setInfoPanel( modelName ) {
 
 	targetPos = RIGHT_POS;
 	targetQuat = RIGHT_QUAT;
-
-}
-
-function openGithubLink() {
-
-	if ( document ) {
-
-		const a = document.createElement('A');
-		a.href = 'https://github.com/felixmariotto/puzzle-museum';
-		a.target = '_blank';
-		a.click();
-
-		homepage.ghButton.text.set( {
-			content: 'Exit VR to see GH page',
-			fontSize: 0.05
-		} );
-
-	}
 
 }
 

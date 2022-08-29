@@ -26,44 +26,54 @@ const homePage = new ThreeMeshUI.Block( {
 	backgroundColor: params.white,
 	backgroundOpacity: 1,
 	fontColor: params.white,
-	contentDirection: "column-reverse",
-	justifyContent: "start"
+	contentDirection: 'row',
+	justifyContent: 'start',
+	alignItems: 'start',
+	borderRadius: 0
 } );
 
 //
 
-const lowerContainer = new ThreeMeshUI.Block( {
-	width: params.panelWidth - HOMEPAGE_PADDING * 2,
-	height: params.panelHeight * 0.4,
+const leftContainer = new ThreeMeshUI.Block( {
+	width: homePage.width * 0.6,
+	height: homePage.height,
 	backgroundOpacity: 0,
 	fontFamily: sourceJSON,
 	fontTexture: sourceImage,
-	justifyContent: "space-between"
+	contentDirection: 'column',
+	justifyContent: 'end',
+	alignItems: 'start',
+	offset: 0
 } );
 
-homePage.add( lowerContainer );
+homePage.add( leftContainer );
 
 //
 
 const titleContainer = new ThreeMeshUI.Block( {
 	width: params.panelWidth - HOMEPAGE_PADDING * 2,
-	height: 0.3,
+	height: 0.26,
 	backgroundOpacity: 0,
-	fontFamily: firaJSON,
-	fontTexture: firaImage,
+	fontFamily: sourceJSON,
+	fontTexture: sourceImage,
 	fontColor: params.darkGrey,
-	alignItems: 'start'
+	alignItems: 'start',
+	offset: 0.02
 } );
 
 const title = new ThreeMeshUI.Text( {
-	content: 'Open Museum',
-	fontSize: 0.28,
-	letterSpacing: -0.1,
+	content: 'Art Salad',
+	fontSize: 0.2,
+	letterSpacing: -0.02,
 	offset: 0
 } );
 
+title.onAfterUpdate = function () {
+	this.position.x -= 0.01;
+}
+
 titleContainer.add( title );
-lowerContainer.add( titleContainer );
+leftContainer.add( titleContainer );
 
 //
 
@@ -72,28 +82,34 @@ const menuContainer = new ThreeMeshUI.Block( {
 	height: 0.2,
 	backgroundOpacity: 0,
 	contentDirection: 'row',
-	justifyContent: 'space-between',
-	// alignItems: 'start'
+	offset: 0.02
 } );
 
-homePage.ghButton = Button( 'Github' );
-menuContainer.add( Button( 'Tutorial' ), Button( 'Puzzles' ), homePage.ghButton )
-lowerContainer.add( menuContainer );
+const tutoBtn = Button( 'Tutorial' );
+const puzzleBtn = Button( 'Puzzles' );
+
+puzzleBtn.onAfterUpdate = function () {
+	this.position.x += 0.1;
+}
+
+menuContainer.add( tutoBtn, puzzleBtn );
+leftContainer.add( menuContainer );
 
 function Button( title ) {
 
 	const button = new ThreeMeshUI.Block( {
-		height: 0.15,
-		width: params.panelWidth * 0.25,
+		height: 0.13,
+		width: params.panelWidth * 0.2,
 		backgroundColor: params.darkGrey,
 		backgroundOpacity: 1,
 		textAlign: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		borderRadius: 0.13 * 0.5
 	} );
 
 	const buttonText = new ThreeMeshUI.Text( {
 		content: title,
-		fontSize: 0.08,
+		fontSize: 0.07,
 		offset: 0
 	} );
 
@@ -108,7 +124,7 @@ function Button( title ) {
 
 new THREE.TextureLoader().load( imageURL, texture => {
 
-	const imageWidth = params.panelWidth * 0.4 - HOMEPAGE_PADDING;
+	const imageWidth = params.panelWidth * 0.55 - HOMEPAGE_PADDING;
 
 	const niceImage = new ThreeMeshUI.Block( {
 		width: imageWidth,
@@ -116,9 +132,15 @@ new THREE.TextureLoader().load( imageURL, texture => {
 		backgroundTexture: texture
 	} );
 
-	niceImage.autoLayout = false;
-	niceImage.position.x = ( params.panelWidth * 0.5 - HOMEPAGE_PADDING ) - imageWidth * 0.5;
-	niceImage.position.y = ( params.panelHeight * 0.5 - HOMEPAGE_PADDING ) - imageWidth * 0.5
+	
+
+	niceImage.onAfterUpdate = function () {
+		niceImage.position.set(
+			( params.panelWidth * 0.5 - HOMEPAGE_PADDING ) - imageWidth * 0.5,
+			( params.panelHeight * 0.5 - HOMEPAGE_PADDING ) - imageWidth * 0.5,
+			0.01
+		);
+	}
 
 	homePage.add( niceImage );
 
