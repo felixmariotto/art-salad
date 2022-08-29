@@ -78,7 +78,7 @@ group.position.copy( CENTRE_POS );
 group.quaternion.copy( CENTRE_QUAT );
 
 group.add( container );
-container.add( homepage )
+container.add( homepage );
 
 // EXIT BUTTON
 // The exit button is placed on top of the main container, in the same group.
@@ -193,6 +193,8 @@ events.on( 'exit-puzzle-request', e => {
 // the passed element ancestors.
 
 function findButton( element, callback ) {
+
+	// if ( element.buttonName && element.buttonName.includes( 'browserCell' ) ) debugger
 
 	if ( element.buttonName ) {
 

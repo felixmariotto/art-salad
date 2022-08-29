@@ -49,13 +49,15 @@ const leftContainer = new ThreeMeshUI.Block( {
 	width: browser.width * sectionsDivision,
 	height: browser.height,
 	padding: 0.03,
-	backgroundOpacity: 0
+	backgroundOpacity: 0,
+	borderRadius: 0
 } );
 
 const rightContainer = new ThreeMeshUI.Block( {
 	width: browser.width * ( 1 - sectionsDivision ),
 	height: browser.height,
-	borderWidth: 0.005,
+	borderWidth: 0.003,
+	borderRadius: 0.02,
 	backgroundOpacity: 0,
 	padding: infoPadding,
 	// justifyContent: 'space-between'
@@ -83,6 +85,7 @@ const cellOpt = {
 	width: rowOpt.width * ( 1 / 3 ),
 	height: rowOpt.height,
 	padding: 0.035,
+	borderRadius: 0.04,
 	backgroundOpacity: 0
 }
 
@@ -102,6 +105,7 @@ const cellImgOpt = {
 	borderWidth: 0,
 	backgroundColor: params.white,
 	backgroundOpacity: 1,
+	borderRadius: 0.02,
 	justifyContent: 'end',
 	alignItems: 'end'
 }
@@ -278,6 +282,7 @@ const navButtonParams = {
 	backgroundColor: params.black,
 	backgroundOpacity: 1,
 	margin: 0.02,
+	borderRadius: 0.02,
 	justifyContent: 'center',
 	textAlign: 'center'
 };
@@ -309,7 +314,7 @@ function NavButton( number ) {
 
 	const text = new ThreeMeshUI.Text( {
 		content: String( number ),
-		fontSize: 0.1,
+		fontSize: 0.075,
 		offset: 0
 	} );
 
@@ -372,12 +377,18 @@ startButton.setupState( {
 	}
 } );
 
-startButton.add( new ThreeMeshUI.Text( {
+const startText = new ThreeMeshUI.Text( {
 	content: "start puzzle",
 	fontSize: 0.07,
 	fontColor: params.white,
 	offset: 0
-} ) );
+} );
+
+startText.onAfterUpdate = function () {
+	this.position.y = 0.005;
+}
+
+startButton.add( startText );
 
 const infoContainer = new ThreeMeshUI.Block( {
 	width: rightContainer.width - ( infoPadding * 2 ),
@@ -448,10 +459,6 @@ function init() {
 	this.populateNavigation();
 
 	this.setChunk( 0 );
-
-	this.populateInfo( 1 );
-	this.populateInfo( 2 );
-	this.populateInfo( null );
 
 }
 
