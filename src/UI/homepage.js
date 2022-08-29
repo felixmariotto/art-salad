@@ -6,9 +6,10 @@ This is the homepage displayed first when the application is started.
 
 import * as THREE from 'three';
 import ThreeMeshUI from 'three-mesh-ui';
-import params from './params.js';
-import imageURL from '../../assets/UI-images/home-background.jpg';
 
+import params from './params.js';
+
+import imageURL from '../../assets/UI-images/home-background.jpg';
 import firaJSON from '../../assets/fonts/Fira.json';
 import firaImage from '../../assets/fonts/Fira.png';
 import sourceJSON from '../../assets/fonts/Source.json';

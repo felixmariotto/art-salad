@@ -1,6 +1,6 @@
 
-import { scene } from './init.js';
-import stage from './stage.js';
+import { scene } from './misc/init.js';
+import stage from './misc/stage.js';
 import UI from './UI.js';
 import gameManager from './gameManager.js';
 

@@ -6,6 +6,7 @@ This one is a static page with a step by step guide on how to use the controller
 
 import * as THREE from 'three';
 import ThreeMeshUI from 'three-mesh-ui';
+
 import params from './params.js';
 
 import firaJSON from '../../assets/fonts/Fira.json';

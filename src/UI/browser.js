@@ -6,9 +6,10 @@ This one is the most important page, it's a list of all the available puzzles.
 
 import * as THREE from 'three';
 import ThreeMeshUI from 'three-mesh-ui';
+
 import params from './params.js';
-import files from '../files.js';
-import events from '../events.js';
+import files from '../files/files.js';
+import events from '../misc/events.js';
 
 import firaJSON from '../../assets/fonts/Fira.json';
 import firaImage from '../../assets/fonts/Fira.png';

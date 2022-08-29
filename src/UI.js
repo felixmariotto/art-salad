@@ -5,11 +5,12 @@ Each individual page has its own module in the /UI folder.
 For information on three-mesh-ui API, see https://github.com/felixmariotto/three-mesh-ui
 */
 
-import { loopCallbacks } from './init.js';
 import * as THREE from 'three';
 import ThreeMeshUI from 'three-mesh-ui';
+
+import { loopCallbacks } from './misc/init.js';
 import gameManager from './gameManager.js';
-import events from './events.js';
+import events from './misc/events.js';
 
 import params from './UI/params.js';
 import homepage from './UI/homepage.js';

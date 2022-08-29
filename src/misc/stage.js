@@ -2,7 +2,7 @@
 /* module responsible for creating and fetching all the scene background decorations */
 
 import * as THREE from 'three';
-import files from './files.js';
+import files from '../files/files.js';
 
 //
 

@@ -5,12 +5,12 @@ It's a kind of global manager that's responsible for telling to other modules
 when and how to react to global game events.
 */
 
-import { scene, renderer, loopCallbacks } from './init.js';
-import controls from './controls.js';
-import files from './files.js';
-import materials from './materials.js';
-import PuzzleManager from './puzzleManager.js';
-import events from './events.js';
+import { scene, renderer, loopCallbacks } from './misc/init.js';
+import controls from './controls/controls.js';
+import files from './files/files.js';
+import materials from './puzzles/materials.js';
+import PuzzleManager from './puzzles/puzzleManager.js';
+import events from './misc/events.js';
 
 //
 	

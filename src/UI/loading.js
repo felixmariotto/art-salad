@@ -6,6 +6,7 @@ model is loading.
 
 import * as THREE from 'three';
 import ThreeMeshUI from 'three-mesh-ui';
+
 import params from './params.js';
 
 import sourceJSON from '../../assets/fonts/Source.json';

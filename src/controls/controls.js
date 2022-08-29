@@ -5,12 +5,13 @@ It is in this module that we look for intersection with puzzle pieces or user in
 and trigger updates if necessary.
 */
 
-import { scene, renderer, loopCallbacks } from './init.js';
 import * as THREE from 'three';
-import materials from './materials.js';
+
+import { scene, renderer, loopCallbacks } from '../misc/init.js';
+import events from '../misc/events.js';
+import materials from '../puzzles/materials.js';
 import controllerAssets from './controllerAssets.js';
-import UI from './UI.js';
-import events from './events.js';
+import UI from '../UI.js';
 
 //
 

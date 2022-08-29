@@ -8,46 +8,46 @@ rendering stuttering as much as possible.
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-import museum from '../assets/museum.glb';
+import museum from '../../assets/museum.glb';
 
 // TODO: find a better way to import URLs and build the dist folder, as this method
 // will quickly get out of hands.
 
-import doubleHeadSculpt from '../assets/puzzles/double-head-sculpt/double-head-sculpt.glb';
-import paintedTrash from '../assets/puzzles/painted-trash/painted-trash.glb';
-import mexicoGraffiti from '../assets/puzzles/mexico-graffiti/mexico-graffiti.glb';
-import louviersCastle from '../assets/puzzles/louviers-castle/louviers-castle.glb';
-import seatedCupid from '../assets/puzzles/seated-cupid/seated-cupid.glb';
-import hydriaVase from '../assets/puzzles/hydria-vase/hydria-vase.glb';
-import nTomoMask from '../assets/puzzles/n-tomo-mask/n-tomo-mask.glb';
-import pentecostRederos from '../assets/puzzles/pentecost-rederos/pentecost-rederos.glb';
-import nazcaVessel from '../assets/puzzles/nazca-vessel/nazca-vessel.glb';
-import paleoEngraving from '../assets/puzzles/paleolithic-engraving/paleolithic-engraving.glb';
-import torzoTanku from '../assets/puzzles/torzo-tanku/torzo-tanku.glb';
+import doubleHeadSculpt from '../../assets/puzzles/double-head-sculpt/double-head-sculpt.glb';
+import paintedTrash from '../../assets/puzzles/painted-trash/painted-trash.glb';
+import mexicoGraffiti from '../../assets/puzzles/mexico-graffiti/mexico-graffiti.glb';
+import louviersCastle from '../../assets/puzzles/louviers-castle/louviers-castle.glb';
+import seatedCupid from '../../assets/puzzles/seated-cupid/seated-cupid.glb';
+import hydriaVase from '../../assets/puzzles/hydria-vase/hydria-vase.glb';
+import nTomoMask from '../../assets/puzzles/n-tomo-mask/n-tomo-mask.glb';
+import pentecostRederos from '../../assets/puzzles/pentecost-rederos/pentecost-rederos.glb';
+import nazcaVessel from '../../assets/puzzles/nazca-vessel/nazca-vessel.glb';
+import paleoEngraving from '../../assets/puzzles/paleolithic-engraving/paleolithic-engraving.glb';
+import torzoTanku from '../../assets/puzzles/torzo-tanku/torzo-tanku.glb';
 
-import doubleHeadSculptInfo from '../assets/puzzles/double-head-sculpt/info.json';
-import paintedTrashInfo from '../assets/puzzles/painted-trash/info.json';
-import mexicoGraffitiInfo from '../assets/puzzles/mexico-graffiti/info.json';
-import louviersCastleInfo from '../assets/puzzles/louviers-castle/info.json';
-import seatedCupidInfo from '../assets/puzzles/seated-cupid/info.json';
-import hydriaVaseInfo from '../assets/puzzles/hydria-vase/info.json';
-import nTomoMaskInfo from '../assets/puzzles/n-tomo-mask/info.json';
-import pentecostRederosInfo from '../assets/puzzles/pentecost-rederos/info.json';
-import nazcaVesselInfo from '../assets/puzzles/nazca-vessel/info.json';
-import paleoEngravingInfo from '../assets/puzzles/paleolithic-engraving/info.json';
-import torzoTankuInfo from '../assets/puzzles/torzo-tanku/info.json';
+import doubleHeadSculptInfo from '../../assets/puzzles/double-head-sculpt/info.json';
+import paintedTrashInfo from '../../assets/puzzles/painted-trash/info.json';
+import mexicoGraffitiInfo from '../../assets/puzzles/mexico-graffiti/info.json';
+import louviersCastleInfo from '../../assets/puzzles/louviers-castle/info.json';
+import seatedCupidInfo from '../../assets/puzzles/seated-cupid/info.json';
+import hydriaVaseInfo from '../../assets/puzzles/hydria-vase/info.json';
+import nTomoMaskInfo from '../../assets/puzzles/n-tomo-mask/info.json';
+import pentecostRederosInfo from '../../assets/puzzles/pentecost-rederos/info.json';
+import nazcaVesselInfo from '../../assets/puzzles/nazca-vessel/info.json';
+import paleoEngravingInfo from '../../assets/puzzles/paleolithic-engraving/info.json';
+import torzoTankuInfo from '../../assets/puzzles/torzo-tanku/info.json';
 
-import doubleHeadSculptImg from '../assets/puzzles/double-head-sculpt/thumbnail.jpg';
-import paintedTrashImg from '../assets/puzzles/painted-trash/thumbnail.jpg';
-import mexicoGraffitiImg from '../assets/puzzles/mexico-graffiti/thumbnail.jpg';
-import louviersCastleImg from '../assets/puzzles/louviers-castle/thumbnail.jpg';
-import seatedCupidImg from '../assets/puzzles/seated-cupid/thumbnail.jpg';
-import hydriaVaseImg from '../assets/puzzles/hydria-vase/thumbnail.jpg';
-import nTomoMaskImg from '../assets/puzzles/n-tomo-mask/thumbnail.jpg';
-import pentecostRederosImg from '../assets/puzzles/pentecost-rederos/thumbnail.jpg';
-import nazcaVesselImg from '../assets/puzzles/nazca-vessel/thumbnail.jpg';
-import paleoEngravingImg from '../assets/puzzles/paleolithic-engraving/thumbnail.jpg';
-import torzoTankuImg from '../assets/puzzles/torzo-tanku/thumbnail.jpg';
+import doubleHeadSculptImg from '../../assets/puzzles/double-head-sculpt/thumbnail.jpg';
+import paintedTrashImg from '../../assets/puzzles/painted-trash/thumbnail.jpg';
+import mexicoGraffitiImg from '../../assets/puzzles/mexico-graffiti/thumbnail.jpg';
+import louviersCastleImg from '../../assets/puzzles/louviers-castle/thumbnail.jpg';
+import seatedCupidImg from '../../assets/puzzles/seated-cupid/thumbnail.jpg';
+import hydriaVaseImg from '../../assets/puzzles/hydria-vase/thumbnail.jpg';
+import nTomoMaskImg from '../../assets/puzzles/n-tomo-mask/thumbnail.jpg';
+import pentecostRederosImg from '../../assets/puzzles/pentecost-rederos/thumbnail.jpg';
+import nazcaVesselImg from '../../assets/puzzles/nazca-vessel/thumbnail.jpg';
+import paleoEngravingImg from '../../assets/puzzles/paleolithic-engraving/thumbnail.jpg';
+import torzoTankuImg from '../../assets/puzzles/torzo-tanku/thumbnail.jpg';
 
 const modelURLs = {
 	museum,
@@ -122,7 +122,7 @@ const objectLoader = new THREE.ObjectLoader();
 
 if ( typeof Worker !== 'undefined' ) {
 
-	worker = new Worker( new URL('workers/worker.js', import.meta.url ) );
+	worker = new Worker( new URL('worker.js', import.meta.url ) );
 
 	worker.onmessage = function( e ) {
 
@@ -174,7 +174,7 @@ if ( typeof Worker !== 'undefined' ) {
 			} );
 
 			// Recreate the material shared by all meshes of the puzzle
-			// As explained in https://github.com/felixmariotto/art-salad/edit/master/assets/puzzles/README.md
+			// As explained in https://github.com/felixmariotto/art-salad/edit/master/../assets/puzzles/README.md
 			// It is necessary to make important trade-off to support the Oculus Quest 1,
 			// So the only type of material allowed in the application is basic material.
 

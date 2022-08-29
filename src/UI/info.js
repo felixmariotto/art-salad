@@ -6,8 +6,9 @@ This is the info page displayed when there is a puzzle running.
 
 import * as THREE from 'three';
 import ThreeMeshUI from 'three-mesh-ui';
+
 import params from './params.js';
-import files from '../files.js';
+import files from '../files/files.js';
 
 import firaJSON from '../../assets/fonts/Fira.json';
 import firaImage from '../../assets/fonts/Fira.png';

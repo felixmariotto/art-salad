@@ -12,7 +12,7 @@ import * as THREE from 'three';
 import PuzzlePiece from './PuzzlePiece.js';
 import PuzzlePart from './PuzzlePart.js';
 import materials from './materials.js';
-import events from './events.js';
+import events from '../misc/events.js';
 
 //
 

@@ -8,7 +8,6 @@ import * as THREE from 'three';
 import ThreeMeshUI from 'three-mesh-ui';
 
 import { VRButton } from './VRButton.js';
-import files from './files.js';
 
 /* Create the container object, the scene */
 
