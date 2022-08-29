@@ -26,6 +26,7 @@ const container = new ThreeMeshUI.Block( {
 	height: 1 * SCALE,
 	backgroundColor: params.white,
 	backgroundOpacity: 1,
+	borderRadius: 0.05,
 	fontFamily: sourceJSON,
 	fontTexture: sourceImage,
 	justifyContent: 'space-evenly'
