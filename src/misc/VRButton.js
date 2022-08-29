@@ -40,8 +40,6 @@ class VRButton {
 			button.style.display = '';
 
 			button.style.cursor = 'pointer';
-			button.style.left = 'calc(50% - 50px)';
-			button.style.width = '150px';
 
 			button.textContent = 'ENTER VR';
 
@@ -86,8 +84,6 @@ class VRButton {
 			button.style.display = '';
 
 			button.style.cursor = 'auto';
-			button.style.left = 'calc(50% - 75px)';
-			button.style.width = '150px';
 
 			button.onmouseenter = null;
 			button.onmouseleave = null;
@@ -117,8 +113,8 @@ class VRButton {
 		function stylizeElement( element ) {
 
 			element.style.position = 'absolute';
-			element.style.bottom = '20px';
-			element.style.padding = '12px 6px';
+			element.style.top = '20px';
+			element.style.padding = '12px 20px';
 			element.style.border = '3px solid #104529';
 			element.style.borderRadius = '4px';
 			element.style.background = '#a9d4bd';
@@ -129,6 +125,8 @@ class VRButton {
 			element.style.opacity = '0.8';
 			element.style.outline = 'none';
 			element.style.zIndex = '999';
+			element.style.left = '50%';
+			element.style.transform = 'translateX(-50%)';
 
 		}
 
@@ -181,8 +179,6 @@ class VRButton {
 
 			}
 
-			message.style.left = 'calc(50% - 90px)';
-			message.style.width = '180px';
 			message.style.textDecoration = 'none';
 
 			stylizeElement( message );
