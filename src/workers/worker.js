@@ -1,4 +1,9 @@
 
+/*
+This web worker is used to load and parse models out of the main thread,
+to avoid rendering stutters which are really anoying in VR.
+*/
+
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
@@ -13,6 +18,9 @@ onmessage = function( e ) {
 	gltfLoader.load( url, 
 
 		function ( gltf ) {
+
+			// Messaging whole array buffers to the main thread would be very slow, instead we use transferable objects.
+			// https://developer.chrome.com/blog/transferable-objects-lightning-fast/
 
 			const [ geometries, arrayBuffers, texture, textureData ] = parseGeometry( gltf.scene );
 
@@ -41,8 +49,9 @@ onmessage = function( e ) {
 // get the gltf scene and return a merged geometry with groups
 
 const vec3A = new THREE.Vector3();
-const vec3B = new THREE.Vector3();
 
+// In meters. Length of the digonal of the model once resized.
+// 1 meter is good because most people can move their hands one meter appart.
 const STANDARD_PUZZLE_SIZE = 1;
 
 function parseGeometry( imported ) {

@@ -1,4 +1,10 @@
 
+/*
+A puzzle piece is the representation of the puzzle piece actual mesh.
+This puzzle piece is never handled directly by controls, instead puzzle pieces
+are put into puzzle parts ( see PuzzlePart module ).
+*/
+
 import * as THREE from 'three';
 
 //
@@ -12,6 +18,7 @@ export default function PuzzlePiece( model ) {
 	const piece = new THREE.Group();
 	piece.isPiece = true;
 	piece.origModel = model;
+	// each piece must have two clones with a special material to render an outline.
 	piece.bgModel1 = model.clone();
 	piece.bgModel2 = model.clone();
 
@@ -34,7 +41,8 @@ function computeBBOX() {
 	
 }
 
-//
+// Used by the controls module to know if a piece is interacted with.
+// For instance to highlight it, or to grip it.
 
 function distanceToPoint( targetVec ) {
 

@@ -1,4 +1,9 @@
 
+/*
+Module responsible for the setup of core three.js features :
+scene, camera, renderer, render loop.
+*/
+
 import * as THREE from 'three';
 import ThreeMeshUI from 'three-mesh-ui';
 
@@ -7,7 +12,7 @@ import files from './files.js';
 
 /* Create the container object, the scene */
 
-var scene = new THREE.Scene();
+const scene = new THREE.Scene();
 scene.background = new THREE.Color( 0xc7c7c7 );
 
 /* Create the camera from which the scene will be seen */
@@ -15,13 +20,13 @@ scene.background = new THREE.Color( 0xc7c7c7 );
 const width = window.innerWidth;
 const height = window.innerHeight;
 
-var camera = new THREE.PerspectiveCamera( 75, width/height, 0.005, 50 );
+const camera = new THREE.PerspectiveCamera( 75, width/height, 0.005, 50 );
 camera.position.set( 0, 1.6, 0 );
 camera.lookAt( 0, 1, -1.8 );
 
 /* Create the renderer object, with VR parameters enabled */
 
-var renderer = new THREE.WebGLRenderer({ antialias: true });
+const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize( window.innerWidth, window.innerHeight );
 renderer.xr.enabled = true;
 renderer.outputEncoding = THREE.sRGBEncoding;
@@ -37,7 +42,7 @@ window.onresize = function () {
 
 };
 
-/* Render loop (called ~60 times/second, or more in VR) */
+/* Render loop (called ~60 times/second) */
 
 const loopCallbacks = [];
 
@@ -46,6 +51,10 @@ renderer.setAnimationLoop( loop );
 let lastTime = 0;
 
 function loop( elapsedTime ) {
+
+	// frameSpeed is a ratio of rendering speed, so for instance if the device is slow and renders
+	// only 30 FPS, then we want everything to animate twice as fast so the experience is consistent
+	// across devices.
 
 	const delta = Math.min( elapsedTime - lastTime, 100 );
 	lastTime = elapsedTime;
@@ -66,13 +75,15 @@ function loop( elapsedTime ) {
 
 	}
 
-	//
+	ThreeMeshUI.update();
 
-	renderer.render( scene, camera );
+	// other modules add their update function into the loopCallbacks array.
 
 	loopCallbacks.forEach( fn => fn( frameSpeed ) );
 
-	ThreeMeshUI.update();
+	//
+
+	renderer.render( scene, camera );
 
 };
 

@@ -1,4 +1,10 @@
 
+/*
+Module responsible for creating the hand controllers.
+It is in this module that we look for intersection with puzzle pieces or user interface,
+and trigger updates if necessary.
+*/
+
 import { scene, renderer, loopCallbacks } from './init.js';
 import * as THREE from 'three';
 import materials from './materials.js';
@@ -8,8 +14,12 @@ import events from './events.js';
 
 //
 
-const HAND_RADIUS = 0.1;
+// the "hand" is actually a sphere, this constant is the sphere radius.
+const HAND_RADIUS = 0.07;
+
+// speed at which a piece moves toward or away of the hand when joystick input.
 const TELEKINESIS_SPEED = 0.02;
+
 const vec3 = new THREE.Vector3();
 const matrix4 = new THREE.Matrix4();
 const raycaster = new THREE.Raycaster();
@@ -24,135 +34,19 @@ function Controls( renderer ) {
 
 	const controls = {
 		controllers: [],
+		// hand meshes are not directly added into the scene, but un this group.
 		group: new THREE.Group(),
 		update,
+		_update,
 		setPuzzle
 	}
 
-	function update( frameSpeed ) {
+	// necessary to have this function because it's called in another module where
+	// it's not called as controls method.
 
-		controls.controllers.forEach( controller => {
+	function update( f ) { controls._update( f ) }
 
-			controller.point.visible = false;
-
-		} );
-
-		if ( controls.puzzle ) {
-
-			// reset highlights before to highlights again if necessary right after
-
-			controls.puzzle.parts.forEach( part => {
-
-				materials.setHighlightShader( part, false );
-
-			} );
-
-			controls.controllers.forEach( controller => {
-
-				controller.highlighted = null;
-
-			} );
-
-			//
-
-			controls.controllers.forEach( controller => {
-
-				// look for for parts to highlight depending on the controller position
-
-				if ( !controller.grippedPart ) {
-
-					if ( controller.isRayEnabled && controller.gamepad ) {
-
-						controller.highlightRayIntersects();
-
-					} else {
-
-						controller.highlightHandIntersects();
-
-					}
-
-				}
-
-				// here we check if the user is pressing the joystick to attract or move away a puzzle part.
-
-				if (
-					controller.grippedPart &&
-					controller.gamepad.axes &&
-					Math.abs( controller.gamepad.axes[3] ) > 0.5
-				) {
-
-					const direction = Math.sign( controller.gamepad.axes[3] );
-
-					controller.raySpace.attach( controller.grippedPart );
-
-					controller.grippedPart.position.z += direction * TELEKINESIS_SPEED * frameSpeed;
-
-					controller.attach( controller.grippedPart );
-
-				}
-
-			} );
-
-			// set each controller ray's visibility depending on wether the user is pressing
-			// the ray input.
-
-			controls.controllers.forEach( controller => {
-
-				if (
-					!controller.grippedPart &&
-					controller.isRayEnabled &&
-					controller.gamepad
-				) {
-
-					controller.ray.visible = true;
-
-				} else {
-
-					controller.ray.visible = false;
-					controller.point.visible = false;
-
-				}
-
-			} );
-
-			// if the user grips at least one part, we tell the puzzle to check for
-			// possible parts merging.
-
-			const grippingC = controls.controllers.find( c => c.grippedPart );
-
-			if ( grippingC ) controls.puzzle.findPossibleMerging( grippingC.grippedPart );
-
-		}
-
-		controls.controllers.forEach( controller => {
-
-			if ( !controls.puzzle ) controller.ray.visible = false;
-
-			matrix4.identity().extractRotation( controller.raySpace.matrixWorld );
-			raycaster.ray.origin.setFromMatrixPosition( controller.raySpace.matrixWorld );
-			raycaster.ray.direction.set( 0, 0, - 1 ).applyMatrix4( matrix4 );
-
-			controller.intersect = UI.findIntersection( raycaster );
-
-			if ( controller.intersect ) {
-
-				events.emit( 'hovered-ui', {
-					controller,
-					element: controller.intersect.element
-				} );
-
-				controller.ray.visible = true;
-				controller.point.visible = true;
-
-				controller.raySpace.worldToLocal( controller.intersect.point );
-
-				controller.point.position.copy( controller.intersect.point );
-
-			}
-
-		} );
-
-	}
+	// create one controller for each hand.
 
 	for ( let i=0 ; i<2 ; i++ ) {
 
@@ -166,55 +60,142 @@ function Controls( renderer ) {
 
 }
 
-//
+// Update function. The framspeed argument is a number representing the real speed of rendering
+// compared to the wanted speed of rendering :
+// If the app runs at 30FPS, frameSpeed will be 2, because when want to update animations twice as fast.
 
-function Hand() {
+function _update( frameSpeed ) {
 
-	const vertexShader = `
-		varying vec3 vPositionW;
-		varying vec3 vNormalW;
+	this.controllers.forEach( controller => {
 
-		void main() {
-			vPositionW = normalize( vec3( modelViewMatrix * vec4( position, 1.0 ) ).xyz );
-			vNormalW = normalize( normalMatrix * normal );
-			gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-		}
-	`;
+		controller.point.visible = false;
 
-	const fragmentShader = `
-		varying vec3 vPositionW;
-		varying vec3 vNormalW;
+	} );
 
-		uniform float alpha;
+	if ( this.puzzle ) {
 
-		void main() {   
-			float fresnelTerm = ( 1.0 - - min( dot( vPositionW, normalize( vNormalW ) ), 0.0 ) );    
-			gl_FragColor = vec4( vec3( .7 ), 1.0 * alpha ) * vec4( fresnelTerm );
-		}
-	`;
+		// disable highlight meshes before to enable them again if necessary right after
 
-	const uniforms = {
-		alpha: { value: 1.0 }
+		this.puzzle.parts.forEach( part => {
+
+			materials.setHighlightShader( part, false );
+
+		} );
+
+		this.controllers.forEach( controller => {
+
+			controller.highlighted = null;
+
+		} );
+
+		//
+
+		this.controllers.forEach( controller => {
+
+			// look for for parts to highlight depending on the controller position
+
+			if ( !controller.grippedPart ) {
+
+				if ( controller.isRayEnabled && controller.gamepad ) {
+
+					controller.highlightRayIntersects();
+
+				} else {
+
+					controller.highlightHandIntersects();
+
+				}
+
+			}
+
+			// here we check if the user is pressing the joystick to attract or move away a puzzle part.
+
+			if (
+				controller.grippedPart &&
+				controller.gamepad.axes &&
+				Math.abs( controller.gamepad.axes[3] ) > 0.5
+			) {
+
+				const direction = Math.sign( controller.gamepad.axes[3] );
+
+				controller.raySpace.attach( controller.grippedPart );
+
+				controller.grippedPart.position.z += direction * TELEKINESIS_SPEED * frameSpeed;
+
+				controller.attach( controller.grippedPart );
+
+			}
+
+		} );
+
+		// set each controller ray's visibility depending on wether the user is pressing
+		// the ray input.
+
+		this.controllers.forEach( controller => {
+
+			if (
+				!controller.grippedPart &&
+				controller.isRayEnabled &&
+				controller.gamepad
+			) {
+
+				controller.ray.visible = true;
+
+			} else {
+
+				controller.ray.visible = false;
+				controller.point.visible = false;
+
+			}
+
+		} );
+
+		// if the user grips at least one part, we tell the puzzle to check for
+		// possible parts merging.
+
+		const grippingC = this.controllers.find( c => c.grippedPart );
+
+		if ( grippingC ) this.puzzle.findPossibleMerging( grippingC.grippedPart );
+
 	}
 
-	const material = new THREE.ShaderMaterial({
-		vertexShader,
-		fragmentShader,
-		uniforms,
-		transparent: true
-	});
+	// Intersection test with user interface.
+	// It happens even when there is no puzzle.
 
-	const geometry = new THREE.IcosahedronGeometry( HAND_RADIUS, 5 );
+	this.controllers.forEach( controller => {
 
-	const mesh = new THREE.Mesh( geometry, material );
+		if ( !this.puzzle ) controller.ray.visible = false;
 
-	mesh.isHand = true;
+		matrix4.identity().extractRotation( controller.raySpace.matrixWorld );
+		raycaster.ray.origin.setFromMatrixPosition( controller.raySpace.matrixWorld );
+		raycaster.ray.direction.set( 0, 0, - 1 ).applyMatrix4( matrix4 );
 
-	return mesh
+		controller.intersect = UI.findIntersection( raycaster );
+
+		if ( controller.intersect ) {
+
+			// This event is listened by the UI module
+
+			events.emit( 'hovered-ui', {
+				controller,
+				element: controller.intersect.element
+			} );
+
+			controller.ray.visible = true;
+			controller.point.visible = true;
+
+			controller.raySpace.worldToLocal( controller.intersect.point );
+
+			controller.point.position.copy( controller.intersect.point );
+
+		}
+
+	} );
 
 }
 
-//
+// this is how this module is informed that a new puzzle is started.
+// If there was a previous puzzle, it overwrites it.
 
 function setPuzzle( puzzle ) {
 
@@ -234,7 +215,10 @@ function setPuzzle( puzzle ) {
 
 }
 
-//
+// Controller class.
+// It holds information about the puzzle parts it is intersecting, the part it is gripping,
+// and has its own methods so that the player can use both controller independently, like
+// gripping one puzzle part in each hand, releasing one, etc..
 
 function Controller( controls, renderer, i ) {
 
@@ -244,7 +228,6 @@ function Controller( controls, renderer, i ) {
 	controller.setupSource = setupSource;
 	controller.grip = grip;
 	controller.release = release;
-	controller.intersectController = intersectController;
 	controller.controls = controls;
 
 	const raySpace = renderer.xr.getController( i );
@@ -256,7 +239,7 @@ function Controller( controls, renderer, i ) {
 
 	controller.isRayEnabled = false;
 
-	controller.add( Hand() );
+	controller.add( controllerAssets.Hand( HAND_RADIUS ) );
 
 	controller.addEventListener( 'selectstart', (e) => {
 
@@ -297,9 +280,16 @@ function Controller( controls, renderer, i ) {
 
 	} );
 
+	// TODO: handle case when the user was gripping a piece and their controller runs out of battery.
+	// In this case three.js will automatically remove the controller from the scene, along with its
+	// children, which is to say the gripped piece.
+	// It's not ultra important since our controller object still exists, and when the user release the
+	// grip button, .release() will be called normally. But still this is weird to see the part disappear
+	// temporarily.
+
 	controller.addEventListener( 'disconnected', () => {
 
-		// console.log('remove source')
+		//
 
 	} );
 
@@ -307,7 +297,8 @@ function Controller( controls, renderer, i ) {
 
 }
 
-//
+// Traverse the puzzle scene to look for an intersection with the controller ray.
+// If found, we tell the materials module to enable the highlight meshes.
 
 function highlightRayIntersects() {
 
@@ -320,6 +311,9 @@ function highlightRayIntersects() {
 	const intersects = [];
 
 	this.controls.puzzle.group.traverse( child => {
+
+		// To improve performance, we start by intersecting the bounding box of each piece.
+		// A real intersection test is only perform if necessary.
 
 		if ( child.isPiece && raycaster.ray.intersectsBox( child.bbox ) ) {
 
@@ -367,21 +361,42 @@ function highlightRayIntersects() {
 
 }
 
-//
+// Like highlightRayIntersects, this function also finds intersection to set highlighted pieces.
+// However is does it by finding intersection with the hand sphere, not the controller ray.
 
 function highlightHandIntersects() {
 
-	const intersects = this.intersectController();
+	const intersects = [];
+
+	if ( !this.controls.puzzle ) return intersects;
+	
+	this.controls.puzzle.parts.forEach( part => {
+
+		const dist = part.distanceToController( this, HAND_RADIUS );
+
+		if ( dist < HAND_RADIUS ) {
+
+			intersects.push( { part, dist } );
+
+		}
+
+	} );
 
 	if ( intersects.length ) {
 
-		const isNotFree = this.controls.controllers.find( val => intersects[0] == val.grippedPart );
+		// Sort the intersected part so the part closest to the hand center is picked
+
+		const part = intersects.sort( ( a, b ) => a.dist - b.dist )[0].part;
+
+		// Highlight the intersected part if it's not gripped by a controller
+
+		const isNotFree = this.controls.controllers.find( val => part == val.grippedPart );
 
 		if ( !isNotFree ) {
 
-			materials.setHighlightShader( intersects[0], true );
+			materials.setHighlightShader( part, true );
 
-			this.highlighted = intersects[0];
+			this.highlighted = part;
 
 		}
 
@@ -402,7 +417,7 @@ function setupSource( inputSource ) {
 
 }
 
-//
+// Gripping is done by moving the part from the scene to the controller space.
 
 function grip() {
 
@@ -428,6 +443,8 @@ function grip() {
 
 }
 
+// Releasing is done by moving the part from the controller to the scene space.
+
 function release() {
 
 	this.traverse( child => {
@@ -451,30 +468,6 @@ function release() {
 		this.grippedPart = null;
 
 	}
-
-}
-
-//
-
-function intersectController() {
-
-	const intersects = [];
-
-	if ( !this.controls.puzzle ) return intersects;
-	
-	this.controls.puzzle.parts.forEach( part => {
-
-		const dist = part.distanceToController( this, HAND_RADIUS );
-
-		if ( dist < HAND_RADIUS ) {
-
-			intersects.push( part );
-
-		}
-
-	} );
-
-	return intersects;
 
 }
 

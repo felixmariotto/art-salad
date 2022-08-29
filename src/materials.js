@@ -1,4 +1,15 @@
 
+/*
+Module responsible for setting the white outline around pieces.
+At the moment it is done in a pretty slapdash, by creating two clone meshes for each
+puzzle piece, and assigning a special material to each of those.
+This material only offset the mesh normal and renders full white.
+It doesn't look great at all, but it was fast to setup.
+
+This should be refactored in favor of a postprocessing solution, like one of the
+three last solutions explained in this article: https://alexanderameye.github.io/notes/rendering-outlines/
+*/
+
 import * as THREE from 'three';
 
 //
@@ -78,7 +89,7 @@ function initPuzzle( puzzle ) {
 
 		};
 
-		// setup material for the piece outline
+		// setup material for the two outline meshes
 
 		piece.bgModel1.material = outlineMaterial;
 		piece.bgModel2.material = outlineMaterial.clone();
@@ -93,7 +104,7 @@ function initPuzzle( puzzle ) {
 
 }
 
-//
+// Called by the controls module when it detects an intersection between a controller and a piece.
 
 function setHighlightShader( puzzlePart, value ) {
 

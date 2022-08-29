@@ -1,4 +1,9 @@
 
+/*
+This is a page that gets added or removed to the main UI panel by the UI module.
+This one is a static page with a step by step guide on how to use the controllers.
+*/
+
 import * as THREE from 'three';
 import ThreeMeshUI from 'three-mesh-ui';
 import params from './params.js';

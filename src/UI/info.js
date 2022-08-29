@@ -1,4 +1,9 @@
 
+/*
+This is a page that gets added or removed to the main UI panel by the UI module.
+This is the info page displayed when there is a puzzle running.
+*/
+
 import * as THREE from 'three';
 import ThreeMeshUI from 'three-mesh-ui';
 import params from './params.js';

@@ -1,4 +1,10 @@
 
+/*
+Module responsible to start and end puzzles.
+It's a kind of global manager that's responsible for telling to other modules
+when and how to react to global game events.
+*/
+
 import { scene, renderer, loopCallbacks } from './init.js';
 import controls from './controls.js';
 import files from './files.js';

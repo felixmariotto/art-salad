@@ -1,13 +1,8 @@
 
-/*
-used everywhere in the library to transmit events across modules.
-*/
 
-//
+// This module is used everywhere in the library to transmit events across modules.
 
 const domElement = document.createElement('DIV');
-
-//
 
 function on( eventName, callback ) {
 
@@ -15,15 +10,11 @@ function on( eventName, callback ) {
 
 }
 
-//
-
 function remove( eventName, callback ) {
 
 	domElement.removeEventListener( eventName, callback );
 
 }
-
-//
 
 function emit( eventName, detail ) {
 

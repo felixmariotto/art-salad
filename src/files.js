@@ -1,8 +1,17 @@
 
+/*
+This is where we load the files. The files module has a getFile function that returns a
+Promise resolved when the model has loaded. Model loading is done in a loader, to limit
+rendering stuttering as much as possible.
+*/
+
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 import museum from '../assets/museum.glb';
+
+// TODO: find a better way to import URLs and build the dist folder, as this method
+// will quickly get out of hands.
 
 import doubleHeadSculpt from '../assets/puzzles/double-head-sculpt/double-head-sculpt.glb';
 import paintedTrash from '../assets/puzzles/painted-trash/painted-trash.glb';
@@ -109,6 +118,8 @@ let worker, onFileReady;
 const gltfLoader = new GLTFLoader();
 const objectLoader = new THREE.ObjectLoader();
 
+// Loading is done in a loader to avoid rendering stuttering as much as possible
+
 if ( typeof Worker !== 'undefined' ) {
 
 	worker = new Worker( new URL('workers/worker.js', import.meta.url ) );
@@ -118,6 +129,8 @@ if ( typeof Worker !== 'undefined' ) {
 		const geometries = e.data.geometries;
 		const texture = e.data.texture;
 		const error = e.data.error;
+		// not used to display loading progress because three.js requires the server to set the Content-Length header.
+		// https://threejs.org/docs/index.html?q=gltfload#examples/en/loaders/GLTFLoader.load
 		const isInProgress = e.data.isInProgress;
 
 		if ( error ) console.log( error );
@@ -129,7 +142,6 @@ if ( typeof Worker !== 'undefined' ) {
 			geometries.forEach( ( shallowGeometry, i, array) => {
 
 				const geometry = new THREE.BufferGeometry();
-				geometry.isProcessed = true;
 
 				if ( shallowGeometry.index ) {
 
@@ -161,7 +173,10 @@ if ( typeof Worker !== 'undefined' ) {
 
 			} );
 
-			// recreate the material shared by all meshes of the puzzle
+			// Recreate the material shared by all meshes of the puzzle
+			// As explained in https://github.com/felixmariotto/art-salad/edit/master/assets/puzzles/README.md
+			// It is necessary to make important trade-off to support the Oculus Quest 1,
+			// So the only type of material allowed in the application is basic material.
 
 			const newTexture = new THREE.CanvasTexture(
 				texture.source.data,
@@ -176,10 +191,6 @@ if ( typeof Worker !== 'undefined' ) {
 			);
 
 			newTexture.encoding = THREE.sRGBEncoding;
-
-			// As explained in https://github.com/felixmariotto/art-salad/edit/master/assets/puzzles/README.md
-			// It is necessary to make important trade-off to support the Oculus Quest 1,
-			// So the only type of material allowed in the application is basic material.
 
 			const material = new THREE.MeshBasicMaterial( {
 				map: newTexture,
@@ -202,7 +213,9 @@ if ( typeof Worker !== 'undefined' ) {
 
 }
 
-//
+// Called by other modules to get a model from a name.
+// It returns a Promise, so other modules just have to listen to the promise resolution
+// and continue what they wanted to do once they get handed the model.
 
 function getModel( modelName ) {
 
@@ -234,7 +247,8 @@ function getModel( modelName ) {
 
 }
 
-// load a file without going through the webworker
+// load a file without going through the webworker.
+// Only used to load the museum model so far.
 
 function getModelDirect( modelName ) {
 
@@ -279,6 +293,7 @@ const files = {
 	getModelDirect,
 	modelInfos,
 	modelImgs,
+	// this gets filled by UI/browser when it loads model thumbnail, in order to reuse them later.
 	modelThumbTextures: []
 };
 

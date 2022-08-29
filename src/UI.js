@@ -1,4 +1,10 @@
 
+/*
+Central module for all UI-related stuff.
+Each individual page has its own module in the /UI folder.
+For information on three-mesh-ui API, see https://github.com/felixmariotto/three-mesh-ui
+*/
+
 import { loopCallbacks } from './init.js';
 import * as THREE from 'three';
 import ThreeMeshUI from 'three-mesh-ui';
@@ -16,7 +22,7 @@ import sourceJSON from '../assets/fonts/Source.json';
 import sourceImage from '../assets/fonts/Source.png';
 import exitIconURL from '../assets/UI-images/exit-icon.png';
 
-//
+// constents for animations
 
 const TRANSLATION_SPEED = 0.03;
 const ANGLE_SPEED = 0.03;
@@ -31,17 +37,30 @@ const quat = new THREE.Quaternion();
 let targetPos = CENTRE_POS;
 let targetQuat = CENTRE_QUAT;
 
+//
+
 const textureLoader = new THREE.TextureLoader();
 
-//
+// The loading panel is never used as a child of container,
+// but this module is still responsible for showing/hiding it and for its animation.
 
 const loadingGroup = new THREE.Group();
 loadingGroup.position.copy( CENTRE_POS );
 loadingGroup.quaternion.copy( CENTRE_QUAT );
 
-//
+// Base container, pages will be added and remove from this component.
 
 const group = new THREE.Group();
+
+const UI = {
+	findIntersection,
+	group,
+	setTutorial,
+	setHomepage,
+	loadingGroup
+}
+
+//
 
 const container = new ThreeMeshUI.Block( {
 	width: params.panelWidth,
@@ -60,6 +79,8 @@ group.add( container );
 container.add( homepage )
 
 // EXIT BUTTON
+// The exit button is placed on top of the main container, in the same group.
+// When the container group is animated, the exit button moves along with it.
 
 const exitContainer = new ThreeMeshUI.Block( {
 	width: 0.8,
@@ -119,8 +140,6 @@ exitContainer.add(
 
 exitContainer.position.y += ( params.panelHeight + exitContainer.height ) * 0.5 + 0.05;
 
-// group.add( exitContainer );
-
 ///////////////
 // EVENTS
 
@@ -138,7 +157,8 @@ events.on( 'hovered-ui', e => {
 
 events.on( 'tutorial-finished', e => {
 
-	UI.setHomepage();
+	group.remove( exitContainer );
+	setHomepage();
 
 } );
 
@@ -167,6 +187,9 @@ events.on( 'exit-puzzle-request', e => {
 
 } );
 
+// recursive function that look for an element with the property .buttonName among
+// the passed element ancestors.
+
 function findButton( element, callback ) {
 
 	if ( element.buttonName ) {
@@ -180,6 +203,9 @@ function findButton( element, callback ) {
 	}
 
 }
+
+// Used as a callback of an event handler above.
+// Triggers stuff based on the clicked button's name, within our outside of this module.
 
 function handleButtonClick( buttonName, button ) {
 
@@ -233,6 +259,8 @@ function handleButtonClick( buttonName, button ) {
 
 }
 
+// Same as above, for hovered events instead of click events.
+
 function handleButtonHovered( buttonName, button ) {
 
 	if ( buttonName.includes( 'browserNav' ) ) {
@@ -272,6 +300,8 @@ loopCallbacks.push( update );
 
 function update( frameSpeed ) {
 
+	// triggers style changes
+
 	if ( exitContainer.isHovered ) {
 
 		exitContainer.isHovered = false;
@@ -283,7 +313,8 @@ function update( frameSpeed ) {
 
 	}
 
-	//
+	// When we want to move the panel to the side or to the front of the side,
+	// we do it when a linear animation because it's nicer.
 
 	browser.animate( frameSpeed );
 	loading.animate( frameSpeed );
@@ -327,6 +358,8 @@ function update( frameSpeed ) {
 
 }
 
+// When we switch page, we actually empty the container and add the new page instead.
+
 function clearContainer() {
 
 	for ( let i=container.children.length-1 ; i>-1 ; i-- ) {
@@ -338,6 +371,8 @@ function clearContainer() {
 	}
 
 }
+
+// Called by the controls module to find intersection with controller rays.
 
 function findIntersection( raycaster ) {
 
@@ -433,13 +468,5 @@ function openGithubLink() {
 }
 
 //
-
-const UI = {
-	findIntersection,
-	group,
-	setTutorial,
-	setHomepage,
-	loadingGroup
-}
 
 export default UI

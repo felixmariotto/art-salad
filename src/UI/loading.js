@@ -1,4 +1,9 @@
 
+/*
+Simple loading panel with a spinning icon to let the user know that the puzzle
+model is loading.
+*/
+
 import * as THREE from 'three';
 import ThreeMeshUI from 'three-mesh-ui';
 import params from './params.js';
