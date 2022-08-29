@@ -177,6 +177,10 @@ if ( typeof Worker !== 'undefined' ) {
 
 			newTexture.encoding = THREE.sRGBEncoding;
 
+			// As explained in https://github.com/felixmariotto/art-salad/edit/master/assets/puzzles/README.md
+			// It is necessary to make important trade-off to support the Oculus Quest 1,
+			// So the only type of material allowed in the application is basic material.
+
 			const material = new THREE.MeshBasicMaterial( {
 				map: newTexture,
 				side: THREE.DoubleSide
