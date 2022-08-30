@@ -2,18 +2,15 @@
 
 Not about salads.
 
+
+https://user-images.githubusercontent.com/46470486/187314383-41cf0121-002d-43f9-ad3d-6b597b0d8a6f.mp4
+
+
 ## Art Jigsaw puzzles in VR. On the web. Free and open-source.
 
 Art Salad is a website that you can visit in immersive VR (with a virtual reality headset such as Meta Quest).     
 Play around in VR with jigsaw puzzles made from 3D scans of art and history objects.   
 It's fun, educative, and free.    
-
-Want to give it a try ? Very simple:
-1) Put on a virtual reality headset (Meta Quest is supported).
-2) Launch the web browser.
-3) Go to https://artsalad.net.
-4) Click on `enter VR`.
-5) Enjoy
 
 ## How to contribute
 
