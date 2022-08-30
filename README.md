@@ -10,6 +10,13 @@ It's fun, educative, and free.
 
 Most models come from [Sketchfab](https://sketchfab.com/), and all of them are under Creative Common license.
 
+Want to give it a try ? Very simple:
+1) Put on a virtual reality headset (Meta Quest is supported).
+2) Launch the web browser.
+3) Go to https://artsalad.net.
+4) Click on `enter VR`.
+5) Enjoy
+
 ___
 
 https://user-images.githubusercontent.com/46470486/187314383-41cf0121-002d-43f9-ad3d-6b597b0d8a6f.mp4
