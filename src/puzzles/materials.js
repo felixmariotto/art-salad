@@ -14,7 +14,7 @@ import * as THREE from 'three';
 
 //
 
-const PIECE_BACK_COLOR = new THREE.Color( 0x8c8c8c );
+const PIECE_BACK_COLOR = new THREE.Color( 0xb5b5b5 );
 
 const outlineVertex = `
 	varying vec4 vPos;
