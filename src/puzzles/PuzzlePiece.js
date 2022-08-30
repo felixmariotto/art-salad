@@ -28,6 +28,7 @@ export default function PuzzlePiece( model ) {
 
 	piece.computeBBOX = computeBBOX;
 	piece.distanceToPoint = distanceToPoint;
+	piece.getAveragedNormal = getAveragedNormal;
 
 	return piece
 
@@ -69,5 +70,44 @@ function distanceToPoint( targetVec ) {
 	}
 
 	return smallestDist
+
+}
+
+// Used to rotate the piece toward the user on puzzle startup
+
+const FACES_TO_SAMPLES = 15;
+const triangle = new THREE.Triangle();
+const indices = new THREE.Vector3();
+
+function getAveragedNormal( targetVec ) {
+
+	const geometry = this.origModel.geometry;
+
+	console.log( geometry );
+
+	const facesCount = geometry.index.count / 3;
+	const facesToSamples = Math.min( FACES_TO_SAMPLES, facesCount );
+
+	for ( let i = 0 ; i < facesToSamples ; i++ ) {
+
+		const faceIndex = Math.floor( facesCount * ( i / facesToSamples ) );
+
+		indices.fromArray( geometry.index.array, faceIndex * 3 );
+
+		triangle.setFromAttributeAndIndices(
+			geometry.attributes.position,
+			indices.x,
+			indices.y,
+			indices.z
+		);
+
+		triangle.getNormal( vec3 );
+		targetVec.add( vec3 );
+
+	}
+
+	targetVec.normalize();
+
+	console.log( targetVec )
 
 }

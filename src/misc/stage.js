@@ -13,7 +13,7 @@ files.getModelDirect('museum').then( model => {
 	model.rotation.y -= Math.PI * 0.5;
 	model.position.z -= 0.7;
 
-	stageGroup.add( model );
+	// stageGroup.add( model );
 
 } );
 

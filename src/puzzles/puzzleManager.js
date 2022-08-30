@@ -9,6 +9,9 @@ one part containing two pieces.
 */
 
 import * as THREE from 'three';
+
+import { scene } from '../misc/init.js';
+
 import PuzzlePiece from './PuzzlePiece.js';
 import PuzzlePart from './PuzzlePart.js';
 import materials from './materials.js';
@@ -81,24 +84,6 @@ function setShuffledState() {
 
 	this.parts.forEach( part => {
 
-		part.rotation.set(
-			Math.random() * Math.PI * 2,
-			Math.random() * Math.PI * 2,
-			Math.random() * Math.PI * 2,
-		);
-
-		part.computeBBOX();
-		const center = part.bbox.getCenter( vec3A );
-
-		const targetCenter = vec3B.set(
-			GRID_CENTER.x + ( GRID_SIZE * -0.5 ) + ( cursor.x * gridCellSize ) + ( gridCellSize * 0.5 ),
-			GRID_CENTER.y + ( GRID_SIZE * 0.5 ) - ( cursor.y * gridCellSize ) - ( gridCellSize * 0.5 ),
-			GRID_CENTER.z
-		)
-
-		const translation = targetCenter.sub( center );
-		part.position.copy( translation );
-
 		/*
 	
 		Ideally here is would be nice to add a function to pivot the part so it doesn't look "away"
@@ -109,6 +94,38 @@ function setShuffledState() {
 
 		*/
 
+		// part.children[0].getAveragedNormal( vec3A );
+
+		// part.computeBBOX();
+		// const center = part.bbox.getCenter( vec3B );
+
+		// const arrow = new THREE.ArrowHelper( vec3A, vec3B, 0.2 );
+
+
+		/*
+		part.rotation.set(
+			Math.random() * Math.PI * 2,
+			Math.random() * Math.PI * 2,
+			Math.random() * Math.PI * 2,
+		);
+		*/
+
+		const normal = new THREE.Vector3();
+		part.children[0].getAveragedNormal( normal );
+
+		part.computeBBOX();
+		const center = part.bbox.getCenter( vec3A );
+
+		/*
+		const targetCenter = vec3B.set(
+			GRID_CENTER.x + ( GRID_SIZE * -0.5 ) + ( cursor.x * gridCellSize ) + ( gridCellSize * 0.5 ),
+			GRID_CENTER.y + ( GRID_SIZE * 0.5 ) - ( cursor.y * gridCellSize ) - ( gridCellSize * 0.5 ),
+			GRID_CENTER.z
+		)
+
+		const translation = targetCenter.sub( center );
+		part.position.copy( translation );
+
 		cursor.x = cursor.x + 1;
 		if ( cursor.x > gridCellLength - 1 ) {
 			cursor.x = 0;
@@ -116,6 +133,11 @@ function setShuffledState() {
 		}
 
 		part.computeChildrenBBOX();
+		*/
+
+		const arrow = new THREE.ArrowHelper( normal, center, 0.05, 'red', 0.02, 0.02 );
+
+		scene.add( arrow );
 
 	} );
 
