@@ -287,6 +287,12 @@ function Controller( controls, renderer, i ) {
 
 	} );
 
+	events.on( 'exit-puzzle-request', e => {
+
+		controller.release();
+
+	} );
+
 	return controller
 
 }
