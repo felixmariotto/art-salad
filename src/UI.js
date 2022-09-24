@@ -280,6 +280,8 @@ function handleButtonHovered( buttonName, button ) {
 		case 'arrowLeft' :
 		case 'arrowRight' :
 		case 'startPuzzle' :
+		case 'Tutorial' :
+		case 'Puzzles' :
 			button.isHovered = true;
 			break
 
@@ -318,6 +320,7 @@ function update( frameSpeed ) {
 
 	browser.animate( frameSpeed );
 	loading.animate( frameSpeed );
+	homepage.animate( frameSpeed );
 
 	if ( !group.position.equals( targetPos ) ) {
 

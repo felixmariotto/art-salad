@@ -89,7 +89,7 @@ const tutoBtn = Button( 'Tutorial' );
 const puzzleBtn = Button( 'Puzzles' );
 
 puzzleBtn.onAfterUpdate = function () {
-	this.position.x += 0.1;
+	this.position.x = -0.2;
 }
 
 menuContainer.add( tutoBtn, puzzleBtn );
@@ -106,6 +106,9 @@ function Button( title ) {
 		justifyContent: 'center',
 		borderRadius: 0.13 * 0.5
 	} );
+
+	button.setupState( { state: 'hovered', attributes: { backgroundColor: params.mediumGrey } } );
+	button.setupState( { state: 'idle', attributes: { backgroundColor: params.darkGrey } } );
 
 	const buttonText = new ThreeMeshUI.Text( {
 		content: title,
@@ -145,6 +148,30 @@ new THREE.TextureLoader().load( imageURL, texture => {
 	homePage.add( niceImage );
 
 } );
+
+//
+
+homePage.animate = animate;
+
+function animate( frameSpeed ) {
+
+	[ tutoBtn, puzzleBtn ].forEach( button => {
+
+		if ( button.isHovered ) {
+
+			button.setState( 'hovered' );
+
+		} else {
+
+			button.setState( 'idle' );
+
+		}
+
+		button.isHovered = false;
+
+	} );
+
+}
 
 //
 
