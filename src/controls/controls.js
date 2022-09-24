@@ -85,6 +85,7 @@ function _update( frameSpeed ) {
 
 		this.controllers.forEach( controller => {
 
+			controller.prevHighlighted = controller.highlighted;
 			controller.highlighted = null;
 
 		} );
@@ -93,7 +94,7 @@ function _update( frameSpeed ) {
 
 		this.controllers.forEach( controller => {
 
-			// look for for parts to highlight depending on the controller position
+			// look for parts to highlight depending on the controller position
 
 			if ( !controller.grippedPart ) {
 
@@ -104,6 +105,16 @@ function _update( frameSpeed ) {
 				} else {
 
 					controller.highlightHandIntersects();
+
+				}
+
+				// create sounds and feedback on new highlights
+
+				if ( controller.highlighted && controller.highlighted !== controller.prevHighlighted ) {
+
+					controller.gamepad.hapticActuators[ 0 ].pulse( 0.2, 30 );
+
+					events.emit( 'new-highlight', controller.highlighted );
 
 				}
 
@@ -295,7 +306,7 @@ function Controller( controls, renderer, i ) {
 
 	events.on( 'parts-assembled', e => {
 
-		controller.gamepad.hapticActuators[ 0 ].pulse( 0.4, 50 );
+		controller.gamepad.hapticActuators[ 0 ].pulse( 0.5, 50 );
 
 	} );
 
