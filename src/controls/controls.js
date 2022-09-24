@@ -281,16 +281,9 @@ function Controller( controls, renderer, i ) {
 
 	} );
 
-	// TODO: handle case when the user was gripping a piece and their controller runs out of battery.
-	// In this case three.js will automatically remove the controller from the scene, along with its
-	// children, which is to say the gripped piece.
-	// It's not ultra important since our controller object still exists, and when the user release the
-	// grip button, .release() will be called normally. But still this is weird to see the part disappear
-	// temporarily.
-
 	controller.addEventListener( 'disconnected', () => {
 
-		//
+		controller.release();
 
 	} );
 
