@@ -293,6 +293,12 @@ function Controller( controls, renderer, i ) {
 
 	} );
 
+	events.on( 'parts-assembled', e => {
+
+		controller.gamepad.hapticActuators[ 0 ].pulse( 0.4, 50 );
+
+	} );
+
 	return controller
 
 }
