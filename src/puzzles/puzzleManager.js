@@ -21,6 +21,10 @@ import events from '../misc/events.js';
 
 const vec3A = new THREE.Vector3();
 const vec3B = new THREE.Vector3();
+const normal = new THREE.Vector3();
+const quart = new THREE.Quaternion();
+
+const dolly = new THREE.Group();
 
 const STANDARD_PUZZLE_SIZE = 0.5;
 const STANDARD_PUZZLE_POSITION = new THREE.Vector3( 0, 1, -1 );
@@ -84,47 +88,18 @@ function setShuffledState() {
 
 	this.parts.forEach( part => {
 
-		/*
-	
-		Ideally here is would be nice to add a function to pivot the part so it doesn't look "away"
-		from the center of the scene.
-
-		Idea: computing the normal of 10 random triangle in the mesh, computing the average, and pivot
-		the part so this averaged normal look the camera.
-
-		*/
-
-		// part.children[0].getAveragedNormal( vec3A );
-
-		// part.computeBBOX();
-		// const center = part.bbox.getCenter( vec3B );
-
-		// const arrow = new THREE.ArrowHelper( vec3A, vec3B, 0.2 );
-
-
-		/*
-		part.rotation.set(
-			Math.random() * Math.PI * 2,
-			Math.random() * Math.PI * 2,
-			Math.random() * Math.PI * 2,
-		);
-		*/
-
-		const normal = new THREE.Vector3();
-		part.children[0].getAveragedNormal( normal );
+		// we get the part position in a grid pattern in front of the camera
 
 		part.computeBBOX();
 		const center = part.bbox.getCenter( vec3A );
 
-		/*
 		const targetCenter = vec3B.set(
 			GRID_CENTER.x + ( GRID_SIZE * -0.5 ) + ( cursor.x * gridCellSize ) + ( gridCellSize * 0.5 ),
 			GRID_CENTER.y + ( GRID_SIZE * 0.5 ) - ( cursor.y * gridCellSize ) - ( gridCellSize * 0.5 ),
 			GRID_CENTER.z
 		)
 
-		const translation = targetCenter.sub( center );
-		part.position.copy( translation );
+		part.position.copy( targetCenter ).sub( center );
 
 		cursor.x = cursor.x + 1;
 		if ( cursor.x > gridCellLength - 1 ) {
@@ -132,12 +107,19 @@ function setShuffledState() {
 			cursor.y ++;
 		}
 
+		// from the part's triangle's average normal, we rotate it towards the camera position
+
+		part.children[0].getAveragedNormal( normal );
+
+		dolly.position.copy( targetCenter );
+		dolly.lookAt( vec3A.copy( targetCenter ).add( normal ) );
+		dolly.attach( part );
+		dolly.lookAt( 0, 1, 0 );
+		this.group.attach( part );
+
+		//
+
 		part.computeChildrenBBOX();
-		*/
-
-		const arrow = new THREE.ArrowHelper( normal, center, 0.05, 'red', 0.02, 0.02 );
-
-		scene.add( arrow );
 
 	} );
 

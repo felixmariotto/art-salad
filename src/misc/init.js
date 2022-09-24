@@ -20,8 +20,8 @@ const width = window.innerWidth;
 const height = window.innerHeight;
 
 const camera = new THREE.PerspectiveCamera( 75, width/height, 0.005, 50 );
-// camera.position.set( 0, 1.6, 0 );
-// camera.lookAt( 0, 1, -1.8 );
+camera.position.set( 0, 1.6, 0 );
+camera.lookAt( 0, 1, -1.8 );
 
 /* Create the renderer object, with VR parameters enabled */
 
@@ -64,7 +64,6 @@ function loop( elapsedTime ) {
 
 	if ( !renderer.xr.isPresenting ) {
 
-		/*
 		camera.position.set( 0, 1.5, 0 );
 
 		camera.lookAt(
@@ -72,15 +71,6 @@ function loop( elapsedTime ) {
 			1.5 + 0.07 * Math.sin( elapsedTime * 0.0007 ),
 			-5
 		)
-		*/
-
-		camera.position.set(
-			Math.sin( elapsedTime * 0.001 ) * 0.4,
-			0.6,
-			Math.cos( elapsedTime * 0.001 ) * 0.4
-		);
-
-		camera.lookAt( 0, 0, 0 );
 
 	}
 

@@ -12,17 +12,18 @@ scene.add( stage, UI.group, UI.loadingGroup );
 
 //
 
+/*
 setTimeout( ()=> {
 	UI.setTutorial();
 	// gameManager.startTutorial();
 	// gameManager.startPuzzle( 'seatedCupid' )
 	// gameManager.startPuzzle( 'mexicoGraffiti' )
-	gameManager.startPuzzle( 'louviersCastle' )
+	// gameManager.startPuzzle( 'louviersCastle' )
 	// gameManager.startPuzzle( 'doubleHeadSculpt' ) 
 	// gameManager.startPuzzle( 'hydriaVase' )
 	// gameManager.startPuzzle( 'pentecostRederos' )
 }, 500 );
-
+*/
 
 const ghLink = document.createElement('A');
 ghLink.href = 'https://github.com/felixmariotto/art-salad';

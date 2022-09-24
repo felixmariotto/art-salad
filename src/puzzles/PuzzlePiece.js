@@ -83,8 +83,6 @@ function getAveragedNormal( targetVec ) {
 
 	const geometry = this.origModel.geometry;
 
-	console.log( geometry );
-
 	const facesCount = geometry.index.count / 3;
 	const facesToSamples = Math.min( FACES_TO_SAMPLES, facesCount );
 
@@ -107,7 +105,5 @@ function getAveragedNormal( targetVec ) {
 	}
 
 	targetVec.normalize();
-
-	console.log( targetVec )
 
 }
