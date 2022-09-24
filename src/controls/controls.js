@@ -114,7 +114,7 @@ function _update( frameSpeed ) {
 
 					controller.gamepad.hapticActuators[ 0 ].pulse( 0.2, 30 );
 
-					events.emit( 'new-highlight', controller.highlighted );
+					events.emit( 'new-highlight', controller );
 
 				}
 
@@ -235,6 +235,7 @@ function setPuzzle( puzzle ) {
 function Controller( controls, renderer, i ) {
 
 	const controller = renderer.xr.getControllerGrip( i );
+	controller.serial = i;
 	controller.highlightRayIntersects = highlightRayIntersects;
 	controller.highlightHandIntersects = highlightHandIntersects;
 	controller.setupSource = setupSource;
@@ -451,6 +452,8 @@ function grip() {
 	} );
 
 	if ( this.highlighted ) {
+
+		events.emit( 'grip-part', this );
 
 		this.grippedPart = this.highlighted;
 

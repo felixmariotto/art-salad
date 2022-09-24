@@ -4,6 +4,8 @@ This is a copy paste of https://github.com/mrdoob/three.js/blob/dev/examples/jsm
 With some changes regarding the button element CSS.
 */
 
+import audio from './audio.js';
+
 class VRButton {
 
 	static createButton( renderer ) {
@@ -56,6 +58,8 @@ class VRButton {
 			};
 
 			button.onclick = function () {
+
+				audio.init();
 
 				if ( currentSession === null ) {
 

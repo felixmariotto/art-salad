@@ -39,7 +39,7 @@ module.exports = env => {
     module: {
       rules: [
         {
-          test: /\.(gltf|glb|png|svg|jpg|gif)$/,
+          test: /\.(gltf|glb|png|svg|jpg|gif|mp3)$/,
           loader: 'file-loader',
           options: {
             name: '[path][name].[ext]',

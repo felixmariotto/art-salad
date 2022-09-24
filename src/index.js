@@ -1,4 +1,5 @@
 
+import audio from './misc/audio.js';
 import { scene } from './misc/init.js';
 import stage from './misc/stage.js';
 import UI from './UI.js';
